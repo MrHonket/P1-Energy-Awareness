@@ -83,3 +83,12 @@ const char* tekst{
 
 
 };
+
+/*VALGMULIGHEDER*/
+
+typedef struct {
+    int id;
+    char* residence[5];
+    char* language;
+    int choice;
+}Choices;
