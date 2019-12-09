@@ -67,8 +67,8 @@ const char *maaned_txt[] = {
 
 typedef struct {
    int   maaler_id;
-   dato  fra;
-   dato  til;
+   int  fra;
+   int  til;
    float maengde;
    char  *enhed; 
    char  *kvalitet;
@@ -77,5 +77,9 @@ typedef struct {
 
 
 const char* tekst{
+   "overskrift",
+   "KWh",
+
+
 
 };
