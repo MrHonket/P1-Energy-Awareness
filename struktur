@@ -1,0 +1,31 @@
+1.  Information om Strømpris Generelt
+  1.1 Funktion printf: Informer om strømpriser sammenholdt med nuværende strømforbrug 
+    1.1.1 Funktion: Fremskaf strømpriser
+    1.1.2 Funktion: Fremskaf strømforbrug fra måler.
+    1.1.3 Funktion: Udregn pris på forbrug pr. time/dag/uge/måned
+    
+2.  Information om Besparelse i Forbrug
+  2.1 Informér om, at du kan spare penge i dit strømforbrug nu.
+    2.1.1 Sammenlign strømpriser med et prisgennemsnit, median, årstidsbestemt, tidspunkt på dagen
+      2.1.1.1 Udregn prisgennemsnit
+      1.1.2 Fremskaf nuværende strømforbrug
+      2.1.1.2 Udregn strømudgift
+  2.2 Informer om at du kan spare penge i dit strømforbrug indenfor 24 timer
+    2.1.1 Sammenlign strømprisen når den er billigst inden for 24 timer med et prisgennemsnit, median, årstidsbestemt, tidspunkt på dagen
+      2.1.1.1 Udregn prisgennemsnit
+      2.1.1.2 Hvornår i dag er strømprisen lavest?
+    
+4.  Information om Overforbrug af Strøm
+  4.1 Advar brugeren hvis elforbruget er højere end gennemsnittet på tidspunkter med enten høj pris og/eller lav andel vedvarende energi.
+  4.1.1 Sammenhold strømforbrug med et strømgennemsnit
+  4.1.2 Advar, hvis du bruger meget strøm på et tidspunkt med høj elpris og/eller lav andel vedvarende energi.
+  
+  Kravsspecifikation: Evt. skal aktiveres? Kunne forestille mig den forbruger mere strøm end de andre (systemet skal være aktivt) samt den er mere "invasiv" end de andre?
+
+5.  Information om Strømforbruget Generelt
+  5.1 Funktion printf: Informér om strømforbruget lige nu, sammenholdt med historisk strømforbrug.
+  5.2 fremskaf historisk strømforbrug
+  5.3 fremskaf strømforbrug lige nu
+  5.4 fremskaf hvor stor en del af energien i systemet der kommer fra vedvarende energikilder.
+
+11. Interaktion med Programmet
