@@ -18,7 +18,7 @@ void update_settings(void)
     FILE *f;
     char location[20];
 
-    printf("What's the location of your house? Enter DK1 for Jutland and Fyn or DK2 for Sealand: ");
+    printf("What's your place of residence? Enter DK1 for Jutland and Fyn or DK2 for Sealand: ");
     scanf(" %3s", location);
 
     f = fopen(" settings.txt", "w");
