@@ -78,7 +78,7 @@ typedef struct {
 
 const char* tekst{
    "overskrift",
-   "KWh",
+   "KWh"
 
 
 
