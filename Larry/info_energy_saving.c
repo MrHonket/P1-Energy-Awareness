@@ -2,6 +2,7 @@
 #include <stdlib.h>
 
 #define NMB_OF_ELEMENTS 4
+#define KWH_TO_MWH 0.001
 
 /* TID */
 typedef enum {Man, Tir, Ons, Tor, Fre, Lor, Son} ugedag;
@@ -44,7 +45,7 @@ const char *maaned_txt[] = {
    "december"
 };
 
-/* METERDATA */
+/* METERDATA - amount målt i KWH */
 typedef struct {
    int   id;
    dato  fra;
@@ -52,13 +53,12 @@ typedef struct {
    float amount;
 } meterdata;
 
-
+/* PRISER - målt ud fra DKK/MWH */
 typedef struct {
     dato from;
     dato to; 
     double price_area1;
     double price_area2;
-    struct priser *next;
 } priser;
 
 double info_energy_saving(meterdata forbrug_array[], priser priser_array[], int time_frame);
@@ -88,47 +88,65 @@ int main(void)
     
     meterdata meterdata_array[4] = {
         {
-            18928, {{20, 00}, 15, januar, 2018}, {{21, 00}, 15, januar, 2018}, 250.32
+            18928, {{20, 00}, 15, januar, 2018}, {{21, 00}, 15, januar, 2018}, 440
         },
         {
-            18928, {{21, 00}, 15, januar, 2018}, {{22, 00}, 15, januar, 2018}, 203.40
+            18921, {{21, 00}, 15, januar, 2018}, {{22, 00}, 15, januar, 2018}, 303
         },
         {
-            18928, {{22, 00}, 15, januar, 2018}, {{23, 00}, 15, januar, 2018}, 175.33
+            18924, {{22, 00}, 15, januar, 2018}, {{23, 00}, 15, januar, 2018}, 275
         },
         {
-            18928, {{23, 00}, 15, januar, 2018}, {{24, 00}, 15, januar, 2018}, 127.30
+            18923, {{23, 00}, 15, januar, 2018}, {{24, 00}, 15, januar, 2018}, 127
         }
     };
 
-
+    printf("\n");
     /* printf("Pris område1: %.1f Pris område2: %.1f\n", data.price_area1, data.price_area2);*/
 
-    /*savings = info_energy_saving(meterdata_array, priser_array, 0);
-    printf("Besparelse: %.1f\n", savings);*/
+    savings = info_energy_saving(meterdata_array, priser_array, 0);
+    printf("Hvis du flytter dit forbrug, sparer du: %.1f DKK\n\n", savings);
 
     cheapest_struct = *cheapest(priser_array, 0);
-    printf("Dato: %d , Klokkeslæt: %d - %d , Pris Område1: %.f\n", cheapest_struct.from.day,
-                                                  cheapest_struct.from.time.hour, cheapest_struct.to.time.hour, cheapest_struct.price_area1);
+    printf("Dato: %d , Klokkeslæt: %d - %d , Pris Område1: %.f DKK\n", cheapest_struct.from.day,
+                                    cheapest_struct.from.time.hour, cheapest_struct.to.time.hour, cheapest_struct.price_area1);
 
-    return 0;
+    printf("\n");
+    return 0;   
 }
-
 
 /* Jeg ønsker at gå ind i et array af priser og finde den billigste pris samt det tidspunkt på døgnet det gælder */
 double info_energy_saving(meterdata forbrug_array[], priser priser_array[], int time_frame)
 {
-    int saving = 0;
-    int time = 0;
-    int median = 0;
+    double current_consumption;
+    double current_price;
+    double user_price_current;
+    double user_price_after;
+    double cheapest_price;
 
+    current_price = priser_array[time_frame].price_area1;
+    current_consumption = forbrug_array[time_frame].amount;
+
+    if (current_price < 0)
+        printf("Prisen er pt. negativ!\n");
+
+    /* Dette giver brugerens nuværende strømpris baseret ud fra forbruget */
+    user_price_current = current_consumption * KWH_TO_MWH * current_price;
+    printf("Nuværende pris baseret på nuværende forbrug: %.1f DKK\n", user_price_current);
+
+    /* Sorterer pris-array så den billigste pris ligger først */
     qsort(priser_array, NMB_OF_ELEMENTS, sizeof(priser), cmpfunc);
-    /* printf("Median = %.1f\n", priser_array[NMB_OF_ELEMENTS/2].price_area1);
-    median = priser_array[NMB_OF_ELEMENTS/2].price_area1;*/
+    cheapest_price = priser_array[0].price_area1;
 
-    saving = priser_array[0].price_area1;
-    return saving;
-}
+    /* Dette giver brugerens strømpris baseret ud fra hvornår det er billigst at bruge strøm */
+    user_price_after = current_consumption * KWH_TO_MWH * cheapest_price;
+    printf("Den billigste pris for forbrugeren baseret på nuværende forbrug: %.1f DKK\n", user_price_after);
+
+    if (user_price_after > user_price_current)
+        return user_price_after - user_price_current;
+    else
+        return user_price_current - user_price_after;
+} 
 
 
 priser *cheapest(priser priser_array[], int time_frame)
@@ -137,13 +155,15 @@ priser *cheapest(priser priser_array[], int time_frame)
     cheapest = (priser*)malloc(1 * sizeof(priser));
 
     qsort(priser_array, NMB_OF_ELEMENTS, sizeof(priser), cmpfunc);
-    /* printf("Median = %.1f\n", priser_array[NMB_OF_ELEMENTS/2].price_area1);
-    median = priser_array[NMB_OF_ELEMENTS/2].price_area1;*/
 
-    cheapest->from = priser_array[time_frame].from;
-    cheapest->to = priser_array[time_frame].to;
-    cheapest->price_area1 = priser_array[time_frame].price_area1;
-    cheapest->price_area2 = priser_array[time_frame].price_area2;
+    cheapest->from = priser_array[0].from;
+    cheapest->to = priser_array[0].to;
+    cheapest->price_area1 = priser_array[0].price_area1;
+    cheapest->price_area2 = priser_array[0].price_area2;
+
+    /* Informerer forbrugren om hvorvidt det billigste tidspunkt er sent om aftenen */
+    if (priser_array[0].from.time.hour > 21)
+        printf("Det billigste tidspunkt er efter kl 21 om aftenen\n");
 
     return cheapest;
 }
@@ -159,7 +179,7 @@ int cmpfunc(const void * a, const void * b)
     priser *priserA = (priser*)a;
     priser *priserB = (priser*)b;
 
-    return priserB->price_area1 - priserA->price_area2;
+    return priserA->price_area1 - priserB->price_area1;
 }
 
 
