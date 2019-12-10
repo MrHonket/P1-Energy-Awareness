@@ -4,6 +4,6 @@
 #include <ctype.h>
 #include "global.h"
 
-int init_database_module(void);
+void init_database(void);
 data *get_price_for_timeinterval_in_area(dato from, dato to,  area area);
 data *get_consumption_for_timeinterval_at_id(dato from, dato to, char *id);
