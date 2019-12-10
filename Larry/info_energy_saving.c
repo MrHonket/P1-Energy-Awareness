@@ -320,7 +320,6 @@ priser *cheapest(priser priser_array[])
     return cheapest;
 }
 
-
 int cmpfunc(const void * a, const void * b)
 {
     priser *priserA = (priser*)a;
