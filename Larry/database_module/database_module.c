@@ -17,6 +17,7 @@
 
 
 /* prototyper */
+int init_database_module(void);
 data *get_price_for_timeinterval_in_area(dato from, dato to,  area area);
 data *get_consumption_for_timeinterval_at_id(dato from, dato to, char *id);
 
@@ -37,8 +38,7 @@ pricedata mypricedata[HOURS_PR_YEAR*3];
 
 
 
-int main(void)
-{
+int init_database_module(void){
    
     char str[30];
     int index=0;
