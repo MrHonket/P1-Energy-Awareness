@@ -4,6 +4,9 @@
 #include <stdlib.h>
 
 /*Symbolske konstanter*/
+/*Overordnede*/
+#define FALSE       0
+#define TRUE        1
 /*Choices.usertype kan indeholde en af disse værdier*/
 #define HUMAN       0
 #define AUTOMATED   1
