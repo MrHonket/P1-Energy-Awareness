@@ -8,6 +8,7 @@
 
 double warning_consumption(double price, double consumption,double median_consumption);
 int main(void){
+  data price_array;
   double price_treshold;
   double median_consumption=0.5;
   printf("hello and welcome to the gokkeslaet\n");
@@ -27,18 +28,17 @@ else
 {
 printf("Price is lower than threshold no worries\n");
 }
-printf("Forbrug i perioden: %lf\n",consumption.value);
     return EXIT_SUCCESS;
 }
 double warning_consumption(double price,double consumption,double median_consumption){
 double price_high, price_difference;
 if(consumption>median_consumption){
-  price_difference=(price*consumption)/(price*median_consumption);
+  price_difference=((price*consumption)/(price*median_consumption)-1);
 printf("your energy consumption is higher than normally right now.\n");
 return price_difference;
 }
 else if(consumption<=median_consumption){
-  price_difference=(price*median_consumption)/(price*consumption);
+  price_difference=((price*median_consumption)/(price*consumption)-1);
 printf("your consumption is not higher than normal\n");
 return price_difference;
 }
