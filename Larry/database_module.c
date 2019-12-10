@@ -1,4 +1,7 @@
+/* Jakob */
+
 /* Get data from file */
+
 
 
 /* #include "structMeterdata.h"
