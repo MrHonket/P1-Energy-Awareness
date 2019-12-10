@@ -32,13 +32,13 @@
 /*VARIABLE TIL data*/
     /* tids enums og structs: ugedag, month, time, dato, ugedag_txt[],month_txt[]. */
     typedef enum {Man,Tir,Ons,Tor,Fre,Lor,Son} ugedag;
-    typedef enum{januar=1,februar,marts,april,
-        maj,juni,juli,august,september,
-        oktober,november,december}month;
+    typedef enum{Januar=1,Februar,Marts,April,
+        Maj,Juni,Juli,August,September,
+        Oktober,November,December}month;
     typedef struct {int hour;int minute;}time;
     typedef struct{time time;int day;month month;int year;}dato;
     /*område struct: area */
-    typedef enum {dk1,dk2}area;
+    typedef enum {Dk1,Dk2}area;
     /*prisdata struct: pricedata*/
     typedef struct{dato from;dato to;double DK1price;double DK2price;}pricedata;
     /*forbrugsdata struct: meterdata*/

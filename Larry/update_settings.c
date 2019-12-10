@@ -2,6 +2,9 @@
 #include <stdlib.h>
 #include <string.h>
 
+/* updatere settings.txt fil*/
+/* Daniel */
+
 void update_settings(void);
 
 int main ()
