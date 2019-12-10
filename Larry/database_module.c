@@ -82,8 +82,6 @@ data *get_consumption_for_timeinterval_at_id(dato from, dato to, char *id){
    int count = to.time.hour - from.time.hour;
    int i =0;
 
-
-
    for(i=0;i<count;i++){
    dat[i].meter.from = mymeterdata[from.day+i].from;
    dat[i].meter.to = mymeterdata[from.day+i].to;
