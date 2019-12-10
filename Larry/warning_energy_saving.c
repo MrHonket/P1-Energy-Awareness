@@ -7,20 +7,6 @@
 
 double warning_energy_saving(double price, double consumption,double median_consumption);
 int main(void){
-<<<<<<< Updated upstream
-   double price_treshold;
-   double median_consumption=0.5;
-printf("hello and welcome to the gokkeslaet\n");
-scanf("%lf %lf",&price_treshold, &median_consumption);
-/* pricedata data;
-meterdata consumption; */
-pricedata data= {{20,0,15,januar,2018},{21,0,15,januar,2018},219.3,222.4};
-meterdata consumption= {"1234",{20,0,15,januar,2018},{21,0,15,januar,2018},1.2,"kwh","measured","hour"}; 
-printf("gokkeslaet: %d\n",data.from.time.hour);   
-printf("slut gokker: %d\n",data.to.time.hour);
-printf("dato: %d. %s %d\n",data.from.day,month_txt[data.from.month],data.from.year); 
-printf("priser: %lf, %lf\n",data.DK1price,data.DK2price);
-=======
   double price_treshold;
   double median_consumption=0.5;
   printf("hello and welcome to the gokkeslaet\n");
@@ -40,7 +26,6 @@ printf("priser: %lf, %lf\n",data.DK1price,data.DK2price);
   {
     printf("you are paying %.2lf percent more than usual",warning_energy_saving(data.DK2price,consumption.value,median_consumption));
   }
->>>>>>> Stashed changes
 
 printf("Forbrug i perioden: %lf\n",consumption.value);
 if(data.DK1price<=price_treshold|| data.DK2price<=price_treshold){
