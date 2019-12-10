@@ -3,6 +3,25 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+/*Symbolske konstanter*/
+/*Choices.usertype kan indeholde en af disse værdier*/
+#define HUMAN       0
+#define AUTOMATED   1
+/*Choices.choice kan indeholde en af disse værdier*/
+#define ERROR_TEST            0
+#define USER_HISTORY          1
+#define INFO_ENERGY_SAVING    2
+#define UPDATE_SETTINGS       3
+#define SYSTEM_INFORMATION    4
+#define WARNING_ENERGY_SAVING 5
+#define MACHINE_ACTIVATION    6
+#define CONSUMPTION_CHECK     7
+#define FUTURE_DATA           8
+/*Konstanter der beskriver en fejlmeddelse i error_message*/
+#define ERROR_CONFIRMATION_PASSIVE_MODULE 10
+#define ERROR_CHOICE_DOESNT_EXIST         11
+#define ERROR_INFO_STR_NOT_FOUND          12
+#define ERROR_USER_TYPE                   13
 
 /* TID */
 typedef enum {
@@ -146,3 +165,15 @@ typedef struct{
    double solarProd;
 
 }production;
+
+typedef struct{
+    int id;
+    char residence[5];
+    char language[5];
+    int choice_of_function;
+    int user_type;
+}user;
+
+typedef struct{
+    //Hvis user skal udvides med en choice og en settings struct for at abstrahere mere.
+}settings;
