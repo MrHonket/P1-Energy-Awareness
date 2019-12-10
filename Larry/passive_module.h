@@ -1,4 +1,8 @@
-#include <stdio.h>
-#include <stdlib.h>
+#ifndef PASSIVE_MODULE
+#define PASSIVE_MODULE
 
-int passive_module(choices user_choices, data user_data);
+#include "global.h"
+
+int passive_module(user user_choices, data user_data);
+
+#endif
