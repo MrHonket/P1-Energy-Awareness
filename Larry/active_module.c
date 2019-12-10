@@ -16,10 +16,6 @@ data load_data(user user_choices);
 int check_user(int activator);
 int prompt_user(user user_choices,data user_data);
 void log_data(user user_choices);
-/*Funktioner der skal inkluderes i debug.c
-char* translate(int choice_of_function);
-int error_message(int error);
-int debug_print(user user_choice, data user_data, int run_or_not);*/
 
 int main(void){
     user user_choices;
@@ -33,20 +29,20 @@ int main(void){
     user_data = load_data(user_choices);
 
     user_type = check_user(next_activation);
-    if (user_type == HUMAN){
+    if (user_type == Human){
         prompt_user(user_choices,user_data);
     }
-    else if(user_type == AUTOMATED){
+    else if(user_type == Automated){
         confirmation = passive_module(user_choices,user_data);
         if(confirmation){
             log_data(user_choices);
         }
         else{
-            error_message(ERROR_CONFIRMATION_PASSIVE_MODULE);
+            error_message(ErrorConfirmationPassiveModule);
         }
     }
     else{
-        error_message(ERROR_USER_TYPE);
+        error_message(ErrorUserType);
     }
 
     debug_print(user_choices,user_data,TRUE);
@@ -55,15 +51,15 @@ int main(void){
 }
 /*Loader settings fra settings.txt. Indeholder pt. KUN MOCKDATA!*/
 user load_settings(void){
-    user settings;
+    user User;
     char setting_str[50];
 
-    settings.id = 35;
-    strcpy(settings.residence,"DK1");
-    strcpy(settings.language,"DK");
-    settings.choice_of_function = USER_HISTORY;
+    User.settings.id = 35;
+    strcpy(User.settings.residence,"DK1");
+    strcpy(User.settings.language,"DK");
+    User.choice.function = UserHistory;
 
-    return settings;
+    return User;
 }
 /*Sætter næste automatiske aktivering*/
 int set_next_activation(void){
@@ -73,7 +69,7 @@ int set_next_activation(void){
 data load_data(user user_choices){
     data local_data;
 
-    if(user_choices.id == 35){
+    if(user_choices.settings.id == 35){
         local_data.prize.DK1price = 120;
     }
     else{
@@ -84,7 +80,7 @@ data load_data(user user_choices){
 }
 /*En funktion der checker om brugeren er programmet selv eller en aktiv bruger.*/
 int check_user(int activator){
-    if (activator == AUTOMATED){
+    if (activator == Automated){
         return 0;
     }
     else{
@@ -102,24 +98,24 @@ int prompt_user(user user_choices, data user_data){
     
     //scanf
     
-    if(user_choices.choice_of_function == USER_HISTORY){
+    if(user_choices.choice.function == UserHistory){
         strcpy(info_str,user_history(user_choices,user_data));
     }
-    else if(user_choices.choice_of_function == UPDATE_SETTINGS){
+    else if(user_choices.choice.function == UpdateSettings){
         strcpy(info_str,update_settings(user_choices,user_data));
     }
-    else if(user_choices.choice_of_function == INFO_ENERGY_SAVING){
+    else if(user_choices.choice.function == InfoEnergySaving){
         strcpy(info_str,info_energy_settings(user_choices,user_data));
     }
     else{
-        error_message(ERROR_CHOICE_DOESNT_EXIST);
+        error_message(ErrorChoiceDoesntExist);
     }
 
     if(info_str != NULL){
         printf("%s\n",info_str);
     }
     else{
-        error_message(ERROR_INFO_STR_NOT_FOUND);
+        error_message(ErrorInfoStrNotFound);
     }
 
     //scanf for om der ønskes ny kommando.
@@ -131,29 +127,3 @@ int prompt_user(user user_choices, data user_data){
         return 0;
     }
 }
-/*
-int debug_print(user user_choice, data user_data, int run_or_not){
-    if(run_or_not){
-        printf("ID = %d ; Sprog = %s ; Bosted = %s\n",user_choice.id,user_choice.language,user_choice.residence);
-        printf("Valgte funktion = %s ; Brugeren er %s\n",translate(user_choice.choice_of_function),(user_choice.user_type == HUMAN ? "menneske" : "automatisk"));
-    }
-    return EXIT_SUCCESS;
-}
-
-char* translate(int choice_of_function){
-    switch(choice_of_function){
-        case ERROR_TEST             : return "error_test";
-        case USER_HISTORY           : return "user_history";
-        case INFO_ENERGY_SAVING     : return "info_energy_saving";
-        case UPDATE_SETTINGS        : return "update_settings";
-        case SYSTEM_INFORMATION     : return "system_information";
-        case WARNING_ENERGY_SAVING  : return "warning_energy_savings";
-        case MACHINE_ACTIVATION     : return "machine_activation";
-        case CONSUMPTION_CHECK      : return "consumption_check";
-        case FUTURE_DATA            : return "future_data";
-    }
-}
-/*Funktion der tager en bestemt type fejl og returnere den slags.
-int error_message(int error){
-    return 0;
-}*/
