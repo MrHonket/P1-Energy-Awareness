@@ -1,4 +1,6 @@
 /*MartinBM*/
+#include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #include "global.h"
 #include "language.h"
@@ -10,8 +12,8 @@ char* update_settings(user user_choices, data user_data){return "upd";}
 char* info_energy_settings(user user_choices, data user_data){return "inf";}
 
 /*Dette er prototyper i programmet.*/
-user load_settings(void);
-int set_next_activation(void);
+settings load_settings(void);
+void set_next_activation(user user_choice);
 data load_data(user user_choices);
 int check_user(int activator);
 int prompt_user(user user_choices,data user_data);
@@ -24,11 +26,11 @@ int main(void){
         user_type,
         confirmation;
 
-    user_choices = load_settings();
-    next_activation = set_next_activation();
+    user_choices.settings = load_settings();
+    set_next_activation(user_choices);
     user_data = load_data(user_choices);
 
-    user_type = check_user(next_activation);
+    user_type = check_user(user_choices.type);
     if (user_type == Human){
         prompt_user(user_choices,user_data);
     }
@@ -50,33 +52,31 @@ int main(void){
     return EXIT_SUCCESS;
 }
 /*Loader settings fra settings.txt. Indeholder pt. KUN MOCKDATA!*/
-user load_settings(void){
-    user User;
-    char setting_str[50];
+settings load_settings(void){
+    settings settings;
 
-    User.settings.id = 35;
-    strcpy(User.settings.residence,"DK1");
-    strcpy(User.settings.language,"DK");
-    User.choice.function = UserHistory;
+    settings.id = 35;
+    strcpy(settings.residence,"DK1");
+    strcpy(settings.language,"DK");
 
-    return User;
+    return settings;
 }
 /*Sætter næste automatiske aktivering*/
-int set_next_activation(void){
-
+void set_next_activation(user user_choices){
+    user_choices.type = Human;
 }
 /*Loader data fra database_module. Indeholder pt. KUN MOCKDATA!*/
 data load_data(user user_choices){
-    data local_data;
+    data data;
 
     if(user_choices.settings.id == 35){
-        local_data.prize.DK1price = 120;
+        data.prize.DK1price = 120;
     }
     else{
-        local_data.prize.DK1price = 85;
+        data.prize.DK1price = 85;
     }
 
-    return local_data;
+    return data;
 }
 /*En funktion der checker om brugeren er programmet selv eller en aktiv bruger.*/
 int check_user(int activator){
