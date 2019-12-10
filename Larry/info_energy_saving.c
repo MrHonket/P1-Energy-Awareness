@@ -1,87 +1,23 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "global.h"
 
-#define NMB_OF_ELEMENTS 4
 #define KWH_TO_MWH 0.001
+#define NMB_OF_ELEMENTS 24
 
-/* TID */
-typedef enum {Man, Tir, Ons, Tor, Fre, Lor, Son} ugedag;
-typedef enum{januar,februar, marts, april, maj, juni, juli, august, september, oktober, november, december} maaned;
-
-typedef struct {
-   int hour;
-   int min;   
-} klokkeslet;
-
-typedef struct{
-   klokkeslet time;
-   int  day;
-   maaned month;
-   int  year;
-} dato;
-
-const char *ugedag_txt[] = {
-   "Mandag",
-   "Tirsdag",
-   "Onsdag",
-   "Torsdag",
-   "Fredag",
-   "Lordag",
-   "Sondag"
-};
-
-const char *maaned_txt[] = {
-   "januar",
-   "februar",
-   "marts",
-   "april",
-   "maj",
-   "juni",
-   "juli",
-   "august",
-   "september",
-   "oktober",
-   "november",
-   "december"
-};
-
-/* METERDATA - amount målt i KWH */
-typedef struct {
-   int   id;
-   dato  fra;
-   dato  til;
-   float amount;
-} meterdata;
-
-/* PRISER - målt ud fra DKK/MWH */
-typedef struct {
-    dato from;
-    dato to; 
-    double price_area1;
-    double price_area2;
-} priser;
-
-typedef struct{
-    int id;
-    char residence[5];
-    char language[5];
-    int choice_of_function;
-    int user_type;
-} user;
-
-double info_energy_saving2(meterdata forbrug_array[], priser priser_array[], int time_frame, user user_choice);
-priser *cheapest(priser priser_array[]);
+double info_energy_saving2(meterdata forbrug_array[], pricedata priser_array[], int time_frame, user user_choice);
+pricedata *cheapest(pricedata priser_array[]);
 int cmpfunc(const void * a, const void * b);
 
 int main(void)
 {
     double savings;
     int tidspunkt = 18;
-    priser cheapest_struct;
+    pricedata cheapest_struct;
     user user_choice = {1200, "DK1", "Dansk", 2, 1};
 
-    priser priser_array[24] = {
+    pricedata priser_array[NMB_OF_ELEMENTS ] = {
         {
             {{00, 00}, 15, januar, 2018}, {{01, 00}, 15, januar, 2018}, 178, 64
         },
@@ -156,7 +92,7 @@ int main(void)
         }
     };
     
-    meterdata meterdata_array[24] = {
+    meterdata meterdata_array[NMB_OF_ELEMENTS ] = {
         {
             18928, {{00, 00}, 15, januar, 2018}, {{01, 00}, 15, januar, 2018}, 440
         },
@@ -246,7 +182,7 @@ int main(void)
 
 /* Funktionen returnerer besparelsen forbrugeren kan opnå hvis vedkommende flytter sit forbrug til det billigste tidspunkt 
  * Funktionen tager udgangspunkt i et 24 element-langt dat-array der samt et user_choice der afgører om det er DK1 eller DK2 vi kigger på */
-double info_energy_saving2(meterdata forbrug_array[], priser priser_array[], int time_frame, user user_choice)
+double info_energy_saving2(meterdata forbrug_array[], pricedata priser_array[], int time_frame, user user_choice)
 {
     double current_consumption = 0.0;
     double current_price = 0.0;
@@ -256,8 +192,8 @@ double info_energy_saving2(meterdata forbrug_array[], priser priser_array[], int
     
     if (strcmp(user_choice.residence, "DK1") == 0)
     {   
-        current_price = priser_array[time_frame+1].price_area1;
-        current_consumption = forbrug_array[time_frame+1].amount;
+        current_price = priser_array[time_frame].price_area1;
+        current_consumption = forbrug_array[time_frame].amount;
 
         if (current_price < 0)
             printf("Prisen er pt. negativ!\n");
@@ -276,8 +212,8 @@ double info_energy_saving2(meterdata forbrug_array[], priser priser_array[], int
     }
     else 
     {
-        current_price = priser_array[time_frame+1].price_area2;
-        current_consumption = forbrug_array[time_frame+1].amount;
+        current_price = priser_array[time_frame].price_area2;
+        current_consumption = forbrug_array[time_frame].amount;
 
         if (current_price < 0)
             printf("Prisen er pt. negativ!\n");
@@ -301,7 +237,7 @@ double info_energy_saving2(meterdata forbrug_array[], priser priser_array[], int
         return user_price_current - user_price_after;
 } 
 
-priser *cheapest(priser priser_array[])
+pricedata *cheapest(pricedata priser_array[])
 {
     priser *cheapest;
     cheapest = (priser*)malloc(1 * sizeof(priser));
@@ -319,7 +255,6 @@ priser *cheapest(priser priser_array[])
 
     return cheapest;
 }
-
 
 int cmpfunc(const void * a, const void * b)
 {

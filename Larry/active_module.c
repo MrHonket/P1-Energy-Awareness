@@ -1,3 +1,4 @@
+/*MartinBM*/
 #include <string.h>
 #include "global.h"
 #include "language.h"
