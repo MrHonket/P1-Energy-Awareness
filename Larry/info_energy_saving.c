@@ -115,7 +115,9 @@ int main(void)
     return 0;   
 }
 
-/* Jeg ønsker at gå ind i et array af priser og finde den billigste pris samt det tidspunkt på døgnet det gælder */
+/* Funktionen returnerer besparelsen forbrugeren kan opnå hvis vedkommende flytter sit forbrug til det billigste tidspunkt 
+ * Funktionen tager udgangspunkt i et 24 element-langt array der indekserer alle timerne og brugeren skriver da blot tidspunktet 
+ * vedkommende ønsker at få informationer fra */
 double info_energy_saving(meterdata forbrug_array[], priser priser_array[], int time_frame)
 {
     double current_consumption;
@@ -169,11 +171,6 @@ priser *cheapest(priser priser_array[], int time_frame)
 }
 
 
-
-
-
-
-
 int cmpfunc(const void * a, const void * b)
 {
     priser *priserA = (priser*)a;
@@ -183,31 +180,4 @@ int cmpfunc(const void * a, const void * b)
 }
 
 
- /* printf("Gokkeslæt fra: %d.%d\n", data.from.time.hour, data.from.time.min);
-    printf("Dato fra: %d\n", data.from.day);
-    printf("Måned: %s\n", maaned_txt[data.from.month]);
-    printf("Årstal: %d\n", data.from.year);
-
-    printf("\n");
-    printf("Gokkeslæt til: %d.%d\n", data.to.time.hour, data.to.time.min);
-    printf("Dato til: %d\n", data.to.day);
-    printf("Måned: %s\n", maaned_txt[data.to.month]);
-    printf("Årstal: %d\n", data.to.year);
-
-
-    printf("\n");
-    printf("Mængde: %.1f\n", info.amount);
-*/
-
-
-/* Structs
-priser data = 
-    {
-        {{20, 00}, 15, januar, 2018}, {{21, 00}, 15, januar, 2018}, 196.34, 34.50
-    };
-    
-    meterdata info =
-    {
-        18928, {{20, 00}, 15, januar, 2018}, {{20, 00}, 15, januar, 2018}, 127.3
-    };
- */
+ 
