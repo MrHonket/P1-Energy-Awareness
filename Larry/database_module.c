@@ -332,42 +332,45 @@ Data was last updated 31-12-2018;;;;;;;;;;;;;;;;;;
  *  */
 pricedata create_pricedata_from_string(char *str, int priceIndex){
     
-   pricedata pdata;
-   init_pricestruct(&pdata);
+   pricedata *pdata;
+   init_pricestruct(pdata);
+
    double value1=0.0 ,value2=0.0;
    char *mydata_txt[30];
    const char s[2] = ";";
-      char *token;
-      int i = 0;
+   char *token;
+   int i = 0;
+
+
    for( i = 0 ; i<30 ;i++){
       mydata_txt[i] = " ";
    }
    
-   sscanf(str,"%2d-%2d-%4d;%2d - %2d",&pdata.from.day, &pdata.from.month, &pdata.from.year, &pdata.from.time.hour, &pdata.to.time.hour);
+   sscanf(str,"%2d-%2d-%4d;%2d - %2d",&pdata->from.day, &pdata->from.month, &pdata->from.year, &pdata->from.time.hour, &pdata->to.time.hour);
 
    // create_date_from_prizestring(mydata_txt[0],  mydata_txt[1], pdata.from, pdata.to);
    // pdata.from.year = pdata.from.month = pdata.from.day= priceIndex;
-   pdata.to.year  = pdata.from.year ;
-   pdata.to.month = pdata.from.month;
-   pdata.to.day   = pdata.from.day;
+   pdata->to.year  = pdata->from.year ;
+   pdata->to.month = pdata->from.month;
+   pdata->to.day   = pdata->from.day;
 
-       token =strtok(str,s);
-       
-       while (token != NULL) {
+      token =strtok(str,s);
+      
+      while (token != NULL) {
 //          printf("%s\n",token);
-          mydata_txt[i] = token;
-          token=strtok(NULL, s);
-          i++;
-       }
-    pdata.to.time.hour = pdata.from.time.hour+1;
+         mydata_txt[i] = token;
+         token=strtok(NULL, s);
+         i++;
+      }
+    pdata->to.time.hour = pdata->from.time.hour+1;
     
     if (sscanf(mydata_txt[7]," %lf,%lf " ,&value1,&value2)==2){
-        pdata.DK1price = value1 + value2/100;
+        pdata->DK1price = value1 + value2/100;
     }
     
     
     if (sscanf(mydata_txt[8]," %lf,%lf " ,&value1,&value2)==2){
-        pdata.DK2price = value1 + value2/100;
+        pdata->DK2price = value1 + value2/100;
     }
     else{
         printf("kunne ikke læse dk1pris for :\n %s\n",str);
@@ -375,7 +378,7 @@ pricedata create_pricedata_from_string(char *str, int priceIndex){
     }
 
     
-   return pdata;
+   return *pdata;
     
 }
 
