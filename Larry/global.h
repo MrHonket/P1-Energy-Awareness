@@ -9,6 +9,7 @@
 #define FALSE       0
 #define TRUE        1
 #define SUCCESS     2
+#define HOURS_PR_YEAR (365*24)
 
 /*VARIABLE TIL data*/
     /* tids enums og structs: ugedag, month, time, dato, ugedag_txt[],month_txt[].*/

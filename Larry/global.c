@@ -6,6 +6,7 @@
 #define FALSE       0
 #define TRUE        1
 #define SUCCESS     2
+#define HOURS_PR_YEAR (365*24)
 
 /*DATA VARIABLE*/
 
