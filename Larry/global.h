@@ -46,9 +46,9 @@ const char *month_txt;
               SystemInformation,WarningEnergySaving,MachineActivation,
               ConsumptionCheck,FutureData}choice_function;
     /*settings valg: settings*/
-    typedef struct{int id;char residence[5];char language[5]}settings;
+    typedef struct{int id;char residence[5];char language[5];}settings;
     /*aktive valg: choice*/
-    typedef struct{int function}choice;
+    typedef struct{int function;}choice;
 /*user structet*/
 typedef struct{
     settings settings;
