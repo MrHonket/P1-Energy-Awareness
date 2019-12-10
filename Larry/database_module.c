@@ -59,7 +59,6 @@ int main(void){
    date2.time.hour =23;
    date1.time.minute=date2.time.minute=0;
     
-//    init_datastruct(testdata);
     
 
    // import_meterdata_from_file(mymeterdata, FILENAME_METER, str);
@@ -144,10 +143,9 @@ void init_datastruct(data *data){
 data *get_price_for_timeinterval_in_area(dato from, dato to,  area area){
    int interval = abs(to.time.hour - from.time.hour);
    data *tempdata;
-   tempdata = malloc(interval*sizeof(data));
-
    int i =0;
    int db_index = from.day;
+   tempdata = malloc(interval*sizeof(data));
    
    for (i=0 ; i < interval ; i++) {      
       tempdata[i].prize.from     = mypricedata[db_index].from;
@@ -161,18 +159,20 @@ data *get_price_for_timeinterval_in_area(dato from, dato to,  area area){
 }
 
 data *get_consumption_for_timeinterval_at_id(dato from, dato to, char *id){
-   data *dat[to.time.hour - from.time.hour];
-   int count = to.time.hour - from.time.hour;
+   int interval = abs(to.time.hour - from.time.hour);
+   data *tempdata;
    int i =0;
+   int db_index = from.day;
+   tempdata = malloc(interval*sizeof(data));
 
-   for(i=0;i<count;i++){
+   for(i=0;i<interval;i++){
        int db_index = from.day + i;
 
-       dat[i]->meter.from = mymeterdata[db_index].from;
-       dat[i]->meter.to = mymeterdata[db_index].to;
-       dat[i]->meter.value = mymeterdata[db_index].value;
+       tempdata[i].meter.from = mymeterdata[db_index].from;
+       tempdata[i].meter.to = mymeterdata[db_index].to;
+       tempdata[i].meter.value = mymeterdata[db_index].value;
 }
-   return *dat;
+   return tempdata;
 
 }
 
@@ -330,12 +330,15 @@ Data was last updated 31-12-2018;;;;;;;;;;;;;;;;;;
 pricedata create_pricedata_from_string(char *str, int priceIndex){
     
    pricedata pdata;
-    init_pricestruct(&pdata);
-    double value1=0.0 ,value2=0.0;
-    char *mydata_txt[30];
-    for(int i = 0 ; i<30 ;i++){
-        mydata_txt[i] = " ";
-    }
+   init_pricestruct(&pdata);
+   double value1=0.0 ,value2=0.0;
+   char *mydata_txt[30];
+   const char s[2] = ";";
+      char *token;
+      int i = 0;
+   for( i = 0 ; i<30 ;i++){
+      mydata_txt[i] = " ";
+   }
    
    sscanf(str,"%2d-%2d-%4d;%2d - %2d",&pdata.from.day, &pdata.from.month, &pdata.from.year, &pdata.from.time.hour, &pdata.to.time.hour);
 
@@ -345,10 +348,6 @@ pricedata create_pricedata_from_string(char *str, int priceIndex){
    pdata.to.month = pdata.from.month;
    pdata.to.day   = pdata.from.day;
 
-
-    const char s[2] = ";";
-       char *token;
-        int i = 0;
        token =strtok(str,s);
        
        while (token != NULL) {
