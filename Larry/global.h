@@ -1,5 +1,7 @@
-/* /* Data structures */
+#ifndef GLOBAL_H
+#define GLOBAL_H
 
+/*Universelle imports*/
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -7,6 +9,7 @@
 /*Overordnede*/
 #define FALSE       0
 #define TRUE        1
+/*Disse herunder kan evt. laves om til enums*/
 /*Choices.usertype kan indeholde en af disse værdier*/
 #define HUMAN       0
 #define AUTOMATED   1
@@ -34,12 +37,6 @@
         oktober,november,december}month;
     typedef struct {int hour;int minute;}time;
     typedef struct{time time;int day;month month;int year;}dato;
-    /* tids text for enums og structs*/
-    const char *ugedag_txt[] = {"Mandag","Tirsdag","Onsdag",
-                "Torsdag","Fredag","Lordag","Sondag"};
-    const char *month_txt[] = {"none","januar","februar","marts",
-                "april","maj","juni","juli","august","september",
-                "oktober","november","december"};
     /*område struct: area */
     typedef enum {dk1,dk2}area;
     /*prisdata struct: pricedata*/
@@ -56,6 +53,10 @@ typedef struct{
    meterdata meter;
    pricedata prize;
 }data;
+
+/*Tid omdannet til tekst prototypes: ugedag_txt[], month_txt[]*/
+const char *ugedag_txt;
+const char *month_txt;
 
 /*VARIABLE TIL user*/
     /*IMPLEMENTERES HVIS VI ØNSKER DET!!!*/
@@ -75,3 +76,10 @@ typedef struct{
     int choice_of_function;
     int user_type;
 }user;
+
+/*debugging Prototypes*/
+int debug_print(user user_choice, data user_data,int run_or_not);
+char* translate(int choice_of_function);
+int error_message(int error);
+
+#endif //GLOBAL_H

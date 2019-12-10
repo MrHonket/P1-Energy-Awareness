@@ -181,3 +181,33 @@ typedef struct{
     //Hvis user skal udvides med en choice og en settings struct for at abstrahere mere.
 }settings;
 
+/*debugging Prototypes*/
+int debug_print(user user_choice, data user_data,int run_or_not);
+char* translate(int choice_of_function);
+int error_message(int error);
+
+int debug_print(user user_choice, data user_data, int run_or_not){
+    if(run_or_not){
+        printf("ID = %d ; Sprog = %s ; Bosted = %s\n",user_choice.id,user_choice.language,user_choice.residence);
+        printf("Valgte funktion = %s ; Brugeren er %s\n",translate(user_choice.choice_of_function),(user_choice.user_type == HUMAN ? "menneske" : "automatisk"));
+    }
+    return EXIT_SUCCESS;
+}
+
+char* translate(int choice_of_function){
+    switch(choice_of_function){
+        case ERROR_TEST             : return "error_test";
+        case USER_HISTORY           : return "user_history";
+        case INFO_ENERGY_SAVING     : return "info_energy_saving";
+        case UPDATE_SETTINGS        : return "update_settings";
+        case SYSTEM_INFORMATION     : return "system_information";
+        case WARNING_ENERGY_SAVING  : return "warning_energy_savings";
+        case MACHINE_ACTIVATION     : return "machine_activation";
+        case CONSUMPTION_CHECK      : return "consumption_check";
+        case FUTURE_DATA            : return "future_data";
+    }
+}
+
+int error_message(int error){
+    return 0;
+}

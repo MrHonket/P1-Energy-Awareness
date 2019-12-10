@@ -1,5 +1,3 @@
-#include <stdio.h>
-#include <stdlib.h>
 #include <string.h>
 #include "global.h"
 #include "language.h"
@@ -17,7 +15,10 @@ data load_data(user user_choices);
 int check_user(int activator);
 int prompt_user(user user_choices,data user_data);
 void log_data(user user_choices);
-void error_message(int error_type);
+/*Funktioner der skal inkluderes i debug.c
+char* translate(int choice_of_function);
+int error_message(int error);
+int debug_print(user user_choice, data user_data, int run_or_not);*/
 
 int main(void){
     user user_choices;
@@ -47,8 +48,7 @@ int main(void){
         error_message(ERROR_USER_TYPE);
     }
 
-    printf("TEST %s\n",user_choices.residence);
-    printf("TEST %lf\n",user_data.prize.DK1price);
+    debug_print(user_choices,user_data,TRUE);
     
     return EXIT_SUCCESS;
 }
@@ -94,10 +94,6 @@ int check_user(int activator){
 void log_data(user user_choices){
 
 }
-/*Funktion der tager en bestemt type fejl og returnere den slags.*/
-void error_message(int error_type){
-
-}
 /*Funktionen som fungere som en brugers interface*/
 int prompt_user(user user_choices, data user_data){
     char info_str[60];
@@ -134,3 +130,29 @@ int prompt_user(user user_choices, data user_data){
         return 0;
     }
 }
+/*
+int debug_print(user user_choice, data user_data, int run_or_not){
+    if(run_or_not){
+        printf("ID = %d ; Sprog = %s ; Bosted = %s\n",user_choice.id,user_choice.language,user_choice.residence);
+        printf("Valgte funktion = %s ; Brugeren er %s\n",translate(user_choice.choice_of_function),(user_choice.user_type == HUMAN ? "menneske" : "automatisk"));
+    }
+    return EXIT_SUCCESS;
+}
+
+char* translate(int choice_of_function){
+    switch(choice_of_function){
+        case ERROR_TEST             : return "error_test";
+        case USER_HISTORY           : return "user_history";
+        case INFO_ENERGY_SAVING     : return "info_energy_saving";
+        case UPDATE_SETTINGS        : return "update_settings";
+        case SYSTEM_INFORMATION     : return "system_information";
+        case WARNING_ENERGY_SAVING  : return "warning_energy_savings";
+        case MACHINE_ACTIVATION     : return "machine_activation";
+        case CONSUMPTION_CHECK      : return "consumption_check";
+        case FUTURE_DATA            : return "future_data";
+    }
+}
+/*Funktion der tager en bestemt type fejl og returnere den slags.
+int error_message(int error){
+    return 0;
+}*/
