@@ -1,4 +1,7 @@
+/* Jakob */
+
 /* Get data from file */
+
 
 
 /* #include "structMeterdata.h"
@@ -74,7 +77,7 @@ int main(void){
           }
       }
     
-     testdata = get_price_for_timeinterval_in_area(date1, date2, dk1) ;
+     testdata = get_price_for_timeinterval_in_area(date1, date2, Dk1) ;
      temp = testdata[10];
 
    return 0;
