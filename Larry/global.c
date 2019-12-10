@@ -79,6 +79,7 @@ const char *ugedag_txt[] = {
    "Fredag",
    "Lordag",
    "Sondag"
+   
 };
 
 const char *month_txt[] = {
@@ -206,6 +207,7 @@ char* translate(int choice_of_function){
         case CONSUMPTION_CHECK      : return "consumption_check";
         case FUTURE_DATA            : return "future_data";
     }
+    return "";
 }
 
 int error_message(int error){
