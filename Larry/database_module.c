@@ -17,9 +17,15 @@
 
 
 /* prototyper */
-int init_database_module(void);
+void init_database(void);
 data *get_price_for_timeinterval_in_area(dato from, dato to,  area area);
 data *get_consumption_for_timeinterval_at_id(dato from, dato to, char *id);
+
+
+void init_pricestruct(pricedata *data);
+void init_meterstruct(meterdata *data);
+void init_datastruct(data *data);
+
 
 void prompt_for_filname(char *filename);
 char * import_meterdata_from_file(meterdata *meterdataArray, char *filename, char *strOUT);
@@ -38,56 +44,135 @@ pricedata mypricedata[HOURS_PR_YEAR*3];
 
 
 
-int init_database_module(void){
+int main(void){
    
-    char str[30];
-    int index=0;
+   int index=0;
+   dato date1,date2;
+   data *testdata;
+   data temp;
+   
+   date1.day = date2.day =20;
+   date1.month=date2.month=2;
+   date1.day = date2.day =20;
+   date1.year=date2.year=2017;
+   date1.time.hour =10;
+   date2.time.hour =23;
+   date1.time.minute=date2.time.minute=0;
+    
+//    init_datastruct(testdata);
+    
 
-   import_meterdata_from_file(mymeterdata, FILENAME_METER, str);
-   import_pricedata_from_file(mypricedata, FILENAME_PRICE, str);
-   printf("hent pris for index: ");
-    while (scanf("%d",&index)&& index != -1){
-        if(index != -1){
-            printf("her er prisen på index%d %f ",index, mypricedata[index].DK1price);
-        }
-    }
+   // import_meterdata_from_file(mymeterdata, FILENAME_METER, str);
+   // import_pricedata_from_file(mypricedata, FILENAME_PRICE, str);
+
+   
+   init_database();
+    
+    printf("hent pris for index: ");
+      while (scanf("%d",&index)&& index != -1){
+          if(index != -1){
+              printf("her er prisen på index%d %f ",index, mypricedata[index].DK1price);
+          }
+      }
+    
+     testdata = get_price_for_timeinterval_in_area(date1, date2, dk1) ;
+     temp = testdata[10];
 
    return 0;
 }
 
 
 
+
+
+/* inits */
+void init_database(void){
+   char str[30];
+    int i = 0;
+    for(i=0;i<HOURS_PR_YEAR*3;i++){
+        init_pricestruct(mypricedata);
+        init_meterstruct(mymeterdata);
+    }
+        
+   import_pricedata_from_file(mypricedata, FILENAME_PRICE, str);
+    import_meterdata_from_file(mymeterdata, FILENAME_METER, str);
+
+}
+
+void init_pricestruct(pricedata *data){
+    data->DK1price=0;
+    data->DK2price=0;
+    data->from.year=0;
+    data->from.month=0;
+    data->from.day=0;
+    data->from.time.hour=0;
+    data->from.time.minute=0;
+    data->to.year=0;
+    data->to.month=0;
+    data->to.day=0;
+    data->to.time.hour=0;
+    data->to.time.minute=0;
+}
+
+void init_meterstruct(meterdata *data){
+   data->value = 0;
+   data->from.year=0;
+   data->from.month=0;
+   data->from.day=0;
+   data->from.time.hour=0;
+   data->from.time.minute=0;
+   data->to.year=0;
+   data->to.month=0;
+   data->to.day=0;
+   data->to.time.hour=0;
+   data->to.time.minute=0;
+    
+}
+
+void init_datastruct(data *data){
+    init_pricestruct(&data->prize);
+    init_meterstruct(&data->meter);
+}
+
+
+
+
+
+
 /* Public functions */
 
 data *get_price_for_timeinterval_in_area(dato from, dato to,  area area){
-   data dat[to.time.hour - from.time.hour];
-   int count = to.time.hour - from.time.hour;
-   int ret_index =0;
-   int db_index = 0;
-   
-   for (ret_index=0 ; ret_index < count ; ret_index++) {
-      db_index = from.day + ret_index;
+   int interval = abs(to.time.hour - from.time.hour);
+   data *tempdata;
+   tempdata = malloc(interval*sizeof(data));
 
-      dat[ret_index].prize.from     = mypricedata[db_index].from;
-      dat[ret_index].prize.to       = mypricedata[db_index].to;
-      dat[ret_index].prize.DK1price = mypricedata[db_index].DK1price;
-      dat[ret_index].prize.DK2price = mypricedata[db_index].DK2price;
+   int i =0;
+   int db_index = from.day;
+   
+   for (i=0 ; i < interval ; i++) {      
+      tempdata[i].prize.from     = mypricedata[db_index].from;
+      tempdata[i].prize.to       = mypricedata[db_index].to;
+      tempdata[i].prize.DK1price = mypricedata[db_index].DK1price;
+      tempdata[i].prize.DK2price = mypricedata[db_index].DK2price;
+      db_index++;
    }
 
-   return dat;
+   return tempdata;
 }
 
 data *get_consumption_for_timeinterval_at_id(dato from, dato to, char *id){
-   data dat[to.time.hour - from.time.hour];
+   data *dat[to.time.hour - from.time.hour];
    int count = to.time.hour - from.time.hour;
    int i =0;
 
    for(i=0;i<count;i++){
-   dat[i].meter.from = mymeterdata[from.day+i].from;
-   dat[i].meter.to = mymeterdata[from.day+i].to;
-   dat[i].meter.value = mymeterdata[from.day+i].value;
+       int db_index = from.day + i;
+
+       dat[i]->meter.from = mymeterdata[db_index].from;
+       dat[i]->meter.to = mymeterdata[db_index].to;
+       dat[i]->meter.value = mymeterdata[db_index].value;
 }
-   return dat;
+   return *dat;
 
 }
 
@@ -172,7 +257,7 @@ void copy_contents_of_meterfile(FILE *f, meterdata *meterdataArray){
    char str[MAXLINEWIDTH];
    
    while (fgets(str,MAXLINEWIDTH,f)!= NULL){
-       printf("%s",str);
+//       printf("%s",str);
       meterdataArray[measurementnr] = create_meterdata_from_string(str);
       measurementnr++;
    }
@@ -187,7 +272,7 @@ void copy_contents_of_pricefile(FILE *f, pricedata *pricedataArray){
    char str[MAXLINEWIDTH];
    
    while (fgets(str,MAXLINEWIDTH,f)!= NULL){
-       printf("%s",str);
+//       printf("%s",str);
       pricedataArray[pricenr] = create_pricedata_from_string(str, pricenr);
       pricenr++;
    }
@@ -201,6 +286,8 @@ void copy_contents_of_pricefile(FILE *f, pricedata *pricedataArray){
 meterdata create_meterdata_from_string(char *str){
     
    meterdata mdata;
+    init_meterstruct(&mdata);
+    
 //   char *id="test", unit[30], quality[30], type[30], dateStart[30], dateEnd[30] ;
     double value1=0.0 ,value2=0.0;
 //   int converted=0;
@@ -213,7 +300,7 @@ meterdata create_meterdata_from_string(char *str){
    token =strtok(str,s);
     
    while (token != NULL) {
-      printf("%s\n",token);
+//      printf("%s\n",token);
       mydata_txt[i] = token;
       token=strtok(NULL, s);
       i++;
@@ -243,35 +330,48 @@ Data was last updated 31-12-2018;;;;;;;;;;;;;;;;;;
 pricedata create_pricedata_from_string(char *str, int priceIndex){
     
    pricedata pdata;
+    init_pricestruct(&pdata);
     double value1=0.0 ,value2=0.0;
     char *mydata_txt[30];
     for(int i = 0 ; i<30 ;i++){
         mydata_txt[i] = " ";
     }
    
-  
-   const char s[2] = ";";
-   char *token;
-    int i = 0;
-   token =strtok(str,s);
-    
-   while (token != NULL) {
-      printf("%s\n",token);
-      mydata_txt[i] = token;
-      token=strtok(NULL, s);
-      i++;
-   }
+   sscanf(str,"%2d-%2d-%4d;%2d - %2d",&pdata.from.day, &pdata.from.month, &pdata.from.year, &pdata.from.time.hour, &pdata.to.time.hour);
 
    // create_date_from_prizestring(mydata_txt[0],  mydata_txt[1], pdata.from, pdata.to);
-   pdata.from.year = pdata.from.month = pdata.from.day= priceIndex;
-   pdata.to.year = pdata.to.month = pdata.to.day= priceIndex;
+   // pdata.from.year = pdata.from.month = pdata.from.day= priceIndex;
+   pdata.to.year  = pdata.from.year ;
+   pdata.to.month = pdata.from.month;
+   pdata.to.day   = pdata.from.day;
 
+
+    const char s[2] = ";";
+       char *token;
+        int i = 0;
+       token =strtok(str,s);
+       
+       while (token != NULL) {
+//          printf("%s\n",token);
+          mydata_txt[i] = token;
+          token=strtok(NULL, s);
+          i++;
+       }
+    pdata.to.time.hour = pdata.from.time.hour+1;
+    
     if (sscanf(mydata_txt[7]," %lf,%lf " ,&value1,&value2)==2){
         pdata.DK1price = value1 + value2/100;
     }
+    
+    
     if (sscanf(mydata_txt[8]," %lf,%lf " ,&value1,&value2)==2){
         pdata.DK2price = value1 + value2/100;
     }
+    else{
+        printf("kunne ikke læse dk1pris for :\n %s\n",str);
+        
+    }
+
     
    return pdata;
     
@@ -283,7 +383,7 @@ pricedata create_pricedata_from_string(char *str, int priceIndex){
 /* create data from string */
 dato create_date_from_string (char *str){
     dato mdate = {{00,00},0,0,0};
-    if (sscanf(str,"%d-%d-%d %d.%d", &mdate.year, &mdate.month, &mdate.day, &mdate.time.hour, &mdate.time.minute)== 5){
+    if (sscanf(str,"%4d-%2d-%2d %2d.%2d", &mdate.year, &mdate.month, &mdate.day, &mdate.time.hour, &mdate.time.minute)== 5){
    return mdate;
     }
 
@@ -297,32 +397,34 @@ dato create_date_from_string (char *str){
 }
 
 /* create data from pricestring */
-void create_date_from_prizestring (char *date, char *hour, dato from, dato to){
-    char *fromTo[2];
-    const char s[2] = "-";
-    char *token;
-     int i = 0;
-    if (sscanf(date,"%d-%d-%d ", &from.day, &from.month, &from.year)== 3){
-              to.day=from.day;
-              to.month = from.month;
-              to.year = from.year;
-             
-    //       }
-        }
-    token =strtok(hour,s);
+//void create_date_from_prizestring (char *date, char *hour, dato from, dato to){
+//    char *fromTo[2];
+//    const char s[2] = "-";
+//    char *token;
+//     int i = 0;
+//    if (sscanf(date,"%d-%d-%d ", &from.day, &from.month, &from.year)== 3){
+//              to.day=from.day;
+//              to.month = from.month;
+//              to.year = from.year;
+//
+//    //       }
+//        }
+//    token =strtok(hour,s);
+//
+//    while (token != NULL) {
+//        printf("%s\n",token);
+//        fromTo[i] = token;
+//        token=strtok(NULL, s);
+//        i++;
+//    }
+//
+//    sscanf(fromTo[0], " %d", &from.time.hour);
+//    to.time.hour = from.time.hour +1;
+//    to.time.minute = from.time.minute = 0;
+//
+//
+//
+//
+//}
 
-    while (token != NULL) {
-        printf("%s\n",token);
-        fromTo[i] = token;
-        token=strtok(NULL, s);
-        i++;
-    }
 
-    sscanf(fromTo[0], " %d", &from.time.hour);
-    to.time.hour = from.time.hour +1;
-    to.time.minute = from.time.minute = 0;
-    
-    
-
-
-}
