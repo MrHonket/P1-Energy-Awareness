@@ -70,60 +70,173 @@ typedef struct{
     int user_type;
 } user;
 
-
-double info_energy_saving(meterdata forbrug_array[], priser priser_array[], int time_frame);
 double info_energy_saving2(meterdata forbrug_array[], priser priser_array[], int time_frame, user user_choice);
-priser *cheapest(priser priser_array[], int time_frame);
+priser *cheapest(priser priser_array[]);
 int cmpfunc(const void * a, const void * b);
-
 
 int main(void)
 {
     double savings;
-    double savings2;
+    int tidspunkt = 18;
     priser cheapest_struct;
     user user_choice = {1200, "DK1", "Dansk", 2, 1};
 
-    priser priser_array[4] = {
+    priser priser_array[24] = {
         {
-            {{20, 00}, 15, januar, 2018}, {{21, 00}, 15, januar, 2018}, 199.34, 89.50
+            {{00, 00}, 15, januar, 2018}, {{01, 00}, 15, januar, 2018}, 178, 64
         },
         {
-            {{21, 00}, 15, januar, 2018}, {{22, 00}, 15, januar, 2018}, 178.34, 80.50
+            {{01, 00}, 15, januar, 2018}, {{02, 00}, 15, januar, 2018}, 178, 64
         },
         {
-            {{22, 00}, 15, januar, 2018}, {{23, 00}, 15, januar, 2018}, 165.34, 75.50
+            {{02, 00}, 15, januar, 2018}, {{03, 00}, 15, januar, 2018}, 178, 56
         },
         {
-            {{23, 00}, 15, januar, 2018}, {{24, 00}, 15, januar, 2018}, 100.34, 53.50
+            {{03, 00}, 15, januar, 2018}, {{04, 00}, 15, januar, 2018}, 172, 39
+        },
+        {
+            {{04, 00}, 15, januar, 2018}, {{05, 00}, 15, januar, 2018}, 179, 39
+        },
+        {
+            {{05, 00}, 15, januar, 2018}, {{06, 00}, 15, januar, 2018}, 185, 92
+        },
+        {
+            {{06, 00}, 15, januar, 2018}, {{07, 00}, 15, januar, 2018}, 190, 46
+        },
+        {
+            {{07, 00}, 15, januar, 2018}, {{8, 00}, 15, januar, 2018}, 192, 32
+        },
+        {
+            {{8, 00}, 15, januar, 2018}, {{9, 00}, 15, januar, 2018}, 194, 62
+        },
+        {
+            {{9, 00}, 15, januar, 2018}, {{10, 00}, 15, januar, 2018}, 191, 35
+        },
+        {
+            {{10, 00}, 15, januar, 2018}, {{11, 00}, 15, januar, 2018}, 199, 9
+        },
+        {
+            {{11, 00}, 15, januar, 2018}, {{12, 00}, 15, januar, 2018}, 204, 29
+        },
+        {
+            {{12, 00}, 15, januar, 2018}, {{13, 00}, 15, januar, 2018}, 208, 45
+        },
+        {
+            {{13, 00}, 15, januar, 2018}, {{14, 00}, 15, januar, 2018}, 213, 36
+        },
+        {
+            {{14, 00}, 15, januar, 2018}, {{15, 00}, 15, januar, 2018}, 220, 49
+        },
+        {
+            {{15, 00}, 15, januar, 2018}, {{16, 00}, 15, januar, 2018}, 225, 84
+        },
+        {
+            {{16, 00}, 15, januar, 2018}, {{17, 00}, 15, januar, 2018}, 228, 97
+        },
+        {
+            {{17, 00}, 15, januar, 2018}, {{18, 00}, 15, januar, 2018}, 229, 93
+        },
+        {
+            {{18, 00}, 15, januar, 2018}, {{19, 00}, 15, januar, 2018}, 228, 82
+        },
+        {
+            {{19, 00}, 15, januar, 2018}, {{20, 00}, 15, januar, 2018}, 226, 81
+        },
+        {
+            {{20, 00}, 15, januar, 2018}, {{21, 00}, 15, januar, 2018}, 224, 43
+        },
+        {
+            {{21, 00}, 15, januar, 2018}, {{22, 00}, 15, januar, 2018}, 222, 57
+        },
+        {
+            {{22, 00}, 15, januar, 2018}, {{23, 00}, 15, januar, 2018}, 220, 42
+        },
+        {
+            {{23, 00}, 15, januar, 2018}, {{24, 00}, 15, januar, 2018}, 218, 26
         }
     };
     
-    meterdata meterdata_array[4] = {
+    meterdata meterdata_array[24] = {
         {
-            18928, {{20, 00}, 15, januar, 2018}, {{21, 00}, 15, januar, 2018}, 440
+            18928, {{00, 00}, 15, januar, 2018}, {{01, 00}, 15, januar, 2018}, 440
         },
         {
-            18921, {{21, 00}, 15, januar, 2018}, {{22, 00}, 15, januar, 2018}, 303
+            18921, {{01, 00}, 15, januar, 2018}, {{02, 00}, 15, januar, 2018}, 450
         },
         {
-            18924, {{22, 00}, 15, januar, 2018}, {{23, 00}, 15, januar, 2018}, 275
+            18924, {{02, 00}, 15, januar, 2018}, {{03, 00}, 15, januar, 2018}, 420
         },
         {
-            18923, {{23, 00}, 15, januar, 2018}, {{24, 00}, 15, januar, 2018}, 127
+            18923, {{03, 00}, 15, januar, 2018}, {{04, 00}, 15, januar, 2018}, 440
+        },
+        {
+            18923, {{04, 00}, 15, januar, 2018}, {{05, 00}, 15, januar, 2018}, 450
+        },
+        {
+            18923, {{05, 00}, 15, januar, 2018}, {{06, 00}, 15, januar, 2018}, 420
+        },
+        {
+            18923, {{06, 00}, 15, januar, 2018}, {{07, 00}, 15, januar, 2018}, 440
+        },
+        {
+            18923, {{07, 00}, 15, januar, 2018}, {{8, 00}, 15, januar, 2018}, 450
+        },
+        {
+            18923, {{8, 00}, 15, januar, 2018}, {{9, 00}, 15, januar, 2018}, 420
+        },
+        {
+            18923, {{9, 00}, 15, januar, 2018}, {{10, 00}, 15, januar, 2018}, 430
+        },
+        {
+            18923, {{10, 00}, 15, januar, 2018}, {{11, 00}, 15, januar, 2018}, 910
+        },
+        {
+            18923, {{11, 00}, 15, januar, 2018}, {{12, 00}, 15, januar, 2018}, 150
+        },
+        {
+            18923, {{12, 00}, 15, januar, 2018}, {{13, 00}, 15, januar, 2018}, 240
+        },
+        {
+            18923, {{13, 00}, 15, januar, 2018}, {{14, 00}, 15, januar, 2018}, 530
+        },
+        {
+            18923, {{14, 00}, 15, januar, 2018}, {{15, 00}, 15, januar, 2018}, 100
+        },
+        {
+            18923, {{15, 00}, 15, januar, 2018}, {{16, 00}, 15, januar, 2018}, 70
+        },
+        {
+            18923, {{16, 00}, 15, januar, 2018}, {{17, 00}, 15, januar, 2018}, 130
+        },
+        {
+            18923, {{17, 00}, 15, januar, 2018}, {{18, 00}, 15, januar, 2018}, 640
+        },
+        {
+            18923, {{18, 00}, 15, januar, 2018}, {{19, 00}, 15, januar, 2018}, 440
+        },
+        {
+            18923, {{19, 00}, 15, januar, 2018}, {{20, 00}, 15, januar, 2018}, 180
+        },
+        {
+            18923, {{20, 00}, 15, januar, 2018}, {{21, 00}, 15, januar, 2018}, 70
+        },
+        {
+            18923, {{21, 00}, 15, januar, 2018}, {{22, 00}, 15, januar, 2018}, 990
+        },
+        {
+            18923, {{22, 00}, 15, januar, 2018}, {{23, 00}, 15, januar, 2018}, 40
+        },
+        {
+            18923, {{23, 00}, 15, januar, 2018}, {{24, 00}, 15, januar, 2018}, 40
         }
     };
 
     printf("\n");
-    /* printf("Pris område1: %.1f Pris område2: %.1f\n", data.price_area1, data.price_area2);*/
 
-    /* savings = info_energy_saving(meterdata_array, priser_array, 0);
-    printf("Hvis du flytter dit forbrug, sparer du: %.1f DKK\n\n", savings);*/
+    savings = info_energy_saving2(meterdata_array, priser_array, tidspunkt, user_choice);
+    printf("Hvis du flytter dit forbrug, sparer du: %.1f DKK\n\n", savings);
 
-    savings2 = info_energy_saving2(meterdata_array, priser_array, 0, user_choice);
-    printf("Hvis du flytter dit forbrug, sparer du: %.1f DKK\n\n", savings2);
-
-    cheapest_struct = *cheapest(priser_array, 0);
+    cheapest_struct = *cheapest(priser_array);
     printf("Dato: %d , Klokkeslæt: %d - %d , Pris Område1: %.f DKK\n", cheapest_struct.from.day,
                                     cheapest_struct.from.time.hour, cheapest_struct.to.time.hour, cheapest_struct.price_area1);
 
@@ -143,8 +256,8 @@ double info_energy_saving2(meterdata forbrug_array[], priser priser_array[], int
     
     if (strcmp(user_choice.residence, "DK1") == 0)
     {   
-        current_price = priser_array[time_frame].price_area1;
-        current_consumption = forbrug_array[time_frame].amount;
+        current_price = priser_array[time_frame+1].price_area1;
+        current_consumption = forbrug_array[time_frame+1].amount;
 
         if (current_price < 0)
             printf("Prisen er pt. negativ!\n");
@@ -163,8 +276,8 @@ double info_energy_saving2(meterdata forbrug_array[], priser priser_array[], int
     }
     else 
     {
-        current_price = priser_array[time_frame].price_area2;
-        current_consumption = forbrug_array[time_frame].amount;
+        current_price = priser_array[time_frame+1].price_area2;
+        current_consumption = forbrug_array[time_frame+1].amount;
 
         if (current_price < 0)
             printf("Prisen er pt. negativ!\n");
@@ -188,7 +301,7 @@ double info_energy_saving2(meterdata forbrug_array[], priser priser_array[], int
         return user_price_current - user_price_after;
 } 
 
-priser *cheapest(priser priser_array[], int time_frame)
+priser *cheapest(priser priser_array[])
 {
     priser *cheapest;
     cheapest = (priser*)malloc(1 * sizeof(priser));
