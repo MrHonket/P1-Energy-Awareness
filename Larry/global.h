@@ -1,4 +1,4 @@
-/* Data structures */
+/* /* Data structures */
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -25,6 +25,8 @@
 #define ERROR_CHOICE_DOESNT_EXIST         11
 #define ERROR_INFO_STR_NOT_FOUND          12
 #define ERROR_USER_TYPE                   13
+
+
 
 /* TID */
 typedef enum {
@@ -127,11 +129,7 @@ typedef struct{
 }pricedata;
 
 
-/* DATA */
-typedef struct{
-   meterdata meter;
-   pricedata prize;
-}data;
+
 
 /* ENERGY PORDUCTION DATA */
 /* HourUTC;HourDK;PriceArea;GrossCon;NetCon;LocalPowerProd;OffshoreWindPower;OnshoreWindPower;CentralProd;ElectricBoilerCon;SolarPowerProd;ExchangeContinent;ExchangeGreatBelt;ExchangeNordicCountries
@@ -169,6 +167,18 @@ typedef struct{
 
 }production;
 
+
+
+typedef struct{
+    //Hvis user skal udvides med en choice og en settings struct for at abstrahere mere.
+}settings;
+
+/* DATA */
+typedef struct{
+   meterdata meter;
+   pricedata prize;
+}data;
+
 typedef struct{
     int id;
     char residence[5];
@@ -176,7 +186,3 @@ typedef struct{
     int choice_of_function;
     int user_type;
 }user;
-
-typedef struct{
-    //Hvis user skal udvides med en choice og en settings struct for at abstrahere mere.
-}settings;
