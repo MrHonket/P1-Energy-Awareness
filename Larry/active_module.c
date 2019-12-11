@@ -58,7 +58,7 @@ int main(void){
         error_message(ErrorUserType);
     }
 
-    debug_print(user_choices,user_data,TRUE);
+    debug_user(user_choices);
     
     return EXIT_SUCCESS;
 }
