@@ -1,44 +1,26 @@
 /* switch module */
 #include <stdio.h>
 #include <stdlib.h>
+#include "global.h"
+//#include "warning_energy_saving.h"
+#include "machine_activation.h"
 
-typedef struct {
-    int id;
-    char residence[5];
-    char language[5];
-    int choice_of_function;
-    int user_type;
-}choices;
-
-typedef struct {
-    int price;
-}data;
-
-int passive_module(choices user_choices, data user_data);
-void energy_saving(choices user_choices, data user_data);
-void machine_activation(choices user_choices, data user_data);
-
-int main(void)
-{
-   choices user_choices;
-   data user_data;
-
-   passive_module(user_choices, user_data);
-
-   return 0;
-}
+int passive_module(user User, data Data);
+/*DEM HERUNDER SLETTES NÅR DERES INCLUDE ER IMPLEMENTERET!*/
+void warning_energy_saving(user User, data Data){int test = 0;}
+//void machine_activation(user User, data Data){int test = 0;}
 
 /* returns 1 for exit_succes and 0 for exit_failure */
-int passive_module(choices user_choices, data user_data)
+int passive_module(user User, data Data)
 {
-   if(user_choices.choice_of_function == 1)
+   if(User.choice.function == WarningEnergySaving)
       {
-      energy_saving(user_choices, user_data);
+      warning_energy_saving(User, Data);
       return 1;
       }
-   else if(user_choices.choice_of_function == 2)
+   else if(User.choice.function == MachineActivation)
       {
-      machine_activation(user_choices, user_data);
+      machine_activation(User, Data);
       return 1;  
       }
    else
