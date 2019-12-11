@@ -9,16 +9,6 @@
 void update_settings(void);
 settings load_settings(void);
 
-int main ()
-{
-
-    update_settings();
-
-    load_settings();
-
-    return(0);
-}
-
 void update_settings(void)
 {
     FILE *f;

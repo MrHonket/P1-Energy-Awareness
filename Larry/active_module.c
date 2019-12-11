@@ -4,25 +4,19 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "global.h"
-#include "language.h"
-#include "database_module.h"
-#include "passive_module.h"
-#include "update_settings.h"
-#include "info_energy_saving.h"
-#include "user_history.h"
-#include "warning_energy_saving.h"
-#include "system_information.h"
-#include "machine_activation.h"
-#include "future_data.h"
-#include "consumption_check.h"
-#include "debug.h"
-
-/*Funktionerne herunder skal importeres via header filer*/
-int passive_module(user User, data Data){return 0;};
-char* user_history(user User, data Data){return "use";}
-//char* update_settings(user User, data Data){return "upd";}
-char* info_energy_settings(user User, data Data){return "inf";}
+#include "global.h" //implementeret
+#include "language.h" //tom .h fil
+#include "database_module.h" //ERROR!
+#include "passive_module.h" //tom .h fil
+#include "update_settings.h" // ERROR!
+//#include "info_energy_saving.h" //SYNTAX ERROR!
+#include "user_history.h" //tom .h fil
+#include "warning_energy_saving.h" //tom .h fil
+#include "system_information.h"//tom .h fil
+#include "machine_activation.h"// .h fil
+#include "future_data.h" //tom .h fil
+#include "consumption_check.h" //tom .h fil
+#include "debug.h" //implementeret
 
 /*Dette er prototyper i programmet.*/
 void set_next_activation(user User);
@@ -87,7 +81,7 @@ int prompt_user(user User, data Data){
     scanf(" %d", User.choice.function);
     
     if(User.choice.function == UserHistory){
-        strcpy(info_str,user_history(User,Data));
+        info_str = user_history(User,Data);
     }
     else if(User.choice.function == UpdateSettings){
         update_settings();
