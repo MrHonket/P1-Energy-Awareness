@@ -199,14 +199,28 @@ typedef enum {
     FutureData
 }choice_function;
 
+typedef enum {
+    mean = 1,
+    median
+}mean_or_median;
+
+/*settings valg: settings*/
 typedef struct{
     int id;
     char residence[5];
     char language[5];
-    int choice_of_function;
-    int user_type;
-}user;
-
-typedef struct{
-    //Hvis user skal udvides med en choice og en settings struct for at abstrahere mere.
 }settings;
+
+
+/*aktive valg: choice*/
+typedef struct{
+    int function;
+    mean_or_median mean_or_median;
+}choice;
+
+/*user-structet*/
+typedef struct{
+    settings settings;
+    choice choice;
+    user_type type;
+}user;
