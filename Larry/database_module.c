@@ -13,7 +13,6 @@
 #include "global.h"
 
 
-#define HOURS_PR_YEAR (365*24)
 #define MAXLINEWIDTH 200
 // #define FILENAME_METER "MeterdataJakob.csv"
 #define FILENAME_PRICE "elspot-prices_2017_hourly_dkk.csv"
