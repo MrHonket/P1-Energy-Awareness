@@ -34,8 +34,7 @@ int main(void){
     user User;
     data Data;
     int next_activation,
-        confirmation,
-        new_command = 0;
+        confirmation;
 
     User.settings = load_settings();
     set_next_activation(User);
@@ -81,7 +80,7 @@ void log_data(user User){
 /*Funktionen som fungere som en brugers interface*/
 int prompt_user(user User, data Data){
     char info_str[60];
-    int new_command;
+    int new_command = 0;
     
     /*Basil was here & coded user interaction*/
     printf("Tryk 1 for brugerhistorik\nTryk 2 for brugerindstillinger\nTryk 3 for info om dine energibesparelser\n");
@@ -108,14 +107,9 @@ int prompt_user(user User, data Data){
         error_message(ErrorInfoStrNotFound);
     }
 
-<<<<<<< HEAD
-    //scanf for om der ønskes ny kommando.
-    printf("Koer igen?");
-=======
     //scanf for om der ønskes ny kommando. Basil was here
     printf("Tryk på enhver tast for at køre programmet igen.\nTryk 0 for at lukke programmet");
     scanf("%d", new_command);
->>>>>>> cd910a8370a5b329ea8d5b17eb0702b66e98a329
 
     if(new_command){
         return prompt_user(User,Data);
