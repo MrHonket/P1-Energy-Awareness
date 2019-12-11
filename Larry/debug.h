@@ -3,7 +3,7 @@
 
 #include "global.h"
 
-int debug_print(user user_choice, data user_data,int run_or_not);
+int debug_print(user User);
 char* translate(int choice_of_function);
 
 #endif //DEBUG_H
