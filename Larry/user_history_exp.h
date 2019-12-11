@@ -3,6 +3,6 @@
 
 #include "global.h"
 
-double user_history(user User, data Data);
+double user_history(user User, data *Data);
 
 #endif //USER_HISTORY_H

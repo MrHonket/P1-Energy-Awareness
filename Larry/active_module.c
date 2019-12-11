@@ -1,5 +1,8 @@
 /*MartinBM*/
+//"Rigtige" gcc compilation
 //gcc active_module.c global.c language.c database_module.c passive_module.c update_settings.c info_energy_saving.c user_history.c warning_energy_saving.c system_information.c machine_activation.c future_data.c consumption_check.c debug.c
+//"Experimental" gcc compilation
+//gcc active_module.c global.c language.c database_module.c update_settings.c info_energy_saving_exp.c passive_module.c warning_energy_saving_exp.c system_information.c machine_activation.c future_data.c consumption_check.c debug.c
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -8,9 +11,9 @@
 #include <ctype.h>
 #include "global.h"                 //Implementeret og brugbart!
 #include "language.h"               //tom .h OG .c fil
-//Includes herunder har nogle problemer
+
 #include "database_module.h"        //Implementeret og brugbart men giver forskellige fejlmeddelser.
-//#include "user_history_exp.h"       //ERROR SYNTAX! IMPLEMENTERET SOM EXP!
+#include "user_history_exp.h"       //ERROR SYNTAX! IMPLEMENTERET SOM EXP!
 #include "update_settings.h"        //Implementeret, men load_data loader ikke data korrekt. MockData skabt i main() for at omgå.
 #include "info_energy_saving_exp.h" //IMPLEMENTERET SOM EXP! Der sker fejl ved linje 51
 #include "passive_module.h"         //Implementeret og brugbart
@@ -21,9 +24,6 @@
 #include "future_data.h"            //Implemented som error_message!
 #include "consumption_check.h"      //Implemented som error_message!
 #include "debug.h"                  //implementeret og brugbart!
-
-/*DISSE SKAL SLETTES NÅR DERES .h ER IMPLEMENTERET!!!*/
-int user_history(user User, data *Data){return 0;}
 
 /*Dette er prototyper i programmet.*/
 void check_activation(user User);
