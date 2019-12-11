@@ -13,7 +13,8 @@ typedef enum{
     ErrorConfirmationPassiveModule,
     ErrorChoiceDoesntExist,
     ErrorInfoStrNotFound,
-    ErrorUserType
+    ErrorUserType,
+    ErrorNotImplemented
 }error_types;
 
 int error_message(int error){
@@ -28,6 +29,9 @@ int error_message(int error){
     }
     else if(error == ErrorUserType){
         printf("Error because the given user type was neither Human nor Automated\n");
+    }
+    else if(error == ErrorNotImplemented){
+        printf("Error because the function nr. %d in choice_function hasn't been implemented yet\n");
     }
     else{
         printf("Error because the error_message nr. %d in error_types hasn't been implemented yet\n",error);
