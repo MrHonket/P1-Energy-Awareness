@@ -1,5 +1,6 @@
 {
    "files.associations": {
-      "global.h": "c"
+      "global.h": "c",
+      "database_module.h": "c"
    }
 }
