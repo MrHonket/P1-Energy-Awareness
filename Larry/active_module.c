@@ -42,7 +42,7 @@ int main(void){
     check_activation(User);
     
     //MockData!
-    User.type = Automated;
+    User.type = Human;
     User.choice.function = WarningEnergySaving;
     dato dato1 = {{10,00},12,6,2017};
     dato dato2 = {{18,00},12,6,2017};
