@@ -216,6 +216,8 @@ typedef struct{
 typedef struct{
     int function;
     mean_or_median mean_or_median;
+    dato from;
+    dato to;
 }choice;
 
 /*user-structet*/
