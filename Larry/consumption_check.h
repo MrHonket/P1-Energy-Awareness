@@ -1,0 +1,7 @@
+#ifndef CONSUMPTION_CHECK_H
+#define CONSUMPTION_CHECK_H
+
+
+
+
+#endif //CONSUMPTION_CHECK_H

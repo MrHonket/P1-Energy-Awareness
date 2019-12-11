@@ -1,0 +1,6 @@
+#ifndef WARNING_ENERGY_H
+#define WARNING_ENERGY_H
+
+
+
+#endif //WARNING_ENERGY_H

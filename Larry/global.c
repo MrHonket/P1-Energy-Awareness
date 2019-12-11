@@ -1,30 +1,42 @@
-/* Data structures */
-
+/*Universelle imports*/
 #include <stdio.h>
 #include <stdlib.h>
 
 /*Symbolske konstanter*/
-/*Overordnede*/
 #define FALSE       0
 #define TRUE        1
-/*Choices.usertype kan indeholde en af disse værdier*/
-#define HUMAN       0
-#define AUTOMATED   1
-/*Choices.choice kan indeholde en af disse værdier*/
-#define ERROR_TEST            0
-#define USER_HISTORY          1
-#define INFO_ENERGY_SAVING    2
-#define UPDATE_SETTINGS       3
-#define SYSTEM_INFORMATION    4
-#define WARNING_ENERGY_SAVING 5
-#define MACHINE_ACTIVATION    6
-#define CONSUMPTION_CHECK     7
-#define FUTURE_DATA           8
-/*Konstanter der beskriver en fejlmeddelse i error_message*/
-#define ERROR_CONFIRMATION_PASSIVE_MODULE 10
-#define ERROR_CHOICE_DOESNT_EXIST         11
-#define ERROR_INFO_STR_NOT_FOUND          12
-#define ERROR_USER_TYPE                   13
+#define SUCCESS     2
+#define HOURS_PR_YEAR (365*24)
+
+/*ERROR MESSAGES*/
+typedef enum{
+    ErrorConfirmationPassiveModule,
+    ErrorChoiceDoesntExist,
+    ErrorInfoStrNotFound,
+    ErrorUserType
+}error_types;
+
+int error_message(int error){
+    if(error == ErrorConfirmationPassiveModule){
+        printf("Error at confirmation from the Passive Module\n");
+    }
+    else if(error == ErrorChoiceDoesntExist){
+        printf("Error because the given function choice doesnt exist\n");
+    }
+    else if(error == ErrorInfoStrNotFound){
+        printf("Error because info_str wasn't correctly given from function\n");
+    }
+    else if(error == ErrorUserType){
+        printf("Error because the given user type was neither Human nor Automated\n");
+    }
+    else{
+        printf("Error because the error_message nr. %d in error_types hasn't been implemented yet\n",error);
+    }
+
+    return 0;
+}
+
+/*DATA VARIABLE*/
 
 /* TID */
 typedef enum {
@@ -38,24 +50,24 @@ typedef enum {
 } ugedag;
 
 typedef enum{
-   januar=1,
-   februar,
-   marts,
-   april,
-   maj,
-   juni,
-   juli,
-   august,
-   september,
-   oktober,
-   november,
-   december
+   Januar=1,
+   Februar,
+   Marts,
+   April,
+   Maj,
+   Juni,
+   Juli,
+   August,
+   September,
+   Oktober,
+   November,
+   December
 }month;
 
 typedef struct {
    int hour;
    int minute;
-}time;
+}time; /*Behøves vel ikke at gemme minuttal...*/
 
 typedef struct{
    time   time;
@@ -63,7 +75,6 @@ typedef struct{
    month month;
    int    year;
 }dato;
-
 
 /* Area */
 typedef enum {
@@ -79,7 +90,6 @@ const char *ugedag_txt[] = {
    "Fredag",
    "Lordag",
    "Sondag"
-   
 };
 
 const char *month_txt[] = {
@@ -97,7 +107,6 @@ const char *month_txt[] = {
    "november",
    "december"
 };
-
 
 /* METERDATA */
 /* Målepunkt id   ;Fra dato        ;Til dato        ;Mængde;Måleenhed;Kvalitet;Type;
@@ -119,14 +128,12 @@ typedef struct {
  *        ;Hours  ; SYS   ; SE1   ;SE2   ;SE3   ;SE4   ;FI    ;DK1   ;DK2   ;Oslo  ;Kr.sand;Bergen;Molde ;Tr.heim;Tromsø;EE    ;LV    ;LT
 01-01-2017;00 - 01; 191,05; 178,64;178,64;178,64;178,64;178,64;155,82;155,82;211,13;211,13 ;211,13;178,64;178,64 ;178,64;178,64;178,64;178,64 */
 
-
 typedef struct{
    dato from;
    dato to;
    double DK1price;
    double DK2price;
 }pricedata;
-
 
 /* DATA */
 typedef struct{
@@ -170,6 +177,23 @@ typedef struct{
 
 }production;
 
+typedef enum {
+    Human,
+    Automated
+}user_type;
+
+typedef enum {
+    ErrorTest,
+    UserHistory,
+    InfoEnergySaving,
+    UpdateSettings,
+    SystemInformation,
+    WarningEnergySaving,
+    MachineActivation,
+    ConsumptionCheck,
+    FutureData
+}choice_function;
+
 typedef struct{
     int id;
     char residence[5];
@@ -181,35 +205,3 @@ typedef struct{
 typedef struct{
     //Hvis user skal udvides med en choice og en settings struct for at abstrahere mere.
 }settings;
-
-/*debugging Prototypes*/
-int debug_print(user user_choice, data user_data,int run_or_not);
-char* translate(int choice_of_function);
-int error_message(int error);
-
-int debug_print(user user_choice, data user_data, int run_or_not){
-    if(run_or_not){
-        printf("ID = %d ; Sprog = %s ; Bosted = %s\n",user_choice.id,user_choice.language,user_choice.residence);
-        printf("Valgte funktion = %s ; Brugeren er %s\n",translate(user_choice.choice_of_function),(user_choice.user_type == HUMAN ? "menneske" : "automatisk"));
-    }
-    return EXIT_SUCCESS;
-}
-
-char* translate(int choice_of_function){
-    switch(choice_of_function){
-        case ERROR_TEST             : return "error_test";
-        case USER_HISTORY           : return "user_history";
-        case INFO_ENERGY_SAVING     : return "info_energy_saving";
-        case UPDATE_SETTINGS        : return "update_settings";
-        case SYSTEM_INFORMATION     : return "system_information";
-        case WARNING_ENERGY_SAVING  : return "warning_energy_savings";
-        case MACHINE_ACTIVATION     : return "machine_activation";
-        case CONSUMPTION_CHECK      : return "consumption_check";
-        case FUTURE_DATA            : return "future_data";
-    }
-    return "";
-}
-
-int error_message(int error){
-    return 0;
-}
