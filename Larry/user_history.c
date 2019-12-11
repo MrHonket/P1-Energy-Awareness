@@ -30,7 +30,7 @@ user_history
 
 double mean(double dataset[], int number_of_elements);
 double median(double dataset[], int number_of_elements);
-int cmpfunc (const void * a, const void * b);
+int cmpfunc(const void * a, const void * b);
 
 /*Denne main skal hedde user_history og have inputparametre User og Data*/
 int main(void) {
@@ -82,6 +82,6 @@ double median(double dataset[], int number_of_elements) {
 }
 
 /*qsort*/
-int cmpfunc (const void * a, const void * b) {
-   return ( *(double*)a - *(double*)b );
+int cmpfunc(const void *a, const void *b) {
+   return (*(double*)a - *(double*)b);
 }

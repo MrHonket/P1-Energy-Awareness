@@ -1,10 +1,8 @@
 {
    "files.associations": {
       "global.h": "c",
-
       "chrono": "c",
-      "complex": "c"
-
-
+      "complex": "c",
+      "type_traits": "c"
    }
 }
