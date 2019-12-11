@@ -8,12 +8,14 @@
 #include <ctype.h>
 #include "global.h"                 //Implementeret og brugbart!
 #include "language.h"               //tom .h OG .c fil
+//Includes herunder har nogle problemer
 #include "database_module.h"        //Implementeret og brugbart men giver forskellige fejlmeddelser.
 //#include "user_history_exp.h"       //ERROR SYNTAX! IMPLEMENTERET SOM EXP!
-#include "update_settings.h"        //Implementeret, men load_data loader ikke data korrekt.
+#include "update_settings.h"        //Implementeret, men load_data loader ikke data korrekt. MockData skabt i main() for at omgå.
 #include "info_energy_saving_exp.h" //IMPLEMENTERET SOM EXP! Der sker fejl ved linje 51
 #include "passive_module.h"         //Implementeret og brugbart
-//#include "warning_energy_saving.h"  //SYNTAX ERROR! modtager ikke User og Data.
+#include "warning_energy_saving_exp.h"//IMPLEMENTERET SOM EXP! Der bruges dog pt. MockData i funktionen for at kalde underfunktioner.
+
 #include "system_information.h"     //Implemented som error_message!
 #include "machine_activation.h"     //Implemented som error_message!
 #include "future_data.h"            //Implemented som error_message!
@@ -22,7 +24,6 @@
 
 /*DISSE SKAL SLETTES NÅR DERES .h ER IMPLEMENTERET!!!*/
 int user_history(user User, data *Data){return 0;}
-//void warning_energy_saving(user User, data *Data){int test = 0;} ER DEFINERET I PASSIVE MODULE!!!!
 
 /*Dette er prototyper i programmet.*/
 void check_activation(user User);
@@ -39,7 +40,7 @@ int main(void){
     
     //MockData!
     User.type = Automated;
-    User.choice.function = ConsumptionCheck;
+    User.choice.function = WarningEnergySaving;
     dato dato1 = {{10,00},12,6,2017};
     dato dato2 = {{18,00},12,6,2017};
     User.choice.lookup = Meter;

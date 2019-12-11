@@ -15,7 +15,7 @@ void print_information(data return_array[], data cheapest_struct, double user_pr
 int main(void)
 {
     double savings;
-    /* int tidspunkt = 19;*/
+    //int tidspunkt = 19;
     double user_price;
     data cheapest_struct;
     data *return_array;
