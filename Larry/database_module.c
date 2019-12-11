@@ -479,6 +479,14 @@ dato create_date_from_string (char *str){
     return mdate;
 }
 
+dato date_from_string(char *date, int time){
+    dato ret_date;
+    sscanf(date,"%2d-%2d-%4d",&ret_date.year, &ret_date.month, &ret_date.day);
+    ret_date.time.hour = time;
+    ret_date.time.minute =0;
+    return ret_date;
+}
+
 /* create data from pricestring */
 //void create_date_from_prizestring (char *date, char *hour, dato from, dato to){
 //    char *fromTo[2];
