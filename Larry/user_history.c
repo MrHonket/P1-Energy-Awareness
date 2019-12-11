@@ -9,7 +9,7 @@
  *                                                                                                          *
  *                                                                                                          *
 user_history
-- Inputparameter er User (en user-struct) og Data (et datasæt)
+- Inputparameter er User (en user-struct) og Data (en struct, der indeholder en value-array)
     - User.choice.mean_or_median afgør om det skal findes gennemsnit eller median, samt om det skal findes for meterdata
       eller for elpris.
     - Data indeholder tid, der bruges til at finde antal elementer (svarer til antal timer, der regnes på), 
@@ -24,43 +24,38 @@ user_history
 #include <stdio.h>
 #include <stdlib.h>
 #include "global.h"
+#include "database_module.h"
 
-#define MEAN 1
-#define MEDIAN 2
+double calc_mean(double dataset[], int number_of_elements);
+double calc_median(double dataset[], int number_of_elements);
+int cmpfunc(const void *a, const void *b);
 
-double mean(double dataset[], int number_of_elements);
-double median(double dataset[], int number_of_elements);
-int cmpfunc(const void * a, const void * b);
-
-/*Denne main skal hedde user_history og have inputparametre User og Data*/
+/*Denne main skal hedde user_history og have inputparametre User og Data (indeholder en value-array)*/
 int main(void) {
     user User; /*Indeholder indstillinger*/
-    data Data[]; /*Indeholder data for både meter-data og elpris*/
+    data Data; /*Indeholder data for både meter-data og elpris*/
     double dataset[];
-    /*Initialiserer antal elementer vha Data-arrayen*/
-    int number_of_elements = Data.to - Data.from; /*Skal specificeres yderligere. f.eks. er det fra meter eller pris, osv. 
-                                                    Vi skal ende med at have et timeantal, så man kunne evt starte med at sige
-                                                    at for hver dag er der 24 timer, osv.
-                                                    Brug evt. time.h?*/
-    
+    /*Initialiserer antal elementer vha Data's dato-info (antal timer, basically)*/
+    int number_of_elements = Dato.to - Dato.from;
 
-    /*Lav en array ud fra data og baseret på, om dataen er fra meter eller pris. Det er denne, der skal regnes på*/
-    if (User.choice_of_function.meter) {
-        /*Læg meter[].value i array dataset[]*/
+    /*Lav en array ud fra data og baseret på, om dataen er fra meter eller pris. Det er denne, der skal regnes på.
+      Funktioner fra datamodulet*/
+    if (User.choice.meter) {
+        *dataset = data *get_consumption_for_timeinterval_at_id(dato from, dato to, char *id);
     } else
-    if (User.choice_of_function.price) {
-        /*Læg i pris[].value i array dataset[]*/
+    if (User.choice.price) {
+        *dataset = data *get_price_for_timeinterval_in_area(dato from, dato to, area area);
     }
 
-        if (User.choice_of_function.mean_or_median == MEAN) {
-            return mean(dataset, number_of_elements);
-        } else
-        if (User.choice_of_function.mean_or_median == MEDIAN) {
-            return median(dataset, number_of_elements);
-        }
+    if (User.choice.mean_or_median == mean) {
+        return calc_mean(dataset, number_of_elements);
+    } else
+    if (User.choice.mean_or_median == median) {
+        return calc_median(dataset, number_of_elements);
+    }
 }
 
-double mean(double dataset[], int number_of_elements) {
+double calc_mean(double dataset[], int number_of_elements) {
     int i = 0;
     double mean = 0;
 
@@ -73,7 +68,7 @@ double mean(double dataset[], int number_of_elements) {
     return (mean/i);
 }
 
-double median(double dataset[], int number_of_elements) {
+double calc_median(double dataset[], int number_of_elements) {
     /*Udregner median*/
     qsort(dataset, number_of_elements, sizeof(double), cmpfunc);
 
