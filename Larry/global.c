@@ -224,7 +224,3 @@ typedef struct{
     choice choice;
     user_type type;
 }user;
-
-typedef struct{
-    //Hvis user skal udvides med en choice og en settings struct for at abstrahere mere.
-}settings;
