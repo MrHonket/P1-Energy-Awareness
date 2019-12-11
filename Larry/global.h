@@ -18,10 +18,8 @@
 /*For inklusion af fejlsøgning i program, lav en ny Error... i error_types.
  *Kald derefter error_message(Error...) på stedet i koden.*/
 typedef enum{ErrorConfirmationPassiveModule,ErrorChoiceDoesntExist,
-             ErrorInfoStrNotFound,ErrorUserType}error_types;
+             ErrorInfoStrNotFound,ErrorUserType,ErrorNotImplemented}error_types;
 int error_message(int error);
-
-
 
 /*VARIABLE TIL data*/
     /* tids enums og structs: ugedag, month, time, dato, ugedag_txt[],month_txt[].*/
