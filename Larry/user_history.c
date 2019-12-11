@@ -30,7 +30,7 @@ user_history
 
 double mean(double dataset[], int number_of_elements);
 double median(double dataset[], int number_of_elements);
-int cmpfunc (const void * a, const void * b);
+int cmpfunc(const void * a, const void * b);
 
 /*Denne main skal hedde user_history og have inputparametre User og Data*/
 int main(void) {
@@ -40,7 +40,8 @@ int main(void) {
     /*Initialiserer antal elementer vha Data-arrayen*/
     int number_of_elements = Data.to - Data.from; /*Skal specificeres yderligere. f.eks. er det fra meter eller pris, osv. 
                                                     Vi skal ende med at have et timeantal, så man kunne evt starte med at sige
-                                                    at for hver dag er der 24 timer, osv.*/
+                                                    at for hver dag er der 24 timer, osv.
+                                                    Brug evt. time.h?*/
     
 
     /*Lav en array ud fra data og baseret på, om dataen er fra meter eller pris. Det er denne, der skal regnes på*/
@@ -52,13 +53,11 @@ int main(void) {
     }
 
         if (User.choice_of_function.mean_or_median == MEAN) {
-            printf("Mean: %lf\n", mean(dataset, number_of_elements); 
+            return mean(dataset, number_of_elements);
         } else
         if (User.choice_of_function.mean_or_median == MEDIAN) {
-            printf("Median: %lf\n", median(dataset, number_of_elements);
+            return median(dataset, number_of_elements);
         }
-
-    return 0;
 }
 
 double mean(double dataset[], int number_of_elements) {
@@ -83,6 +82,6 @@ double median(double dataset[], int number_of_elements) {
 }
 
 /*qsort*/
-int cmpfunc (const void * a, const void * b) {
-   return ( *(double*)a - *(double*)b );
+int cmpfunc(const void *a, const void *b) {
+   return (*(double*)a - *(double*)b);
 }

@@ -9,8 +9,8 @@
 #define FALSE       0
 #define TRUE        1
 #define SUCCESS     2
-#define HOURS_PR_YEAR 8765
-#define FILENAME_METER "consumption_data.csv"
+#define HOURS_PR_YEAR 8765*20
+#define FILENAME_METER "Meterdata.csv"
 #define FILENAME_PRICE "elspot-prices_2017_hourly_dkk.csv"
 
 
