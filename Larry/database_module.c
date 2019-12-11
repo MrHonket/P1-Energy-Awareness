@@ -186,8 +186,8 @@ data *get_price_for_timeinterval_in_area(dato from, dato to,  area area){
       tempdata[i].prize.to.time.hour =hour2+i;
       tempdata[i].prize.to.time.minute =00;
 
-      tempdata[i].prize.DK1price=rand()%150;
-      tempdata[i].prize.DK2price=rand()%150;
+      tempdata[i].prize.DK1price=999;//rand()%150;
+      tempdata[i].prize.DK2price=888;//rand()%150;
 
       tempdata[i].meter.from.year=year;
       tempdata[i].meter.from.month = month;
