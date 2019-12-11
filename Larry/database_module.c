@@ -432,18 +432,18 @@ double consumption_from_string(char *price){
 
 
 void print_price_index(int index){
-   //  printf("from: %d-%d-%d %d:%d\nto  : %d-%d-%d %d:%d\n DK1: %f\nDK2: %f \n\n",
-    mypricedata[index].from.year,mypricedata[index].from.month,mypricedata[index].from.day,mypricedata[index].from.time.hour,mypricedata[index].from.time.minute,
-    mypricedata[index].to.year  ,mypricedata[index].to.month  ,mypricedata[index].to.day  ,mypricedata[index].to.time.hour  ,mypricedata[index].to.time.minute,
-    mypricedata[index].DK1price,mypricedata[index].DK2price);
+//    printf("from: %d-%d-%d %d:%d\nto  : %d-%d-%d %d:%d\n DK1: %f\nDK2: %f \n\n",
+//    mypricedata[index].from.year,mypricedata[index].from.month,mypricedata[index].from.day,mypricedata[index].from.time.hour,mypricedata[index].from.time.minute,
+//    mypricedata[index].to.year  ,mypricedata[index].to.month  ,mypricedata[index].to.day  ,mypricedata[index].to.time.hour  ,mypricedata[index].to.time.minute,
+//    mypricedata[index].DK1price,mypricedata[index].DK2price);
     
 }
 
 void print_consump_index(int index){
-   //  printf("from: %d-%d-%d %d:%d\nto  : %d-%d-%d %d:%d\n VALUE: %f\n\n",
-    myconsumpdata[index].from.year,myconsumpdata[index].from.month,myconsumpdata[index].from.day,myconsumpdata[index].from.time.hour,myconsumpdata[index].from.time.minute,
-    myconsumpdata[index].to.year  ,myconsumpdata[index].to.month  ,myconsumpdata[index].to.day  ,myconsumpdata[index].to.time.hour  ,myconsumpdata[index].to.time.minute,
-    myconsumpdata[index].value);
+//    printf("from: %d-%d-%d %d:%d\nto  : %d-%d-%d %d:%d\n VALUE: %f\n\n",
+//    myconsumpdata[index].from.year,myconsumpdata[index].from.month,myconsumpdata[index].from.day,myconsumpdata[index].from.time.hour,myconsumpdata[index].from.time.minute,
+//    myconsumpdata[index].to.year  ,myconsumpdata[index].to.month  ,myconsumpdata[index].to.day  ,myconsumpdata[index].to.time.hour  ,myconsumpdata[index].to.time.minute,
+//    myconsumpdata[index].value);
     
 }
 

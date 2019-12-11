@@ -4,29 +4,26 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "global.h"                 //IMPLEMENTERET og brugbart!
-#include "language.h"               //tom .h fil
-#include "database_module.h"        //
+#include <unistd.h>
+#include <ctype.h>
+#include "global.h"                 //Implementeret og brugbart!
+#include "language.h"               //tom .h OG .c fil
+#include "database_module.h"        //Implementeret og brubart!
 //#include "user_history.h"         //SYNTAX ERROR! modtager ikke User og Data.
-//#include "update_settings.h"      // ERROR!
-//#include "info_energy_saving.h"   //SYNTAX ERROR! modtager ikke User og Data.
+#include "update_settings.h"      // ERROR!
+#include "info_energy_saving.h"   //SYNTAX ERROR! modtager ikke User og Data.
 #include "passive_module.h"         //Implementeret med mindre fejl!
 //#include "warning_energy_saving.h"//SYNTAX ERROR! modtager ikke User og Data.
-//#include "system_information.h"   //tom .h fil
+#include "system_information.h"     //Implemented som error_message!
 #include "machine_activation.h"     //Implemented som error_message!
-//#include "future_data.h"          //tom .h fil
+#include "future_data.h"            //Implemented som error_message!
 #include "consumption_check.h"      //Implemented som error_message!
 #include "debug.h"                  //implementeret og brugbart!
 
 /*DISSE SKAL SLETTES NÅR DERES .h ER IMPLEMENTERET!!!*/
-data database_module(user User){data Test; return Test;}
 int user_history(user User, data *Data){return 0;}
-settings load_settings(void){settings Test; Test.id = 7357;return Test;}
-int update_settings(void){return 0;}
-int info_energy_saving(user User, data *Data){return 0;}
+//int info_energy_saving(user User, data *Data){return 0;}
 //int warning_energy_saving(user User, data *Data){return 0;}
-int system_information(user User, data *Data){return 0;}
-int future_data(user User, data *Data){return 0;}
 
 /*Dette er prototyper i programmet.*/
 void check_activation(user User);
@@ -67,6 +64,8 @@ int main(void){
     }
 
     debug_user(User);
+    future_data(User,Data);
+    system_information(User,Data);
     
     return EXIT_SUCCESS;
 }
@@ -100,7 +99,7 @@ int prompt_user(user User, data *Data){
         info = user_history(User,Data);
     }
     else if(User.choice.function == UpdateSettings){
-        info = update_settings();
+        update_settings();
     }
     else if(User.choice.function == InfoEnergySaving){
         info = info_energy_saving(User,Data);

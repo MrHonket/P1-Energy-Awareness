@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <unistd.h>
 #include "global.h"
 
 /* updatere settings.txt fil*/
@@ -17,7 +18,7 @@ void update_settings(void)
     printf("What's your place of residence? Enter DK1 for Jutland and Fyn or DK2 for Sealand - Language (DK or ENG) - User id: ");
     scanf(" %[a-zA-Z0-9 -]", userdata);
 
-    f = fopen(" settings.txt", "w");
+    f = fopen("settings.txt", "w");
     fwrite(userdata, 1, sizeof(userdata),f);
 
     fclose(f);
@@ -28,8 +29,12 @@ settings load_settings(void){
     FILE *f;
     char scan_data[40], language[5], location[5];
     int user_id; 
+    //herunder bruges unistd biblioteket til at se om der er access (File_Ok) til settings.txt. Hvis den ikke eksistere, skab settings fil.
+    if(access("settings.txt",F_OK) == -1){
+        update_settings();
+    }
 
-    f = fopen(" settings.txt", "r");
+    f = fopen("settings.txt","r");
     
     fgets(scan_data,40,f);
     

@@ -1,8 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include "global.h"
 
-int main(void){
-    
-    
-    return EXIT_SUCCESS;
+int future_data(user User, data *Data){
+    error_message(ErrorNotImplemented);
+    return 0;
 }
