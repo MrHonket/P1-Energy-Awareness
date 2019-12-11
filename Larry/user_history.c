@@ -9,9 +9,13 @@
  *                                                                                                          *
  *                                                                                                          *
 user_history
-- Inputparameter er user_choice (er det en median eller gennemsnit, der ønskes) og user_data (ideelt en array af værdier) og antal
-  elementer i arrayet.
-- return-værdien er en double (median-return bliver lavet om til en int), enten gennemsnit eller median, baseret på user_choice
+- Inputparameter er User (en user-struct) og Data (et datasæt)
+    - User.choice.mean_or_median afgør om det skal findes gennemsnit eller median, samt om det skal findes for meterdata
+      eller for elpris.
+    - Data indeholder tid, der bruges til at finde antal elementer (svarer til antal timer, der regnes på), 
+
+- return-værdien er en double (gennemsnit eller median)
+
 - gennemsnit udregnes ved at lægge alle værdierne sammen fra user_data og dividere med antal elementer i arrayet
 - median udregnes ved først at sortere alle værdierne fra user_data, dernæst dividere antal elementer med 2, 
   hvilket giver 'i' og så tage værdien af det i'ende element i user_data.
@@ -21,49 +25,64 @@ user_history
 #include <stdlib.h>
 #include "global.h"
 
-double user_history(int mean_or_median, double dataset[], int number_of_elements);
+#define MEAN 1
+#define MEDIAN 2
+
+double mean(double dataset[], int number_of_elements);
+double median(double dataset[], int number_of_elements);
 int cmpfunc (const void * a, const void * b);
 
+/*Denne main skal hedde user_history og have inputparametre User og Data*/
 int main(void) {
-    /*Mock-data)*/
-    double data[] = {1.5, 9.2, 3.4, 5.6, 2.3};
-    int choice1 = 1, choice2 = 2, n = 5;
+    user User; /*Indeholder indstillinger*/
+    data Data[]; /*Indeholder data for både meter-data og elpris*/
+    double dataset[];
+    /*Initialiserer antal elementer vha Data-arrayen*/
+    int number_of_elements = Data.to - Data.from; /*Skal specificeres yderligere. f.eks. er det fra meter eller pris, osv. 
+                                                    Vi skal ende med at have et timeantal, så man kunne evt starte med at sige
+                                                    at for hver dag er der 24 timer, osv.*/
+    
 
-        printf("Mean: %lf\nMedian: %lf", user_history(choice1, data, n), user_history(choice2, data, n)); 
-        /*choice angiver om der ønskes gennemsnit eller median 
-          data[] er et array af structs (enten pris, forbrug eller grøn andel)*/
+    /*Lav en array ud fra data og baseret på, om dataen er fra meter eller pris. Det er denne, der skal regnes på*/
+    if (User.choice_of_function.meter) {
+        /*Læg meter[].value i array dataset[]*/
+    } else
+    if (User.choice_of_function.price) {
+        /*Læg i pris[].value i array dataset[]*/
+    }
+
+        if (User.choice_of_function.mean_or_median == MEAN) {
+            printf("Mean: %lf\n", mean(dataset, number_of_elements); 
+        } else
+        if (User.choice_of_function.mean_or_median == MEDIAN) {
+            printf("Median: %lf\n", median(dataset, number_of_elements);
+        }
 
     return 0;
 }
 
-double user_history(int mean_or_median, double dataset[], int number_of_elements) {
+double mean(double dataset[], int number_of_elements) {
     int i = 0;
     double mean = 0;
 
-    if (mean_or_median == 1) {
-        /*Udregner gennemsnit*/
-        for (i = 0; i < number_of_elements; i++) {
-            mean += dataset[i];
-        }
-        /*Returnerer gennemsnittet*/
-        printf("%lf, %d\n", mean, i);
-        return (mean/i);
-
-    } else
-    if (mean_or_median == 2) {
-        /*Udregner median*/
-        qsort(dataset, number_of_elements, sizeof(double), cmpfunc);
-
-        /*Returnerer median*/
-        return dataset[number_of_elements/2];
-    } else
-    {
-        /*Error*/
-        return 0;
+    /*Udregner gennemsnit*/
+    for (i = 0; i < number_of_elements; i++) {
+        mean += dataset[i];
     }
 
+    /*Returnerer gennemsnittet*/
+    return (mean/i);
 }
 
+double median(double dataset[], int number_of_elements) {
+    /*Udregner median*/
+    qsort(dataset, number_of_elements, sizeof(double), cmpfunc);
+
+    /*Returnerer median*/
+    return dataset[number_of_elements/2];
+}
+
+/*qsort*/
 int cmpfunc (const void * a, const void * b) {
    return ( *(double*)a - *(double*)b );
 }
