@@ -23,5 +23,5 @@ char* translate(int choice_of_function){
         case ConsumptionCheck    : return "consumption_check";
         case FutureData          : return "future_data";
     }
-    return "";
+    return "Error_Translate";
 }
