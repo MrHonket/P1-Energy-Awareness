@@ -1,0 +1,7 @@
+#ifndef SYSTEM_INFORMATION_H
+#define SYSTEM_INFORMATIN_H
+
+
+
+
+#endif //SYSTEM_INFORMATION_H

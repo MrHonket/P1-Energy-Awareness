@@ -1,8 +1,8 @@
-#ifndef PASSIVE_MODULE
-#define PASSIVE_MODULE
+#ifndef PASSIVE_MODULE_H
+#define PASSIVE_MODULE_H
 
 #include "global.h"
 
 int passive_module(user user_choices, data user_data);
 
-#endif
+#endif //PASSIVE_MODULE_H

@@ -3,13 +3,11 @@
 #include "global.h"
 
 char* translate(int choice_of_function);
-int debug_print(user User, data Data, int run_or_not);
+int debug_user(user User);
 
-int debug_print(user User, data Data, int run_or_not){
-    if(run_or_not){
-        printf("ID = %d ; Sprog = %s ; Bosted = %s\n",User.settings.id,User.settings.language,User.settings.residence);
-        printf("Valgte funktion = %s ; Brugeren er %s\n",translate(User.choice.function),(User.type == Human ? "menneske" : "automatisk"));
-    }
+int debug_user(user User){
+    printf("ID = %d ; Sprog = %s ; Bosted = %s\n",User.settings.id,User.settings.language,User.settings.residence);
+    printf("Valgte funktion = %s ; Brugeren er %s\n",translate(User.choice.function),(User.type == Human ? "menneske" : "automatisk"));
     return EXIT_SUCCESS;
 }
 
@@ -25,5 +23,5 @@ char* translate(int choice_of_function){
         case ConsumptionCheck    : return "consumption_check";
         case FutureData          : return "future_data";
     }
-    return "";
+    return "Error_Translate";
 }

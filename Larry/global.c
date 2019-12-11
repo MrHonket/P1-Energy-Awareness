@@ -67,7 +67,7 @@ typedef enum{
 typedef struct {
    int hour;
    int minute;
-}time;
+}time; /*Behøves vel ikke at gemme minuttal...*/
 
 typedef struct{
    time   time;
