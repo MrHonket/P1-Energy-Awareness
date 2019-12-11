@@ -4,48 +4,46 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "global.h" //IMPLEMENTERET!
-#include "language.h" //tom .h fil
-//#include "database_module.h" //ERROR!
-//#include "user_history.h" //SYNTAX ERROR!
-//#include "update_settings.h" // ERROR!
-//#include "info_energy_saving.h" //SYNTAX ERROR!
-//#include "passive_module.h" //tom .h fil
-//#include "warning_energy_saving.h" //tom .h fil
-//#include "system_information.h"//tom .h fil
-//#include "machine_activation.h"// .h fil
-//#include "future_data.h" //tom .h fil
-//#include "consumption_check.h" //tom .h fil
-#include "debug.h" //implementeret
+#include "global.h"                 //IMPLEMENTERET og brugbart!
+#include "language.h"               //tom .h fil
+//#include "database_module.h"      //ERROR!
+//#include "user_history.h"         //SYNTAX ERROR!
+//#include "update_settings.h"      // ERROR!
+//#include "info_energy_saving.h"   //SYNTAX ERROR!
+#include "passive_module.h"         //Implementeret med mindre fejl!
+//#include "warning_energy_saving.h"//tom .h fil
+//#include "system_information.h"   //tom .h fil
+#include "machine_activation.h"     //Implemented som error_message!
+//#include "future_data.h"          //tom .h fil
+#include "consumption_check.h"      //Implemented som error_message!
+#include "debug.h"                  //implementeret og brugbart!
 
 /*DISSE SKAL SLETTES NÅR DERES .h ER IMPLEMENTERET!!!*/
 data database_module(user User){data Test; return Test;}
 int user_history(user User, data Data){return 0;}
-settings load_settings(void){settings Test; return Test;}
+settings load_settings(void){settings Test; Test.id = 7357;return Test;}
 int update_settings(void){return 0;}
 int info_energy_saving(user User, data Data){return 0;}
-int passive_module(user User, data Data){return 0;}
-int warning_energy_saving(user User, data Data){return 0;}
 int system_information(user User, data Data){return 0;}
-int machine_activation(user User, data Data){return 0;}
 int future_data(user User, data Data){return 0;}
-int consumption_check(user User, data Data){return 0;}
 
 /*Dette er prototyper i programmet.*/
-user_type set_next_activation(user User);
+void check_activation(user User);
 data load_data(user User);
 int prompt_user(user User,data Data);
 void log_data(user User);
-
+/*main vil modtage information om det er en måler (Automatisk) der aktivere eller en app (Human)*/
 int main(void){
     user User;
     data Data;
-    int next_activation,
-        confirmation;
+    int confirmation;
 
     User.settings = load_settings();
-    User.type = set_next_activation(User);
+    check_activation(User);
     Data = load_data(User);
+
+    User.type = Automated;
+    User.choice.function = MachineActivation;
 
     if (User.type == Human){
         prompt_user(User,Data);
@@ -67,13 +65,13 @@ int main(void){
     
     return EXIT_SUCCESS;
 }
-/*Sætter næste automatiske aktivering*/
-user_type set_next_activation(user User){
-    user_type local_type;
-
-    local_type = Human;
-
-    return local_type;
+/*Checker for om der skal aktiveresSætter næste automatiske aktivering
+ *Hvis aktivatitionen sker automatisk skal den lave en udregning. 
+ *Ellers hvis aktivationen sker af et menneske skal den bare gå videre.
+ *Hvis den er automatisk og vurderes til at aktivere nu skal den hurtigt udregne næste gang den vurdere at aktivere hele programmet.
+ *Hvis den er automatisk men vurderes til ikke at aktivere nu, så skal den returnere main(Automated) efter X antal tid(1 time?)*/
+void check_activation(user User){
+    
 }
 /*Loader data fra database_module. Indeholder pt. KUN MOCKDATA!*/
 data load_data(user User){
@@ -94,7 +92,11 @@ int prompt_user(user User, data Data){
     int new_command = 0;
     
     /*Basil was here & coded user interaction*/
-    printf("Tryk 1 for brugerhistorik\nTryk 2 for brugerindstillinger\nTryk 3 for info om dine energibesparelser\n");
+    printf("Tryk %d for brugerhistorik\n",UserHistory);
+    printf("Tryk %d for brugerindstillinger\n",UpdateSettings);
+    printf("Tryk %d for info om dine energibesparelser\n",InfoEnergySaving);
+    printf("Tryk %d for at lave et elcheck",ConsumptionCheck);
+
     scanf(" %d", &User.choice.function);
     
     if(User.choice.function == UserHistory){
@@ -105,6 +107,9 @@ int prompt_user(user User, data Data){
     }
     else if(User.choice.function == InfoEnergySaving){
         info = info_energy_saving(User,Data);
+    }
+    else if(User.choice.function == ConsumptionCheck){
+        info = consumption_check(User,Data);
     }
     else{
         error_message(ErrorChoiceDoesntExist);
