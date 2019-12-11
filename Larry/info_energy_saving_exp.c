@@ -15,13 +15,13 @@ void print_information(data return_array[], data cheapest_struct, double user_pr
 int main(void)
 {
     double savings;
-    int tidspunkt = 19;
+    /* int tidspunkt = 19;*/
     double user_price;
     data cheapest_struct;
     data *return_array;
     dato from = {{00, 00}, 15, Januar, 2018};
     dato to = {{00, 00}, 15, Januar, 2018};
-    user user_choice = { {1200, "DK1", "Dansk"}, {2, Mean, {{19, 0}, 15, Januar, 2017}, {{20, 0}, 15, Januar, 2017}}};
+    user user_choice = { {1200, "DK1", "Dansk"}, {2, Mean, {{18, 0}, 15, Januar, 2017}, {{19, 0}, 15, Januar, 2017}}};
     
     return_array = get_price_for_timeinterval_in_area(from, to, Dk1);
     cheapest_struct = *cheapest(return_array);
@@ -114,9 +114,9 @@ void print_information(data return_array[], data cheapest_struct, double user_pr
 {
     if (strcmp(User.settings.residence, "DK1") == 0)
     {
-        user_price = return_array[19].meter.value * KWH_TO_MWH * return_array[19].prize.DK1price;
-        printf("Nuværende pris: %.1f\n\n", return_array[19].prize.DK1price); 
-        printf("Nuværende forbrug: %.2f\n\n", return_array[19].meter.value); 
+        user_price = return_array[19].meter.value * KWH_TO_MWH * return_array[User.choice.from.time.hour].prize.DK1price;
+        printf("Nuværende pris: %.1f\n\n", return_array[User.choice.from.time.hour].prize.DK1price); 
+        printf("Nuværende forbrug: %.2f\n\n", return_array[User.choice.from.time.hour].meter.value); 
         printf("Nuværende pris baseret på nuværende forbrug: %.2f DKK\n\n", user_price); 
         printf("Det billigste tidspunkt at forbruge på er: \n");
         printf("\n");
@@ -125,9 +125,9 @@ void print_information(data return_array[], data cheapest_struct, double user_pr
     }
     else
     {
-        user_price = return_array[19].meter.value * KWH_TO_MWH * return_array[19].prize.DK2price;
-        printf("Nuværende pris: %.1f\n\n", return_array[19].prize.DK2price); 
-        printf("Nuværende forbrug: %.2f\n\n", return_array[19].meter.value); 
+        user_price = return_array[19].meter.value * KWH_TO_MWH * return_array[User.choice.from.time.hour].prize.DK2price;
+        printf("Nuværende pris: %.1f\n\n", return_array[User.choice.from.time.hour].prize.DK2price); 
+        printf("Nuværende forbrug: %.2f\n\n", return_array[User.choice.from.time.hour].meter.value); 
         printf("Nuværende pris baseret på nuværende forbrug: %.2f DKK\n\n", user_price); 
         printf("Det billigste tidspunkt at forbruge på er: \n");
         printf("\n");
