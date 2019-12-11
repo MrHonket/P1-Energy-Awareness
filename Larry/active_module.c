@@ -9,9 +9,9 @@
 #include "global.h"                 //Implementeret og brugbart!
 #include "language.h"               //tom .h OG .c fil
 #include "database_module.h"        //Implementeret og brubart!
-//#include "user_history.h"         //SYNTAX ERROR! modtager ikke User og Data.
-#include "update_settings.h"      // ERROR!
-#include "info_energy_saving.h"   //SYNTAX ERROR! modtager ikke User og Data.
+#include "user_history.h"           //SYNTAX ERROR! modtager ikke User og Data.
+#include "update_settings.h"        // ERROR!
+//#include "info_energy_saving.h"     //SYNTAX ERROR! modtager ikke User og Data.
 #include "passive_module.h"         //Implementeret med mindre fejl!
 //#include "warning_energy_saving.h"//SYNTAX ERROR! modtager ikke User og Data.
 #include "system_information.h"     //Implemented som error_message!
@@ -21,15 +21,15 @@
 #include "debug.h"                  //implementeret og brugbart!
 
 /*DISSE SKAL SLETTES NÅR DERES .h ER IMPLEMENTERET!!!*/
-int user_history(user User, data *Data){return 0;}
-//int info_energy_saving(user User, data *Data){return 0;}
+//int user_history(user User, data *Data){return 0;}
+int info_energy_saving(user User, data *Data){return 0;}
 //int warning_energy_saving(user User, data *Data){return 0;}
 
 /*Dette er prototyper i programmet.*/
 void check_activation(user User);
 int prompt_user(user User,data *Data);
 void log_data(user User);
-/*main vil modtage information om det er en måler (Automatisk) der aktivere eller en app (Human)*/
+/*main vil modtage information om det er en måler eller sig selv (Automatisk) der aktivere eller en app (Human)*/
 int main(void){
     user User;
     data *Data;
@@ -40,9 +40,11 @@ int main(void){
     
     //MockData!
     User.type = Human;
-    User.choice.function = WarningEnergySaving;
+    User.choice.function = UserHistory;
     dato dato1 = {{10,00},12,6,2017};
     dato dato2 = {{18,00},12,6,2017};
+    User.choice.lookup = Meter;
+    User.choice.mean_or_median = Mean;
     //endmock
 
     Data = get_price_for_timeinterval_in_area(dato1,dato2,Dk1);
