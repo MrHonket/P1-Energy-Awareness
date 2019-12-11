@@ -8,13 +8,15 @@
 #define KWH 1000
 #define NMB_OF_ELEMENTS 24
 double warning_consumption(double price, double consumption,double median_consumption);
+/* double warning_energy_saving() */
 int main(void){
   double price_treshold = 200;
   double median_consumption=0.5;
   int timeframe=12;
   printf("hello and welcome to the gokkeslaet\n");
+  printf("enter timeframe, median consumption and price threshold: ");
   /* mean_price=user_history(mean.data); */
-  scanf("%d %lf",&timeframe, &median_consumption);
+  scanf("%d %lf %lf",&timeframe, &median_consumption, &price_treshold);
   pricedata price_array[NMB_OF_ELEMENTS] = {
         {
             {{00, 00}, 15, Januar, 2018}, {{01, 00}, 15, Januar, 2018}, 178, 64
@@ -90,7 +92,7 @@ int main(void){
         }
     };
     
-    meterdata meterdata_array[NMB_OF_ELEMENTS] = {
+  meterdata meterdata_array[NMB_OF_ELEMENTS] = {
         {
             "18928", {{00, 00}, 15, Januar, 2018}, {{01, 00}, 15, Januar, 2018}, 440
         },
@@ -166,11 +168,13 @@ int main(void){
     };
   if(price_array[timeframe].DK1price>=price_treshold)
   {
-    printf("your consumption is %.2lf percent off the usual\n",warning_consumption(price_array[timeframe].DK1price,meterdata_array[timeframe].value,median_consumption));
+    printf("your consumption is %.2lf percent off the usual\n",warning_consumption(price_array[timeframe].DK1price,
+    meterdata_array[timeframe-1].value,median_consumption));
   }
   else if (price_array[timeframe].DK2price>=price_treshold)
   {
-    printf("your consumption is %.2lf percent off the usual\n",warning_consumption(price_array[timeframe].DK2price,meterdata_array[timeframe].value,median_consumption));
+    printf("your consumption is %.2lf percent off the usual\n",warning_consumption(price_array[timeframe].DK2price,
+    meterdata_array[timeframe-1].value,median_consumption));
   }
 else
 {
