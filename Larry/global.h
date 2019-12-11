@@ -10,6 +10,11 @@
 #define TRUE        1
 #define SUCCESS     2
 
+#define HOURS_PR_YEAR (365*24)
+#define FILENAME_METER "consumption_data.csv"
+#define FILENAME_PRICE "elspot-prices_2017_hourly_dkk.csv"
+
+
 /*VARIABLE TIL data*/
     /* tids enums og structs: ugedag, month, time, dato, ugedag_txt[],month_txt[].*/
     typedef enum {Man,Tir,Ons,Tor,Fre,Lor,Son} ugedag;
