@@ -204,8 +204,8 @@ double info_energy_saving2(meterdata forbrug_array[], pricedata priser_array[], 
         printf("Nuværende pris baseret på nuværende forbrug: %.1f DKK\n", user_price_current);
 
         /* Sorterer pris-array så den billigste pris ligger først */
-        qsort(priser_array, NMB_OF_ELEMENTS, sizeof(pricedata), cmpfunc);
-        cheapest_price = priser_array[0].DK1price;
+        qsort(data_array, NMB_OF_ELEMENTS, sizeof(pricedata), cmpfunc);
+        cheapest_price = data_array[0].prizes.DK1price;
 
         /* Dette giver brugerens strømpris baseret ud fra hvornår det er billigst at bruge strøm */
         user_price_after = current_consumption * KWH_TO_MWH * cheapest_price;
@@ -226,8 +226,8 @@ double info_energy_saving2(meterdata forbrug_array[], pricedata priser_array[], 
         printf("Nuværende pris baseret på nuværende forbrug: %.1f DKK\n", user_price_current);
 
         /* Sorterer pris-array så den billigste pris ligger først */
-        qsort(priser_array, NMB_OF_ELEMENTS, sizeof(pricedata), cmpfunc);
-        cheapest_price = priser_array[0].DK2price;
+        qsort(data_array, NMB_OF_ELEMENTS, sizeof(pricedata), cmpfunc);
+        cheapest_price = data_array[0].prizes.DK2price;
 
         /* Dette giver brugerens strømpris baseret ud fra hvornår det er billigst at bruge strøm */
         user_price_after = current_consumption * KWH_TO_MWH * cheapest_price;
