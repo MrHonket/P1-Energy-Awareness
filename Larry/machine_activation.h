@@ -3,6 +3,6 @@
 
 #include "global.h"
 
-int machine_activation(user User, data Data);
+int machine_activation(user User, data *Data);
 
 #endif //MACHINE_ACTIVATION_H

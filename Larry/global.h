@@ -65,7 +65,7 @@ const char *month_txt;
     /*settings valg: settings*/
     typedef struct{int id;char residence[5];char language[5];}settings;
     /*aktive valg: choice*/
-    typedef struct{int function; mean_or_median mean_or_median;}choice;
+    typedef struct{int function; mean_or_median mean_or_median;dato from;dato to;}choice;
 /*user structet*/
 typedef struct{
     settings settings;

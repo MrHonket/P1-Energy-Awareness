@@ -3,6 +3,6 @@
 
 #include "global.h"
 
-int consumption_check(user User, data Data);
+int consumption_check(user User, data *Data);
 
 #endif //CONSUMPTION_CHECK_H

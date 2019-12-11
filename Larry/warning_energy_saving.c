@@ -4,14 +4,14 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "global.h"
-#include "database_module.h"
+//#include "database_module.h"
 #define KWH 1000
 #define NMB_OF_ELEMENTS 24
 double warning_consumption(double price, double consumption,double median_consumption);
 /* double warning_energy_saving() 
    user_history median data
    time data hvor får vi det fra?*/
-
+/*
 int main(void){
   double price_treshold = 200;
   double median_consumption=0.5;
@@ -33,12 +33,13 @@ int main(void){
     printf("your consumption is %.2lf percent off the  median consumption\n",warning_consumption(data_array[timeframe].prize.DK2price,
     data_array[timeframe-1].meter.value,median_consumption));
   }
-else
-{
-printf("Price is lower than threshold no worries\n");
-}
+  else
+  {
+  printf("Price is lower than threshold no worries\n");
+  }
     return EXIT_SUCCESS;
 }
+*/
 double warning_consumption(double price,double consumption,double median_consumption){
 double price_difference;
 consumption/=KWH;
