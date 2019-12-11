@@ -38,6 +38,9 @@ void        init(void);
 pricedata   *init_datab(pricedata *mypricedata, meterdata *meter_data, production *production_data);
 void        init_pricestruct(pricedata data[]);
 pricedata   *init_price_array(pricedata mypricedata[]);
+void        init_meterstruct(meterdata data[]);
+
+
 
 
 int         copy_file_to_mypricedata(char *filename);
@@ -104,7 +107,7 @@ int main(void){
     printf("hent pris for index: ");
     while (scanf("%d",&index)&& index != -1){
          if(index != -1){
-            printf("her er prisen på index%d\n DK1:%f  DK2:%f \n",index, mypricedata[index].DK1price, mypricedata[index].DK2price);
+            printf("her er forbruget på index%d\n VALUE:%f \n",index, myconsumpdata[index].value);
          }
     }
 
@@ -177,19 +180,12 @@ data *get_price_for_timeinterval_in_area(dato from, dato to,  area area){
    tempdata = malloc(interval*sizeof(data));
    
    for (i=0 ; i < interval ; i++) { 
-      tempdata[i].prize.from.year=mypricedata[i].from.year;
-      tempdata[i].prize.from.month = month;
-      tempdata[i].prize.from.day = day;
-      tempdata[i].prize.from.time.hour =hour1+i;
-      tempdata[i].prize.from.time.minute =00;
-      tempdata[i].prize.to.year=year;
-      tempdata[i].prize.to.month = month;
-      tempdata[i].prize.to.day = day;
-      tempdata[i].prize.to.time.hour =hour2+i;
-      tempdata[i].prize.to.time.minute =00;
-
-      tempdata[i].prize.DK1price=rand()%150;
-      tempdata[i].prize.DK2price=rand()%150;
+      tempdata[i].prize.from    = mypricedata[i].from;
+      
+      tempdata[i].prize.to      = mypricedata[i].to;
+      
+      tempdata[i].prize.DK1price=mypricedata[i].DK1price;
+      tempdata[i].prize.DK2price=mypricedata[i].DK2price;
 
       tempdata[i].meter.from.year=year;
       tempdata[i].meter.from.month = month;
