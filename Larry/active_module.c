@@ -92,7 +92,8 @@ int prompt_user(user User, data Data){
     char info_str[60];
     int new_command;
     
-    //scanf
+    printf("Tryk 1 for brugerhistorik\nTryk 2 for brugerindstillinger\nTryk 3 for info om dine energibesparelser\n");
+    scanf(" %d", User.choice.function);
     
     if(User.choice.function == UserHistory){
         strcpy(info_str,user_history(User,Data));
@@ -116,6 +117,8 @@ int prompt_user(user User, data Data){
     }
 
     //scanf for om der ønskes ny kommando.
+    printf("Koer igen?")
+
     new_command = 0;
     if(new_command){
         return prompt_user(User,Data);
