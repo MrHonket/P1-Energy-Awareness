@@ -6,6 +6,35 @@
 #define FALSE       0
 #define TRUE        1
 #define SUCCESS     2
+#define HOURS_PR_YEAR (365*24)
+
+/*ERROR MESSAGES*/
+typedef enum{
+    ErrorConfirmationPassiveModule,
+    ErrorChoiceDoesntExist,
+    ErrorInfoStrNotFound,
+    ErrorUserType
+}error_types;
+
+int error_message(int error){
+    if(error == ErrorConfirmationPassiveModule){
+        printf("Error at confirmation from the Passive Module\n");
+    }
+    else if(error == ErrorChoiceDoesntExist){
+        printf("Error because the given function choice doesnt exist\n");
+    }
+    else if(error == ErrorInfoStrNotFound){
+        printf("Error because info_str wasn't correctly given from function\n");
+    }
+    else if(error == ErrorUserType){
+        printf("Error because the given user type was neither Human nor Automated\n");
+    }
+    else{
+        printf("Error because the error_message nr. %d in error_types hasn't been implemented yet\n",error);
+    }
+
+    return 0;
+}
 
 /*DATA VARIABLE*/
 
@@ -165,13 +194,6 @@ typedef enum {
     FutureData
 }choice_function;
 
-typedef enum{
-    ErrorConfirmationPassiveModule,
-    ErrorChoiceDoesntExist,
-    ErrorInfoStrNotFound,
-    ErrorUserType
-}error_types;
-
 typedef struct{
     int id;
     char residence[5];
@@ -183,35 +205,3 @@ typedef struct{
 typedef struct{
     //Hvis user skal udvides med en choice og en settings struct for at abstrahere mere.
 }settings;
-
-/*debugging Prototypes*/
-int debug_print(user user_choice, data user_data,int run_or_not);
-char* translate(int choice_of_function);
-int error_message(int error);
-
-int debug_print(user user_choice, data user_data, int run_or_not){
-    if(run_or_not){
-        printf("ID = %d ; Sprog = %s ; Bosted = %s\n",user_choice.id,user_choice.language,user_choice.residence);
-        printf("Valgte funktion = %s ; Brugeren er %s\n",translate(user_choice.choice_of_function),(user_choice.user_type == Human ? "menneske" : "automatisk"));
-    }
-    return EXIT_SUCCESS;
-}
-
-char* translate(int choice_of_function){
-    switch(choice_of_function){
-        case ErrorTest           : return "error_test";
-        case UserHistory         : return "user_history";
-        case InfoEnergySaving    : return "info_energy_saving";
-        case UpdateSettings      : return "update_settings";
-        case SystemInformation   : return "system_information";
-        case WarningEnergySaving : return "warning_energy_savings";
-        case MachineActivation   : return "machine_activation";
-        case ConsumptionCheck    : return "consumption_check";
-        case FutureData          : return "future_data";
-    }
-    return "";
-}
-
-int error_message(int error){
-    return 0;
-}
