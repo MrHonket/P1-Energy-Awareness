@@ -1,4 +1,6 @@
 /*MartinBM*/
+//gcc active_module.c global.c language.c database_module.c passive_module.c update_settings.c info_energy_saving.c user_history.c warning_energy_saving.c system_information.c machine_activation.c future_data.c consumption_check.c debug.c
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -8,23 +10,21 @@
 #include "passive_module.h"
 #include "update_settings.h"
 #include "info_energy_saving.h"
-#include "user_history.h,"
+#include "user_history.h"
 #include "warning_energy_saving.h"
 #include "system_information.h"
 #include "machine_activation.h"
 #include "future_data.h"
 #include "consumption_check.h"
-
 #include "debug.h"
 
 /*Funktionerne herunder skal importeres via header filer*/
 int passive_module(user User, data Data){return 0;};
 char* user_history(user User, data Data){return "use";}
-char* update_settings(user User, data Data){return "upd";}
+//char* update_settings(user User, data Data){return "upd";}
 char* info_energy_settings(user User, data Data){return "inf";}
 
 /*Dette er prototyper i programmet.*/
-settings load_settings(void);
 void set_next_activation(user User);
 data load_data(user User);
 int prompt_user(user User,data Data);
@@ -60,16 +60,6 @@ int main(void){
     
     return EXIT_SUCCESS;
 }
-/*Loader settings fra settings.txt. Indeholder pt. KUN MOCKDATA!*/
-settings load_settings(void){
-    settings settings;
-
-    settings.id = 35;
-    strcpy(settings.residence,"DK1");
-    strcpy(settings.language,"DK");
-
-    return settings;
-}
 /*Sætter næste automatiske aktivering*/
 void set_next_activation(user User){
     User.type = Human;
@@ -99,7 +89,7 @@ int prompt_user(user User, data Data){
         strcpy(info_str,user_history(User,Data));
     }
     else if(User.choice.function == UpdateSettings){
-        strcpy(info_str,update_settings(User,Data));
+        update_settings();
     }
     else if(User.choice.function == InfoEnergySaving){
         strcpy(info_str,info_energy_settings(User,Data));
@@ -117,7 +107,7 @@ int prompt_user(user User, data Data){
     }
 
     //scanf for om der ønskes ny kommando.
-    printf("Koer igen?")
+    printf("Koer igen?");
 
     new_command = 0;
     if(new_command){
