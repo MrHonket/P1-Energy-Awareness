@@ -12,12 +12,16 @@ double warning_consumption(double price, double consumption,double median_consum
 int main(void){
   double price_treshold = 200;
   double median_consumption=0.5;
-  int timeframe=12;
+  int timeframe;
+  data *data_array;
+  dato from={{00, 00}, 15, Januar, 2018};
+  dato to= {{24, 00}, 15, Januar, 2018};
   printf("hello and welcome to the gokkeslaet\n");
   printf("enter timeframe, median consumption and price threshold: ");
   /* mean_price=user_history(mean.data); */
-  scanf("%d %lf %lf",&timeframe, &median_consumption, &price_treshold);
-  pricedata price_array[NMB_OF_ELEMENTS] = {
+   scanf("%d %lf %lf",&timeframe, &median_consumption, &price_treshold);
+  data_array =get_price_for_timeinterval_in_area(from, to, Dk1);
+  /* pricedata price_array[NMB_OF_ELEMENTS] = {
         {
             {{00, 00}, 15, Januar, 2018}, {{01, 00}, 15, Januar, 2018}, 178, 64
         },
@@ -92,7 +96,7 @@ int main(void){
         }
     };
     
-  meterdata meterdata_array[NMB_OF_ELEMENTS] = {
+  meterdata meterdata_array[NMB_OF_ELEMENTS] = { 
         {
             "18928", {{00, 00}, 15, Januar, 2018}, {{01, 00}, 15, Januar, 2018}, 440
         },
@@ -165,16 +169,16 @@ int main(void){
         {
             "18923", {{23, 00}, 15, Januar, 2018}, {{24, 00}, 15, Januar, 2018}, 40
         }
-    };
-  if(price_array[timeframe].DK1price>=price_treshold)
+    }; */
+  if(data_array[timeframe].prize.DK1price>=price_treshold)
   {
-    printf("your consumption is %.2lf percent off the usual\n",warning_consumption(price_array[timeframe].DK1price,
-    meterdata_array[timeframe-1].value,median_consumption));
+    printf("your consumption is %.2lf percent off the usual\n",warning_consumption(data_array[timeframe].prize.DK1price,
+    data_array[timeframe-1].meter.value,median_consumption));
   }
-  else if (price_array[timeframe].DK2price>=price_treshold)
+  else if (data_array[timeframe].prize.DK1price>=price_treshold)
   {
-    printf("your consumption is %.2lf percent off the usual\n",warning_consumption(price_array[timeframe].DK2price,
-    meterdata_array[timeframe-1].value,median_consumption));
+    printf("your consumption is %.2lf percent off the usual\n",warning_consumption(data_array[timeframe].prize.DK2price,
+    data_array[timeframe-1].meter.value,median_consumption));
   }
 else
 {
