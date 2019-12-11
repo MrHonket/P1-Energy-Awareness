@@ -181,7 +181,7 @@ int main(void)
 
 /* Funktionen returnerer besparelsen forbrugeren kan opnå hvis vedkommende flytter sit forbrug til det billigste tidspunkt 
  * Funktionen tager udgangspunkt i et 24 element-langt dat-array der samt et user_choice der afgører om det er DK1 eller DK2 vi kigger på */
-double info_energy_saving2(meterdata forbrug_array[], pricedata priser_array[], int time_frame, user user_choice)
+double info_energy_saving2(meterdata forbrug_array[], pricedata priser_array[], int time_frame, user User)
 {
     double current_consumption = 0.0;
     double current_price = 0.0;
@@ -189,7 +189,7 @@ double info_energy_saving2(meterdata forbrug_array[], pricedata priser_array[], 
     double user_price_after = 0.0;
     double cheapest_price = 0.0;
     
-    if (strcmp(user_choice.residence, "DK1") == 0)
+    if (strcmp(User.settings.residence, "DK1") == 0)
     {   
         current_price = priser_array[time_frame].DK1price;
         printf("Nuværende pris: %.1f\n\n", current_price);
