@@ -21,7 +21,7 @@ int main(void)
     data *return_array;
     dato from = {{00, 00}, 15, Januar, 2018};
     dato to = {{00, 00}, 15, Januar, 2018};
-    user user_choice = { {1200, "DK1", "Dansk"}, {2, Mean, {{18, 0}, 15, Januar, 2017}, {{19, 0}, 15, Januar, 2017}}};
+    user user_choice = { {1200, "DK1", "Dansk"}, {2, Mean, {{20, 0}, 15, Januar, 2017}, {{21, 0}, 15, Januar, 2017}}};
     
     return_array = get_price_for_timeinterval_in_area(from, to, Dk1);
     cheapest_struct = *cheapest(return_array);
