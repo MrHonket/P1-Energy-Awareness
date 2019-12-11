@@ -46,6 +46,12 @@ typedef struct{
    pricedata prize;
 }data;
 
+/* bruges i user_history til at udregne gennemsnit og median */
+typedef enum {
+    mean = 1,
+    median
+}mean_or_median;
+
 /*Tid omdannet til tekst prototypes: ugedag_txt[], month_txt[]*/
 const char *ugedag_txt;
 const char *month_txt;
@@ -59,7 +65,7 @@ const char *month_txt;
     /*settings valg: settings*/
     typedef struct{int id;char residence[5];char language[5];}settings;
     /*aktive valg: choice*/
-    typedef struct{int function;}choice;
+    typedef struct{int function; mean_or_median mean_or_median;}choice;
 /*user structet*/
 typedef struct{
     settings settings;
