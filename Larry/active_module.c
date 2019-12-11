@@ -4,22 +4,35 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "global.h" //implementeret
+#include "global.h" //IMPLEMENTERET!
 #include "language.h" //tom .h fil
-#include "database_module.h" //ERROR!
-#include "passive_module.h" //tom .h fil
-#include "update_settings.h" // ERROR!
+//#include "database_module.h" //ERROR!
+//#include "user_history.h" //SYNTAX ERROR!
+//#include "update_settings.h" // ERROR!
 //#include "info_energy_saving.h" //SYNTAX ERROR!
-#include "user_history.h" //tom .h fil
-#include "warning_energy_saving.h" //tom .h fil
-#include "system_information.h"//tom .h fil
-#include "machine_activation.h"// .h fil
-#include "future_data.h" //tom .h fil
-#include "consumption_check.h" //tom .h fil
+//#include "passive_module.h" //tom .h fil
+//#include "warning_energy_saving.h" //tom .h fil
+//#include "system_information.h"//tom .h fil
+//#include "machine_activation.h"// .h fil
+//#include "future_data.h" //tom .h fil
+//#include "consumption_check.h" //tom .h fil
 #include "debug.h" //implementeret
 
+/*DISSE SKAL SLETTES NÅR DERES .h ER IMPLEMENTERET!!!*/
+data database_module(user User){data Test; return Test;}
+int user_history(user User, data Data){return 0;}
+settings load_settings(void){settings Test; return Test;}
+int update_settings(void){return 0;}
+int info_energy_saving(user User, data Data){return 0;}
+int passive_module(user User, data Data){return 0;}
+int warning_energy_saving(user User, data Data){return 0;}
+int system_information(user User, data Data){return 0;}
+int machine_activation(user User, data Data){return 0;}
+int future_data(user User, data Data){return 0;}
+int consumption_check(user User, data Data){return 0;}
+
 /*Dette er prototyper i programmet.*/
-void set_next_activation(user User);
+user_type set_next_activation(user User);
 data load_data(user User);
 int prompt_user(user User,data Data);
 void log_data(user User);
@@ -31,7 +44,7 @@ int main(void){
         confirmation;
 
     User.settings = load_settings();
-    set_next_activation(User);
+    User.type = set_next_activation(User);
     Data = load_data(User);
 
     if (User.type == Human){
@@ -55,15 +68,18 @@ int main(void){
     return EXIT_SUCCESS;
 }
 /*Sætter næste automatiske aktivering*/
-void set_next_activation(user User){
-    User.type = Human;
+user_type set_next_activation(user User){
+    user_type local_type;
+
+    local_type = Human;
+
+    return local_type;
 }
 /*Loader data fra database_module. Indeholder pt. KUN MOCKDATA!*/
 data load_data(user User){
     data local_data;
 
-    //LAVER INFINITE LOOP PT!!!!
-    //init_database();
+    local_data = database_module(User);
 
     return local_data;
 }
@@ -73,21 +89,22 @@ void log_data(user User){
 }
 /*Funktionen som fungere som en brugers interface*/
 int prompt_user(user User, data Data){
-    char info_str[60];
+    char info_str[60] = {'T','E','S','T'};
+    int info;
     int new_command = 0;
     
     /*Basil was here & coded user interaction*/
     printf("Tryk 1 for brugerhistorik\nTryk 2 for brugerindstillinger\nTryk 3 for info om dine energibesparelser\n");
-    scanf(" %d", User.choice.function);
+    scanf(" %d", &User.choice.function);
     
     if(User.choice.function == UserHistory){
-        info_str = user_history(User,Data);
+        info = user_history(User,Data);
     }
     else if(User.choice.function == UpdateSettings){
-        update_settings();
+        info = update_settings();
     }
     else if(User.choice.function == InfoEnergySaving){
-        strcpy(info_str,info_energy_settings(User,Data));
+        info = info_energy_saving(User,Data);
     }
     else{
         error_message(ErrorChoiceDoesntExist);
@@ -102,8 +119,8 @@ int prompt_user(user User, data Data){
     }
 
     //scanf for om der ønskes ny kommando. Basil was here
-    printf("Tryk på enhver tast for at køre programmet igen.\nTryk 0 for at lukke programmet");
-    scanf("%d", new_command);
+    printf("Tryk paa enhver tast for at kore programmet igen.\nTryk 0 for at lukke programmet");
+    scanf("%d", &new_command);
 
     if(new_command){
         return prompt_user(User,Data);
