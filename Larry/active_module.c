@@ -6,12 +6,12 @@
 #include <string.h>
 #include "global.h"                 //IMPLEMENTERET og brugbart!
 #include "language.h"               //tom .h fil
-//#include "database_module.h"      //ERROR!
-//#include "user_history.h"         //SYNTAX ERROR!
+#include "database_module.h"        //
+//#include "user_history.h"         //SYNTAX ERROR! modtager ikke User og Data.
 //#include "update_settings.h"      // ERROR!
-//#include "info_energy_saving.h"   //SYNTAX ERROR!
+//#include "info_energy_saving.h"   //SYNTAX ERROR! modtager ikke User og Data.
 #include "passive_module.h"         //Implementeret med mindre fejl!
-//#include "warning_energy_saving.h"//tom .h fil
+//#include "warning_energy_saving.h"//SYNTAX ERROR! modtager ikke User og Data.
 //#include "system_information.h"   //tom .h fil
 #include "machine_activation.h"     //Implemented som error_message!
 //#include "future_data.h"          //tom .h fil
@@ -20,30 +20,35 @@
 
 /*DISSE SKAL SLETTES NÅR DERES .h ER IMPLEMENTERET!!!*/
 data database_module(user User){data Test; return Test;}
-int user_history(user User, data Data){return 0;}
+int user_history(user User, data *Data){return 0;}
 settings load_settings(void){settings Test; Test.id = 7357;return Test;}
 int update_settings(void){return 0;}
-int info_energy_saving(user User, data Data){return 0;}
-int system_information(user User, data Data){return 0;}
-int future_data(user User, data Data){return 0;}
+int info_energy_saving(user User, data *Data){return 0;}
+//int warning_energy_saving(user User, data *Data){return 0;}
+int system_information(user User, data *Data){return 0;}
+int future_data(user User, data *Data){return 0;}
 
 /*Dette er prototyper i programmet.*/
 void check_activation(user User);
-data load_data(user User);
-int prompt_user(user User,data Data);
+int prompt_user(user User,data *Data);
 void log_data(user User);
 /*main vil modtage information om det er en måler (Automatisk) der aktivere eller en app (Human)*/
 int main(void){
     user User;
-    data Data;
+    data *Data;
     int confirmation;
 
     User.settings = load_settings();
     check_activation(User);
-    Data = load_data(User);
-
+    
+    //MockData!
     User.type = Automated;
-    User.choice.function = MachineActivation;
+    User.choice.function = WarningEnergySaving;
+    dato dato1 = {{10,00},12,6,2017};
+    dato dato2 = {{18,00},12,6,2017};
+    //endmock
+
+    Data = get_price_for_timeinterval_in_area(dato1,dato2,Dk1);
 
     if (User.type == Human){
         prompt_user(User,Data);
@@ -73,20 +78,12 @@ int main(void){
 void check_activation(user User){
     
 }
-/*Loader data fra database_module. Indeholder pt. KUN MOCKDATA!*/
-data load_data(user User){
-    data local_data;
-
-    local_data = database_module(User);
-
-    return local_data;
-}
 /*Funktion der logger brugen af programmet og de data der måtte komme derigennem.*/
 void log_data(user User){
 
 }
 /*Funktionen som fungere som en brugers interface*/
-int prompt_user(user User, data Data){
+int prompt_user(user User, data *Data){
     char info_str[60] = {'T','E','S','T'};
     int info;
     int new_command = 0;

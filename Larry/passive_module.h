@@ -4,6 +4,6 @@
 #include "global.h"
 #include "machine_activation.h"
 
-int passive_module(user user_choices, data user_data);
+int passive_module(user User, data *Data);
 
 #endif //PASSIVE_MODULE_H
