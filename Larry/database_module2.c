@@ -38,9 +38,13 @@ void        init(void);
 pricedata   *init_datab(pricedata *mypricedata, meterdata *meter_data, production *production_data);
 void        init_pricestruct(pricedata data[]);
 pricedata   *init_price_array(pricedata mypricedata[]);
+void        init_meterstruct(meterdata data[]);
+
+
 
 
 int         copy_file_to_mypricedata(char *filename);
+int         copy_file_to_myconsumpdata(char *filename);
 
 
 
@@ -104,7 +108,7 @@ int main(void){
     printf("hent pris for index: ");
     while (scanf("%d",&index)&& index != -1){
          if(index != -1){
-            printf("her er prisen på index%d\n DK1:%f  DK2:%f \n",index, mypricedata[index].DK1price, mypricedata[index].DK2price);
+            printf("her er forbruget på index%d\n VALUE:%f \n",index, myconsumpdata[index].value);
          }
     }
 
@@ -177,19 +181,12 @@ data *get_price_for_timeinterval_in_area(dato from, dato to,  area area){
    tempdata = malloc(interval*sizeof(data));
    
    for (i=0 ; i < interval ; i++) { 
-      tempdata[i].prize.from.year=mypricedata[i].from.year;
-      tempdata[i].prize.from.month = month;
-      tempdata[i].prize.from.day = day;
-      tempdata[i].prize.from.time.hour =hour1+i;
-      tempdata[i].prize.from.time.minute =00;
-      tempdata[i].prize.to.year=year;
-      tempdata[i].prize.to.month = month;
-      tempdata[i].prize.to.day = day;
-      tempdata[i].prize.to.time.hour =hour2+i;
-      tempdata[i].prize.to.time.minute =00;
-
-      tempdata[i].prize.DK1price=rand()%150;
-      tempdata[i].prize.DK2price=rand()%150;
+      tempdata[i].prize.from    = mypricedata[i].from;
+      
+      tempdata[i].prize.to      = mypricedata[i].to;
+      
+      tempdata[i].prize.DK1price=mypricedata[i].DK1price;
+      tempdata[i].prize.DK2price=mypricedata[i].DK2price;
 
       tempdata[i].meter.from.year=year;
       tempdata[i].meter.from.month = month;
@@ -220,10 +217,10 @@ data *get_price_for_timeinterval_in_area(dato from, dato to,  area area){
 
 /* Elspot Prices in DKK/MWh;;;;;;;;;;;;;;;;;;
 Data was last updated 31-12-2018;;;;;;;;;;;;;;;;;;
-;Hours;SYS;SE1;SE2;SE3;SE4;FI;DK1;DK2;Oslo;Kr.sand;Bergen;Molde;Tr.heim;Troms�;EE;LV;LT
-01-01-2018;00�-�01;195,85;196;196;196;196;196;162,28;196;196;196;196;196;196;196;196;196;196
-01-01-2018;01�-�02;196,74;196,74;196,74;196,74;196,74;196,74;196,74;196,74;196,74;196,74;196,74;196,74;196,74;196,74;196,74;196,74;196,74 */
-
+;Hours;SYS;SE1;SE2;SE3;SE4;FI;DK1;DK2;Oslo;Kr.sand;Bergen;Molde;Tr.heim;Tromsø;EE;LV;LT
+01-01-2017;00 - 01;191,05;178,64;178,64;178,64;178,64;178,64;155,82;155,82;211,13;211,13;211,13;178,64;178,64;178,64;178,64;178,64;178,64
+01-01-2017;01 - 02;190,38;178,64;178,64;178,64;178,64;178,64;155,37;155,37;209,42;209,42;209,42;178,64;178,64;178,64;178,64;178,64;178,64
+*/
 int copy_file_to_mypricedata(char *filename){
     int i=0,j=0;
     char str[MAX_LINE_WIDTH];
@@ -269,7 +266,68 @@ int copy_file_to_mypricedata(char *filename){
         print_index(j);
         j++;
     }
-/* ;%2dÊ-Ê%2d;%*d,%*d;%*d;%*d;%*d;196;196;162,28;196;196;196;196;196;196;196;196;196;196
+    /* ;%2dÊ-Ê%2d;%*d,%*d;%*d;%*d;%*d;196;196;162,28;196;196;196;196;196;196;196;196;196;196
+ */    
+
+
+
+
+    fclose(f);
+    return SUCCESS;
+}
+
+
+/* Målepunkt id;Fra dato;Til dato;Mængde;Måleenhed;Kvalitet;Type;
+571313104402686056;2017-01-01 00.00;2017-01-01 01.00;0,440;KWH;Målt;Tidsserier;
+571313104402686056;2017-01-01 01.00;2017-01-01 02.00;0,450;KWH;Målt;Tidsserier; 
+*/
+int copy_file_to_myconsumpdata(char *filename){
+    int i=0,j=0;
+    char str[MAX_LINE_WIDTH];
+    double value1=0,value2=0;
+    const char s[2] = ";";
+    char *token;
+    char *data_txt[30];
+
+    FILE *f = check_file(filename);
+
+    for(i=0;i<30;i++){
+        data_txt[i] = " ";
+    }
+
+    j=0;
+
+    while (fgets(str,MAX_LINE_WIDTH,f)!=NULL){
+        char  hourb[7];
+        int   houra,hourb_int;
+        token = strtok(str,s);
+
+        i=0;
+        while(token !=NULL){
+            data_txt[i] = token;
+            printf("%s\n",token);
+            token=strtok(NULL,s);
+            i++;
+        }
+        
+        printf("linie:169 i=%d  j=%d\n",i,j);
+        
+        
+        // sscanf(data_txt[1],"%*d %*3c %s",hourb);
+        // sscanf((data_txt[1]+5),"%d",&hourb_int);
+        strcpy(myconsumpdata[j],data_txt[0]);
+        
+        printf("hra:%d,hrb:%d\n",houra, hourb_int);
+        mypricedata[j].from  = date_from_string(data_txt[0],houra);
+        mypricedata[j].to    = date_from_string(data_txt[0],get_next_hour(houra));
+        
+        mypricedata[j].DK1price = price_from_string(data_txt[8]);
+        mypricedata[j].DK2price = price_from_string(data_txt[9]);
+
+        print_index(j);
+        j++;
+    }
+    /* ;%2dÊ-Ê%2d;%*d,%*d;%*d;%*d;%*d;196;196;162,28;196;196;196;196;196;196;196;196;196;196
  */    
 
 

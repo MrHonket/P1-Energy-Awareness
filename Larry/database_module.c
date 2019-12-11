@@ -173,6 +173,7 @@ data *get_price_for_timeinterval_in_area(dato from, dato to,  area area){
    int db_index = from.day;
    tempdata = malloc(interval*sizeof(data));
    
+   
    for (i=0 ; i < interval ; i++) { 
       tempdata[i].prize.from.year=year;
       tempdata[i].prize.from.month = month;
@@ -199,7 +200,7 @@ data *get_price_for_timeinterval_in_area(dato from, dato to,  area area){
       tempdata[i].meter.to.time.hour =hour2+i;
       tempdata[i].meter.to.time.minute =00;
 
-      tempdata[i].meter.value= rand()%100 /53.2;
+      tempdata[i].meter.value= rand()%500;
       
       // tempdata[i].prize.from     = mypricedata[db_index].from;
       // tempdata[i].prize.to       = mypricedata[db_index].to;
@@ -476,6 +477,14 @@ dato create_date_from_string (char *str){
     mdate.year   = 0;
 
     return mdate;
+}
+
+dato date_from_string(char *date, int time){
+    dato ret_date;
+    sscanf(date,"%2d-%2d-%4d",&ret_date.year, &ret_date.month, &ret_date.day);
+    ret_date.time.hour = time;
+    ret_date.time.minute =0;
+    return ret_date;
 }
 
 /* create data from pricestring */

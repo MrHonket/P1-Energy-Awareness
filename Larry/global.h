@@ -9,8 +9,8 @@
 #define FALSE       0
 #define TRUE        1
 #define SUCCESS     2
-#define HOURS_PR_YEAR 8765
-#define FILENAME_METER "consumption_data.csv"
+#define HOURS_PR_YEAR 8765*20
+#define FILENAME_METER "Meterdata.csv"
 #define FILENAME_PRICE "elspot-prices_2017_hourly_dkk.csv"
 
 
@@ -18,10 +18,8 @@
 /*For inklusion af fejlsøgning i program, lav en ny Error... i error_types.
  *Kald derefter error_message(Error...) på stedet i koden.*/
 typedef enum{ErrorConfirmationPassiveModule,ErrorChoiceDoesntExist,
-             ErrorInfoStrNotFound,ErrorUserType}error_types;
+             ErrorInfoStrNotFound,ErrorUserType,ErrorNotImplemented}error_types;
 int error_message(int error);
-
-
 
 /*VARIABLE TIL data*/
     /* tids enums og structs: ugedag, month, time, dato, ugedag_txt[],month_txt[].*/
