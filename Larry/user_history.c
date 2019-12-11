@@ -31,7 +31,8 @@ int main(void) {
 
         printf("Mean: %lf\nMedian: %lf", user_history(choice1, data, n), user_history(choice2, data, n)); 
         /*choice angiver om der ønskes gennemsnit eller median 
-          data[] er et array af structs (enten pris, forbrug eller grøn andel)*/
+          data[] er et array af structs (enten pris, forbrug eller grøn andel)
+            lslslsl*/
 
     return 0;
 }
