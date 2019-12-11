@@ -86,7 +86,7 @@ int copy_file_to_price_data(char *filename){
         }
         
 
-        price_data[j].from = date_from_string(data_txt[0],DATE_DMY);
+        price_data[j].from  = date_from_string(data_txt[0],DATE_DMY);
         price_data[j].to    = date_from_string(data_txt[0],DATE_DMY);
 
 
