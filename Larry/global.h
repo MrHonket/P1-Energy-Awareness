@@ -9,6 +9,14 @@
 #define FALSE       0
 #define TRUE        1
 #define SUCCESS     2
+#define HOURS_PR_YEAR (365*24)
+
+/*FEJLSØGNING*/
+/*For inklusion af fejlsøgning i program, lav en ny Error... i error_types.
+ *Kald derefter error_message(Error...) på stedet i koden.*/
+typedef enum{ErrorConfirmationPassiveModule,ErrorChoiceDoesntExist,
+             ErrorInfoStrNotFound,ErrorUserType}error_types;
+int error_message(int error);
 
 #define HOURS_PR_YEAR (365*24)
 #define FILENAME_METER "consumption_data.csv"
@@ -61,13 +69,4 @@ typedef struct{
     user_type type;
 }user;
 
-/*De forskellige fejltyper. Bruges med error_message*/
-typedef enum{ErrorConfirmationPassiveModule,ErrorChoiceDoesntExist,
-             ErrorInfoStrNotFound,ErrorUserType}error_types;
-/*debugging Prototypes*/
-int debug_print(user user_choice, data user_data,int run_or_not);
-char* translate(int choice_of_function);
-int error_message(int error);
-
 #endif //GLOBAL_H
-
