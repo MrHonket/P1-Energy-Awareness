@@ -10,6 +10,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
+#include <time.h>
 #include "global.h"
 
 
@@ -173,6 +174,7 @@ data *get_price_for_timeinterval_in_area(dato from, dato to,  area area){
    int db_index = from.day;
    tempdata = malloc(interval*sizeof(data));
    
+   
    for (i=0 ; i < interval ; i++) { 
       tempdata[i].prize.from.year=year;
       tempdata[i].prize.from.month = month;
@@ -185,8 +187,8 @@ data *get_price_for_timeinterval_in_area(dato from, dato to,  area area){
       tempdata[i].prize.to.time.hour =hour2+i;
       tempdata[i].prize.to.time.minute =00;
 
-      tempdata[i].prize.DK1price=999;//rand()%150;
-      tempdata[i].prize.DK2price=888;//rand()%150;
+      tempdata[i].prize.DK1price=rand()%150;
+      tempdata[i].prize.DK2price=rand()%150;
 
       tempdata[i].meter.from.year=year;
       tempdata[i].meter.from.month = month;
@@ -199,7 +201,7 @@ data *get_price_for_timeinterval_in_area(dato from, dato to,  area area){
       tempdata[i].meter.to.time.hour =hour2+i;
       tempdata[i].meter.to.time.minute =00;
 
-      tempdata[i].meter.value= 432;
+      tempdata[i].meter.value= rand()%500;
       
       // tempdata[i].prize.from     = mypricedata[db_index].from;
       // tempdata[i].prize.to       = mypricedata[db_index].to;
