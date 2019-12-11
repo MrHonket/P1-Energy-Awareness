@@ -9,7 +9,10 @@
 #define FALSE       0
 #define TRUE        1
 #define SUCCESS     2
-#define HOURS_PR_YEAR (365*24)
+#define HOURS_PR_YEAR 8765
+#define FILENAME_METER "consumption_data.csv"
+#define FILENAME_PRICE "elspot-prices_2017_hourly_dkk.csv"
+
 
 /*FEJLSØGNING*/
 /*For inklusion af fejlsøgning i program, lav en ny Error... i error_types.
@@ -18,9 +21,6 @@ typedef enum{ErrorConfirmationPassiveModule,ErrorChoiceDoesntExist,
              ErrorInfoStrNotFound,ErrorUserType}error_types;
 int error_message(int error);
 
-#define HOURS_PR_YEAR (365*24)
-#define FILENAME_METER "consumption_data.csv"
-#define FILENAME_PRICE "elspot-prices_2017_hourly_dkk.csv"
 
 
 /*VARIABLE TIL data*/
