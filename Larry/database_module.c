@@ -200,7 +200,7 @@ data *get_price_for_timeinterval_in_area(dato from, dato to,  area area){
       tempdata[i].meter.to.time.hour =hour2+i;
       tempdata[i].meter.to.time.minute =00;
 
-      tempdata[i].meter.value= rand()%10000 /53.2;
+      tempdata[i].meter.value= 432;
       
       // tempdata[i].prize.from     = mypricedata[db_index].from;
       // tempdata[i].prize.to       = mypricedata[db_index].to;
