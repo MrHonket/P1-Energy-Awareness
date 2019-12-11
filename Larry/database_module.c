@@ -48,7 +48,7 @@ meterdata mymeterdata[HOURS_PR_YEAR];
 pricedata mypricedata[HOURS_PR_YEAR];
 
 
-
+/* UDKOMMENTERET FOR AT KUNNE BRUGES I ANDRE PROGRAMMER!!!!
 int main(void){
    
    int index=0;
@@ -99,7 +99,7 @@ int main(void){
 
    return 0;
 }
-
+*/
 
 
 
