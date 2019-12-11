@@ -32,6 +32,8 @@
 
 pricedata mypricedata[HOURS_PR_YEAR];
 meterdata myconsumpdata[HOURS_PR_YEAR];
+int pricinitialised = 0;
+int consumptioninitialised = 0;
 
 
 void        init(void);
@@ -66,7 +68,7 @@ int     get_next_hour(int hour);
 
 
 
-int main(void){
+void init(void){
    
    int index=0;
    dato date1,date2;
@@ -91,31 +93,31 @@ int main(void){
 //    }
    
     printf("vi skal til at hente fil indhold\n");
-    copy_file_to_mypricedata(FILENAME_PRICE);
+    pricinitialised =  copy_file_to_mypricedata(FILENAME_PRICE);
     printf("vi har hentet fil indhold\n");
 
 
-    printf("hent pris for index: ");
-    while (scanf("%d",&index)&& index != -1){
-         if(index != -1){
-            printf("her er prisen på index%d\n DK1:%f  DK2:%f \n",index, mypricedata[index].DK1price, mypricedata[index].DK2price);
-         }
-    }
+   //  printf("hent pris for index: ");
+   //  while (scanf("%d",&index)&& index != -1){
+   //       if(index != -1){
+   //          printf("her er prisen på index%d\n DK1:%f  DK2:%f \n",index, mypricedata[index].DK1price, mypricedata[index].DK2price);
+   //       }
+   //  }
 
 
     init_meterstruct(myconsumpdata);
 
     printf("vi skal til at hente fil indhold\n");
-    copy_file_to_myconsumpdata(FILENAME_METER);
+   consumptioninitialised = copy_file_to_myconsumpdata(FILENAME_METER);
     printf("vi har hentet fil indhold\n");
 
 
-    printf("hent pris for index: ");
-    while (scanf("%d",&index)&& index != -1){
-         if(index != -1){
-            printf("her er forbruget på index%d\n VALUE:%f \n",index, myconsumpdata[index].value);
-         }
-    }
+   //  printf("hent pris for index: ");
+   //  while (scanf("%d",&index)&& index != -1){
+   //       if(index != -1){
+   //          printf("her er forbruget på index%d\n VALUE:%f \n",index, myconsumpdata[index].value);
+   //       }
+   //  }
 
 
    return 0;
@@ -184,6 +186,10 @@ data *get_price_for_timeinterval_in_area(dato from, dato to,  area area){
    int i =0;
    int db_index = from.day;
    tempdata = malloc(interval*sizeof(data));
+   if (pricinitialised == 0 && consumptioninitialised == 0){
+      init();
+
+   }
    
    for (i=0 ; i < interval ; i++) { 
       tempdata[i].prize.from    = mypricedata[db_index].from;      
