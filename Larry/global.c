@@ -200,9 +200,15 @@ typedef enum {
 }choice_function;
 
 typedef enum {
-    mean = 1,
-    median
+    Mean = 1,
+    Median
 }mean_or_median;
+
+typedef enum {
+    Meter,
+    Price,
+    Green
+} lookup_type;
 
 /*settings valg: settings*/
 typedef struct{
@@ -218,6 +224,7 @@ typedef struct{
     mean_or_median mean_or_median;
     dato from;
     dato to;
+    lookup_type lookup;
 }choice;
 
 /*user-structet*/

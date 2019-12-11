@@ -92,9 +92,9 @@ void init(void){
 //          }
 //    }
    
-    printf("vi skal til at hente fil indhold\n");
+   //  printf("vi skal til at hente fil indhold\n");
     pricinitialised =  copy_file_to_mypricedata(FILENAME_PRICE);
-    printf("vi har hentet fil indhold\n");
+    printf("vi har hentet prisfil indhold\n");
 
 
    //  printf("hent pris for index: ");
@@ -107,9 +107,9 @@ void init(void){
 
     init_meterstruct(myconsumpdata);
 
-    printf("vi skal til at hente fil indhold\n");
+   //  printf("vi skal til at hente fil indhold\n");
    consumptioninitialised = copy_file_to_myconsumpdata(FILENAME_METER);
-    printf("vi har hentet fil indhold\n");
+    printf("vi har hentet consumption-fil indhold\n");
 
 
    //  printf("hent pris for index: ");
@@ -122,18 +122,6 @@ void init(void){
 
 }
 
-
-// void init(void){ 
-//     int i = 0;
-//     for(i=0;i<HOURS_PR_YEAR;i++){
-//        mypricedata[i].DK1price  = 00;
-//        mypricedata[i].DK2price  = 00;
-//        mypricedata[i].from  = date_from_stringDMYI("0000 00 00 00:00",DATE_YMD);
-//        mypricedata[i].to  = date_from_stringDMYI("0000 00 00 00:00",DATE_YMD);
-//     }
-// copy_file_to_mypricedata(FILENAME_PRICE);
-    
-// }
 
 
 
@@ -178,6 +166,8 @@ void init_meterstruct(meterdata data[]){
 
 data *get_price_for_timeinterval_in_area(dato from, dato to,  area area){
    int interval = 24 ;
+
+
    int year=2018,month=02,day=10,hour1=0,hour2=1;
    double dk1=135,dk2=156;
    // abs(to.time.hour - from.time.hour);
@@ -239,19 +229,19 @@ int copy_file_to_mypricedata(char *filename){
         i=0;
         while(token !=NULL){
             data_txt[i] = token;
-//            printf("%s\n",token);
+            // printf("%s\n",token);
             token=strtok(NULL,s);
             i++;
         }
         
-//        printf("linie:169 i=%d  j=%d\n",i,j);
+      //   printf("linie:169 i=%d  j=%d\n",i,j);
         
         sscanf(data_txt[1],"%dÊ-Ê",&houra);
         // sscanf(data_txt[1],"%*d %*3c %s",hourb);
         // sscanf((data_txt[1]+5),"%d",&hourb_int);
 
         
-//        printf("hra:%d,hrb:%d\n",houra, hourb_int);
+      //   printf("hra:%d,hrb:%d\n",houra, hourb_int);
         mypricedata[j].from  = date_from_stringDMYI(data_txt[0],houra);
         mypricedata[j].to    = date_from_stringDMYI(data_txt[0],get_next_hour(houra));
         
@@ -300,12 +290,12 @@ int copy_file_to_myconsumpdata(char *filename){
         i=0;
         while(token !=NULL){
             data_txt[i] = token;
-//            printf("%s\n",token);
+            // printf("%s\n",token);
             token=strtok(NULL,s);
             i++;
         }
         
-//        printf("linie:169 i=%d  j=%d\n",i,j);
+      //   printf("linie:169 i=%d  j=%d\n",i,j);
         
         
         
@@ -340,7 +330,7 @@ FILE *check_file(char*filename){
     }
 
     if(f!=NULL){
-//        printf("%s",filename);
+        printf("%s",filename);
         return f;
     }
 
@@ -371,7 +361,7 @@ pricedata *init_datab(pricedata *mypricedata, meterdata *meter_data, production 
     for(i=0;i<HOURS_PR_YEAR;i++){
         mypricedata[i] = *init_price_array(mypricedata);
     }
-//    printf("b%d\n",mypricedata[20].from.year);
+   //  printf("b%d\n",mypricedata[20].from.year);
 
   return mypricedata;
 }
@@ -414,15 +404,15 @@ dato date_from_stringYMDH(char *date){
 }
 
 double price_from_string(char *price){
-    double value1=0,value2=0;
-    int scanres=0;
-    
-    if ((scanres = sscanf(price," %lf,%lf " ,&value1,&value2))>1){
-        return  value1 + value2/100;
-    }
-    
-    printf("could not convert %lf %lf to number\n",value1,value2);
-    return -1000;
+   double value1=0,value2=0;
+   int scanres=0;
+   
+   if ((scanres = sscanf(price," %lf,%lf " ,&value1,&value2))>1){
+      return  value1 + value2/100;
+   }
+   
+   printf("error tried to convert string %s to doubles %lf %lf to number\n",value1,value2);
+   return -1000;
 }
 
 double consumption_from_string(char *price){
@@ -442,19 +432,19 @@ double consumption_from_string(char *price){
 
 
 void print_price_index(int index){
-/*    printf("from: %d-%d-%d %d:%d\nto  : %d-%d-%d %d:%d\n DK1: %f\nDK2: %f \n\n",
-    mypricedata[index].from.year,mypricedata[index].from.month,mypricedata[index].from.day,mypricedata[index].from.time.hour,mypricedata[index].from.time.minute,
-    mypricedata[index].to.year  ,mypricedata[index].to.month  ,mypricedata[index].to.day  ,mypricedata[index].to.time.hour  ,mypricedata[index].to.time.minute,
-    mypricedata[index].DK1price,mypricedata[index].DK2price);
-*/    
+//    printf("from: %d-%d-%d %d:%d\nto  : %d-%d-%d %d:%d\n DK1: %f\nDK2: %f \n\n",
+//    mypricedata[index].from.year,mypricedata[index].from.month,mypricedata[index].from.day,mypricedata[index].from.time.hour,mypricedata[index].from.time.minute,
+//    mypricedata[index].to.year  ,mypricedata[index].to.month  ,mypricedata[index].to.day  ,mypricedata[index].to.time.hour  ,mypricedata[index].to.time.minute,
+//    mypricedata[index].DK1price,mypricedata[index].DK2price);
+    
 }
 
 void print_consump_index(int index){
-/*    printf("from: %d-%d-%d %d:%d\nto  : %d-%d-%d %d:%d\n VALUE: %f\n\n",
-    myconsumpdata[index].from.year,myconsumpdata[index].from.month,myconsumpdata[index].from.day,myconsumpdata[index].from.time.hour,myconsumpdata[index].from.time.minute,
-    myconsumpdata[index].to.year  ,myconsumpdata[index].to.month  ,myconsumpdata[index].to.day  ,myconsumpdata[index].to.time.hour  ,myconsumpdata[index].to.time.minute,
-    myconsumpdata[index].value);
-*/ 
+//    printf("from: %d-%d-%d %d:%d\nto  : %d-%d-%d %d:%d\n VALUE: %f\n\n",
+//    myconsumpdata[index].from.year,myconsumpdata[index].from.month,myconsumpdata[index].from.day,myconsumpdata[index].from.time.hour,myconsumpdata[index].from.time.minute,
+//    myconsumpdata[index].to.year  ,myconsumpdata[index].to.month  ,myconsumpdata[index].to.day  ,myconsumpdata[index].to.time.hour  ,myconsumpdata[index].to.time.minute,
+//    myconsumpdata[index].value);
+    
 }
 
 
