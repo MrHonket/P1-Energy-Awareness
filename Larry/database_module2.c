@@ -215,9 +215,11 @@ data *get_price_for_timeinterval_in_area(dato from, dato to,  area area){
 
 
 
-/* Målepunkt id;Fra dato;Til dato;Mængde;Måleenhed;Kvalitet;Type;
-571313104402686056;2017-01-01 00.00;2017-01-01 01.00;0,440;KWH;Målt;Tidsserier;
-571313104402686056;2017-01-01 01.00;2017-01-01 02.00;0,450;KWH;Målt;Tidsserier; 
+/* Elspot Prices in DKK/MWh;;;;;;;;;;;;;;;;;;
+Data was last updated 31-12-2018;;;;;;;;;;;;;;;;;;
+;Hours;SYS;SE1;SE2;SE3;SE4;FI;DK1;DK2;Oslo;Kr.sand;Bergen;Molde;Tr.heim;Tromsø;EE;LV;LT
+01-01-2017;00 - 01;191,05;178,64;178,64;178,64;178,64;178,64;155,82;155,82;211,13;211,13;211,13;178,64;178,64;178,64;178,64;178,64;178,64
+01-01-2017;01 - 02;190,38;178,64;178,64;178,64;178,64;178,64;155,37;155,37;209,42;209,42;209,42;178,64;178,64;178,64;178,64;178,64;178,64
 */
 int copy_file_to_mypricedata(char *filename){
     int i=0,j=0;
@@ -275,7 +277,10 @@ int copy_file_to_mypricedata(char *filename){
 }
 
 
-
+/* Målepunkt id;Fra dato;Til dato;Mængde;Måleenhed;Kvalitet;Type;
+571313104402686056;2017-01-01 00.00;2017-01-01 01.00;0,440;KWH;Målt;Tidsserier;
+571313104402686056;2017-01-01 01.00;2017-01-01 02.00;0,450;KWH;Målt;Tidsserier; 
+*/
 int copy_file_to_myconsumpdata(char *filename){
     int i=0,j=0;
     char str[MAX_LINE_WIDTH];
@@ -296,6 +301,7 @@ int copy_file_to_myconsumpdata(char *filename){
         char  hourb[7];
         int   houra,hourb_int;
         token = strtok(str,s);
+
         i=0;
         while(token !=NULL){
             data_txt[i] = token;
@@ -306,10 +312,10 @@ int copy_file_to_myconsumpdata(char *filename){
         
         printf("linie:169 i=%d  j=%d\n",i,j);
         
-        sscanf(data_txt[1],"%dÊ-Ê",&houra);
+        
         // sscanf(data_txt[1],"%*d %*3c %s",hourb);
         // sscanf((data_txt[1]+5),"%d",&hourb_int);
-        strcpy(myconsumpdata[j])
+        strcpy(myconsumpdata[j],data_txt[0]);
         
         printf("hra:%d,hrb:%d\n",houra, hourb_int);
         mypricedata[j].from  = date_from_string(data_txt[0],houra);
