@@ -8,27 +8,31 @@
 #define KWH 1000
 #define NMB_OF_ELEMENTS 24
 double warning_consumption(double price, double consumption,double median_consumption);
-/* double warning_energy_saving() 
+/* int warning_energy_saving(data *data_array,user choices)? 
    user_history median data
    time data hvor får vi det fra?*/
-/*
-int main(void){
+
+int main(void)
+{
   double price_treshold = 200;
   double median_consumption=0.5;
   int timeframe;
   data *data_array;
+  user User;
+
+  median_consumption= User.choice.
   dato from={{00, 00}, 15, Januar, 2018};
   dato to= {{24, 00}, 15, Januar, 2018};
   printf("hello and welcome to the gokkeslaet\n");
   printf("enter timeframe, median consumption and price threshold: ");
    scanf("%d %lf %lf",&timeframe, &median_consumption, &price_treshold);
   data_array =get_price_for_timeinterval_in_area(from, to, Dk1);
-  if(data_array[timeframe].prize.DK1price>=price_treshold)
+  if(choices.settings.residence==Dk1 && data_array[timeframe].prize.DK1price>=price_treshold)
   {
     printf("your consumption is %.2lf percent off the median consumption\n",warning_consumption(data_array[timeframe].prize.DK1price,
     data_array[timeframe-1].meter.value,median_consumption));
   }
-  else if (data_array[timeframe].prize.DK1price>=price_treshold)
+  else if (choices.settings.residence==Dk2 && data_array[timeframe].prize.DK2price>=price_treshold)
   {
     printf("your consumption is %.2lf percent off the  median consumption\n",warning_consumption(data_array[timeframe].prize.DK2price,
     data_array[timeframe-1].meter.value,median_consumption));
@@ -39,7 +43,7 @@ int main(void){
   }
     return EXIT_SUCCESS;
 }
-*/
+
 double warning_consumption(double price,double consumption,double median_consumption){
 double price_difference;
 consumption/=KWH;
