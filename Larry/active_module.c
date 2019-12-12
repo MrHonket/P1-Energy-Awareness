@@ -1,8 +1,6 @@
 /*MartinBM*/
 //"Rigtige" gcc compilation
 //gcc active_module.c global.c language.c database_module.c passive_module.c update_settings.c info_energy_saving.c user_history.c warning_energy_saving.c system_information.c machine_activation.c future_data.c consumption_check.c debug.c
-//"Experimental" gcc compilation
-//gcc active_module.c global.c language.c database_module.c user_history.c update_settings.c info_energy_saving.c passive_module.c warning_energy_saving_exp.c system_information.c machine_activation.c future_data.c consumption_check.c debug.c
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -10,7 +8,7 @@
 #include <unistd.h>
 #include <ctype.h>
 #include "global.h"                 //Implementeret og brugbart!
-#include "language.h"               //tom .h OG .c fil
+#include "language.h"               //Implementeret og brugbart!
 #include "database_module.h"        //Implementeret og brugbart!
 #include "user_history.h"           //Implementeret og brugbart!
 #include "update_settings.h"        //Implementeret og brugbart!

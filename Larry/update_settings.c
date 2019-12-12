@@ -4,7 +4,7 @@
 #include <unistd.h>
 #include "global.h"
 
-/* updatere settings.txt fil*/
+/* opdatere settings.txt fil*/
 /* Daniel */
 
 void update_settings(void);

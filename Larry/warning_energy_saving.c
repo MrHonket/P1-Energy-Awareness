@@ -1,8 +1,7 @@
 /* Mathias(Niller) */
 #include <stdio.h>
 #include <stdlib.h>
-#include <stdio.h>
-#include <stdlib.h>
+#include <string.h>
 #include "global.h"
 #include "user_history.h"
 #define KWH 1000
@@ -18,11 +17,11 @@ double warning_energy_saving(user User, data *Data){
            one_price,          
            one_consumption,    
            median_consumption;
-    if(User.settings.residence=="DK1")
+    if(strcmp(User.settings.residence,"DK1") == 0)
     {
         one_price= Data[Time_now].prize.DK1price;  
     }
-    else if(User.settings.residence=="DK2")
+    else if(strcmp(User.settings.residence,"DK2") == 0)
     {
         one_price =Data[Time_now].prize.DK2price;
     }
