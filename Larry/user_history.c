@@ -90,12 +90,12 @@ int user_history(user User, data *Data) {
 
     if (User.choice.mean_or_median == Mean) {
         /*return calc_mean(dataset, number_of_elements);*/
-        printf("\nMean:  %lf", calc_mean(pointer_to_dataset, number_of_elements));
+        //printf("\nMean:  %lf", calc_mean(pointer_to_dataset, number_of_elements));
         return(calc_mean(pointer_to_dataset, number_of_elements));
     } else
     if (User.choice.mean_or_median == Median) {
         /*return calc_median(dataset, number_of_elements);*/
-        printf("\nMedian:  %lf", calc_median(pointer_to_dataset, number_of_elements));
+        //printf("\nMedian:  %lf", calc_median(pointer_to_dataset, number_of_elements));
         return(calc_median(pointer_to_dataset, number_of_elements));
     } else {
         /*Error*/
