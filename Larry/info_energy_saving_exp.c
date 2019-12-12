@@ -115,8 +115,8 @@ void print_information(data return_array[], data cheapest_struct, double user_pr
     if (strcmp(User.settings.residence, "DK1") == 0)
     {
         user_price = return_array[19].meter.value * KWH_TO_MWH * return_array[User.choice.from.time.hour].prize.DK1price;
-        printf("Nuværende pris: %.1f\n\n", return_array[User.choice.from.time.hour].prize.DK1price); 
-        printf("Nuværende forbrug: %.2f\n\n", return_array[User.choice.from.time.hour].meter.value); 
+        printf("Nuværende pris: %.1f DKK\n\n", return_array[User.choice.from.time.hour].prize.DK1price); 
+        printf("Nuværende forbrug: %.2f KWH\n\n", return_array[User.choice.from.time.hour].meter.value); 
         printf("Nuværende pris baseret på nuværende forbrug: %.2f DKK\n\n", user_price); 
         printf("Det billigste tidspunkt at forbruge på er: \n");
         printf("\n");
