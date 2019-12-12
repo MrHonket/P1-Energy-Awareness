@@ -7,7 +7,7 @@
 #define KWH_TO_MWH 0.001
 #define NMB_OF_ELEMENTS 24
 
-double info_energy_saving(user User,data data_array[]);
+double info_energy_saving(user User, data data_array[]);
 data *cheapest(data data_array[]);
 int cmpfunc(const void * a, const void * b);
 void print_information(data return_array[], data cheapest_struct, double user_price, user User);
@@ -114,7 +114,7 @@ void print_information(data return_array[], data cheapest_struct, double user_pr
 {
     if (strcmp(User.settings.residence, "DK1") == 0)
     {
-        user_price = return_array[19].meter.value * KWH_TO_MWH * return_array[User.choice.from.time.hour].prize.DK1price;
+        user_price = return_array[User.choice.from.time.hour].meter.value * KWH_TO_MWH * return_array[User.choice.from.time.hour].prize.DK1price;
         printf("Nuværende pris: %.1f DKK\n\n", return_array[User.choice.from.time.hour].prize.DK1price); 
         printf("Nuværende forbrug: %.2f KWH\n\n", return_array[User.choice.from.time.hour].meter.value); 
         printf("Nuværende pris baseret på nuværende forbrug: %.2f DKK\n\n", user_price); 
@@ -125,7 +125,7 @@ void print_information(data return_array[], data cheapest_struct, double user_pr
     }
     else
     {
-        user_price = return_array[19].meter.value * KWH_TO_MWH * return_array[User.choice.from.time.hour].prize.DK2price;
+        user_price = return_array[User.choice.from.time.hour].meter.value * KWH_TO_MWH * return_array[User.choice.from.time.hour].prize.DK2price;
         printf("Nuværende pris: %.1f\n\n", return_array[User.choice.from.time.hour].prize.DK2price); 
         printf("Nuværende forbrug: %.2f\n\n", return_array[User.choice.from.time.hour].meter.value); 
         printf("Nuværende pris baseret på nuværende forbrug: %.2f DKK\n\n", user_price); 
