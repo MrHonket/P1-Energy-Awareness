@@ -40,13 +40,9 @@ int main(void){
     
     //MockData!
     User.type = Human;
-<<<<<<< HEAD
-    User.choice.function = WarningEnergySaving;
-=======
     User.choice.function = InfoEnergySaving;
->>>>>>> 166354abe3528b068c7cc46155bd921015260335
-    dato dato1 = {{10,00},12,6,2017};
-    dato dato2 = {{18,00},12,6,2017};
+    dato dato1 = {{20, 00}, 15, Januar, 2018};
+    dato dato2 = {{21, 00}, 15, Januar, 2018};
     User.choice.lookup = Meter;
     User.choice.mean_or_median = Mean;
     User.settings.id = 200;
@@ -91,7 +87,7 @@ void log_data(user User){
 /*Funktionen som fungere som en brugers interface*/
 int prompt_user(user User, data *Data){
     char info_str[60] = {'T','E','S','T'};
-    int info;
+    double info;
     int new_command = 0;
     
     /*Basil was here & coded user interaction*/
@@ -112,6 +108,7 @@ int prompt_user(user User, data *Data){
     }
     else if(User.choice.function == InfoEnergySaving){
         info = info_energy_saving(User,Data);
+        printf("Din besparelse er: %.5f DKK\n", info);
     }
     else if(User.choice.function == ConsumptionCheck){
         info = consumption_check(User,Data);
