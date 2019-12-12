@@ -64,6 +64,7 @@ double info_energy_saving(user User, data data_array[])
 
         /* Dette giver brugerens strømpris baseret ud fra hvornår det er billigst at bruge strøm */
         user_price_after = current_consumption * KWH_TO_MWH * cheapest_price;
+        printf("Din pris, hvis du vælger at flytte dit forbrug: %.2f DKK\n\n", user_price_after);
     }
     else 
     {
@@ -83,6 +84,7 @@ double info_energy_saving(user User, data data_array[])
 
         /* Dette giver brugerens strømpris baseret ud fra hvornår det er billigst at bruge strøm */
         user_price_after = current_consumption * KWH_TO_MWH * cheapest_price;
+        printf("Din pris, hvis du vælger at flytte dit forbrug: %.2f DKK\n\n", user_price_after);
     }
 
     if (user_price_after > user_price_current)
@@ -104,11 +106,13 @@ data *cheapest(data data_array[], user User)
     cheapest->prize.DK1price = data_array[0].prize.DK1price;
     cheapest->prize.DK2price = data_array[0].prize.DK2price;
 
+    printf("Det billigste tidspunkt at forbruge din strøm vil være: \n--------------------------------------------------------\n");
+
     if (strcmp(User.settings.residence, "DK1") == 0)
-        printf("Dato: %d | Klokkeslæt: %d - %d | Pris DK1: %.2f DKK\n\n", cheapest->prize.from.day,
+        printf("Dato: %d | Klokkeslæt: %d - %d | Pris DK1: %.2f DKK |\n\n", cheapest->prize.from.day,
                          cheapest->prize.from.time.hour, cheapest->prize.to.time.hour, cheapest->prize.DK1price);
     else       
-        printf("Dato: %d | Klokkeslæt: %d - %d | Pris DK2: %.2lf DKK\n\n", cheapest->prize.from.day,
+        printf("Dato: %d | Klokkeslæt: %d - %d | Pris DK2: %.2lf DKK |\n\n", cheapest->prize.from.day,
                          cheapest->prize.from.time.hour, cheapest->prize.to.time.hour, cheapest->prize.DK2price);
     return cheapest;
 }
@@ -116,16 +120,14 @@ data *cheapest(data data_array[], user User)
 /* En samlet print funktion der tager højde for om vi kigger på DK1 eller DK2 */
 void print_information(data return_array[], data cheapest_struct, user User)
 {
+    printf("Tidspunkt valgt af bruger: kl.%d\n\n", User.choice.from.time.hour);
     double user_price;
     if (strcmp(User.settings.residence, "DK1") == 0)
     {
-        printf("Tidspunkt valgt af bruger: %d\n", User.choice.from.time.hour);
         user_price = return_array[User.choice.from.time.hour].meter.value * KWH_TO_MWH * return_array[User.choice.from.time.hour].prize.DK1price;
         printf("Nuværende pris: %.2f DKK\n\n", return_array[User.choice.from.time.hour].prize.DK1price); 
         printf("Nuværende forbrug: %.2f KWH \n\n", return_array[User.choice.from.time.hour].meter.value); 
         printf("Nuværende pris baseret på nuværende forbrug: %.2f DKK\n\n", user_price); 
-        printf("Det billigste tidspunkt at forbruge på er: \n");
-        printf("\n");
     }
     else
     {
@@ -133,8 +135,6 @@ void print_information(data return_array[], data cheapest_struct, user User)
         printf("Nuværende pris: %.2f\n\n", return_array[User.choice.from.time.hour].prize.DK2price); 
         printf("Nuværende forbrug: %.2f\n\n", return_array[User.choice.from.time.hour].meter.value); 
         printf("Nuværende pris baseret på nuværende forbrug: %.2f DKK\n\n", user_price); 
-        printf("Det billigste tidspunkt at forbruge på er: \n");
-        printf("\n");
     }
 }
 
