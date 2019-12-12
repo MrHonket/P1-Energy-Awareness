@@ -42,9 +42,11 @@ int main(void){
     User.choice.function = WarningEnergySaving;
     dato dato1 = {{18, 00}, 4, Januar, 2018};
     dato dato2 = {{19, 00}, 4, Januar, 2018};
-    User.choice.lookup = Price;
+    User.choice.lookup = Meter;
     User.choice.mean_or_median = Median;
     User.settings.id = 200;
+    User.choice.from.time.hour = 3;
+    User.settings.next_activation.time.hour = User.choice.from.time.hour;
     strcpy(User.settings.language,"DK");
     strcpy(User.settings.residence,"DK1");
     // End mock 
