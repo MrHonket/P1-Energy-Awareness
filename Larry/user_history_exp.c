@@ -33,21 +33,21 @@ int user_history(user User, data *Data) {
     /*Lav en array ud fra data og baseret på, om dataen er fra meter eller pris. Det er denne, der skal regnes på.
       Funktioner fra datamodulet*/
     if (User.choice.lookup == Meter) {
-        int number_of_elements = Data.meter.to - *Data.meter.from;/*Erstat med Jakobs calctime, der finder antal timer*/
-        data consumption_array[number_of_elements];
-        consumption_array = get_consumption_for_timeinterval_at_id(Data.meter.from, Data.meter.to, User.id);
+        int number_of_elements = HOURS_PR_YEAR;//Skal indeholde Data->meter->to *Data.meter.from;/*Erstat med Jakobs calctime, der finder antal timer*/
+        meterdata dataset[number_of_elements];
+        //dataset = Data->meter;  Her skal data_settet sættes lige den korrekte delmængde af *Data
     } else
     if (User.choice.lookup == Price) {
-        int number_of_elements = Data.prize.to - Data.prize.from;
-        data prize_array[number_of_elements];
-        prize_array = get_price_for_timeinterval_in_area(Data.prize.from, Data.prize.to, User.settings.residence);
+        int number_of_elements = HOURS_PR_YEAR;//Skal indeholde Data->meter->to *Data.meter.from;/*Erstat med Jakobs calctime, der finder antal timer*/
+        pricedata dataset[number_of_elements];
+        //dataset = Data->prize; Her skal data_settet sættes lige den korrekte delmængde af *Data
     }
 
     if (User.choice.mean_or_median == Mean) {
-        return calc_mean(dataset, number_of_elements);
+        return 0; //calc_mean(dataset, number_of_elements); Dette skal returneres når det andet virker
     } else
     if (User.choice.mean_or_median == Median) {
-        return calc_median(dataset, number_of_elements);
+        return 0; //calc_median(dataset, number_of_elements); Dette skal returneres når det andet virker
     }
 }
 

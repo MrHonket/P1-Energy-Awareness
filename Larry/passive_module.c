@@ -2,20 +2,19 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "global.h"
-//#include "warning_energy_saving.h"
+#include "warning_energy_saving_exp.h" //IMPLEMENTERET SOM EXP!!!!
 #include "machine_activation.h"
 
 int passive_module(user User, data *Data);
-/*DEM HERUNDER SLETTES NÅR DERES INCLUDE ER IMPLEMENTERET!*/
-void warning_energy_saving(user User, data *Data){int test = 0;}
-//void machine_activation(user User, data Data){int test = 0;}
 
 /* returns 1 for exit_succes and 0 for exit_failure */
 int passive_module(user User, data *Data)
 {
    if(User.choice.function == WarningEnergySaving)
       {
+      printf("IMPLEMENTERET SOM EXP VERSION I PASSIVE_MODULE!!!\n");
       warning_energy_saving(User, Data);
+      printf("IMPLEMENTERET SOM EXP VERSION I PASSIVE_MODULE!!!\n");
       return 1;
       }
    else if(User.choice.function == MachineActivation)

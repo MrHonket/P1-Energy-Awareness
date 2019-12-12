@@ -1,3 +1,26 @@
+/* FIX THIS!!! */
+/* sørg for at doubles indlæses selv om der ikke er komma i tallet 
+    det klares ved at acceptere scanres>0 */
+
+/* spring over hvis data_txt ikke indeholder et tal
+ * se på problem med at 'æ' læses som et tal */
+
+/* get_prize_data funktionen skal ændres til get_data_for_timeinterval */
+
+/* lav en days in month funktion */
+
+/* lav en hours_since_index0 funktion*/
+
+/* sæt index0 til første index som indeholder en gyldig dato */
+
+/*brug ovenstående til at beregne hvilket index interval der skal returnes*/
+
+
+
+
+
+
+
 
 /* *get_price_for_time_interval */
 /* *get_consumption_for_timeinterval */
@@ -36,8 +59,7 @@ int pricinitialised = 0;
 int consumptioninitialised = 0;
 
 
-void        init(void);
-pricedata   *init_datab(pricedata *mypricedata, meterdata *meter_data, production *production_data);
+void        init_database(void);
 void        init_pricestruct(pricedata data[]);
 pricedata   *init_price_array(pricedata mypricedata[]);
 void        init_meterstruct(meterdata data[]);
@@ -68,7 +90,7 @@ int     get_next_hour(int hour);
 
 
 
-void init(void){
+void init_database(void){
    
    int index=0;
    dato date1,date2;
@@ -176,7 +198,7 @@ data *get_price_for_timeinterval_in_area(dato from, dato to,  area area){
    int db_index = from.day;
    tempdata = malloc(interval*sizeof(data));
    if (pricinitialised == 0 && consumptioninitialised == 0){
-      init();
+      init_database();
 
    }
    
@@ -234,11 +256,10 @@ int copy_file_to_mypricedata(char *filename){
             i++;
         }
         
-      //   printf("linie:169 i=%d  j=%d\n",i,j);
+     
         
         sscanf(data_txt[1],"%dÊ-Ê",&houra);
-        // sscanf(data_txt[1],"%*d %*3c %s",hourb);
-        // sscanf((data_txt[1]+5),"%d",&hourb_int);
+       
 
         
       //   printf("hra:%d,hrb:%d\n",houra, hourb_int);
@@ -411,7 +432,7 @@ double price_from_string(char *price){
       return  value1 + value2/100;
    }
    
-   printf("error tried to convert string %s to doubles %lf %lf to number\n",value1,value2);
+   printf("error tried to convert string %s to doubles %lf %lf to number\n",price ,value1,value2);
    return -1000;
 }
 
@@ -423,7 +444,7 @@ double consumption_from_string(char *price){
         return  value1 + value2/1000;
     }
     
-    printf("could not convert %lf %lf to number\n",value1,value2);
+   printf("error tried to convert string %s to doubles %lf %lf to number\n",price ,value1,value2);
     return -1000;
 }
 

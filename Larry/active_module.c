@@ -1,5 +1,8 @@
 /*MartinBM*/
+//"Rigtige" gcc compilation
 //gcc active_module.c global.c language.c database_module.c passive_module.c update_settings.c info_energy_saving.c user_history.c warning_energy_saving.c system_information.c machine_activation.c future_data.c consumption_check.c debug.c
+//"Experimental" gcc compilation
+//gcc active_module.c global.c language.c database_module.c update_settings.c info_energy_saving_exp.c passive_module.c warning_energy_saving_exp.c system_information.c machine_activation.c future_data.c consumption_check.c debug.c
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -8,22 +11,19 @@
 #include <ctype.h>
 #include "global.h"                 //Implementeret og brugbart!
 #include "language.h"               //tom .h OG .c fil
-#include "database_module.h"        //Implementeret og brubart!
-//#include "user_history_exp.h"           //ERROR SYNTAX! IMPLEMENTERET SOM EXP!
-#include "update_settings.h"        // ERROR!
-//#include "info_energy_saving_exp.h"     //SYNTAX ERROR! modtager ikke User og Data. IMPLEMENTERET SOM EXP!
-#include "passive_module.h"         //Implementeret med mindre fejl!
-//#include "warning_energy_saving.h"//SYNTAX ERROR! modtager ikke User og Data.
+
+#include "database_module.h"        //Implementeret og brugbart men giver forskellige fejlmeddelser.
+#include "user_history_exp.h"       //ERROR SYNTAX! IMPLEMENTERET SOM EXP!
+#include "update_settings.h"        //Implementeret, men load_data loader ikke data korrekt. MockData skabt i main() for at omgå.
+#include "info_energy_saving_exp.h" //IMPLEMENTERET SOM EXP! Der sker fejl ved linje 51
+#include "passive_module.h"         //Implementeret og brugbart
+#include "warning_energy_saving_exp.h"//IMPLEMENTERET SOM EXP! Der bruges dog pt. MockData i funktionen for at kalde underfunktioner.
+
 #include "system_information.h"     //Implemented som error_message!
 #include "machine_activation.h"     //Implemented som error_message!
 #include "future_data.h"            //Implemented som error_message!
 #include "consumption_check.h"      //Implemented som error_message!
 #include "debug.h"                  //implementeret og brugbart!
-
-/*DISSE SKAL SLETTES NÅR DERES .h ER IMPLEMENTERET!!!*/
-int user_history(user User, data *Data){return 0;}
-int info_energy_saving(user User, data *Data){return 0;}
-//int warning_energy_saving(user User, data *Data){return 0;}
 
 /*Dette er prototyper i programmet.*/
 void check_activation(user User);
@@ -39,12 +39,15 @@ int main(void){
     check_activation(User);
     
     //MockData!
-    User.type = Human;
-    User.choice.function = UserHistory;
+    User.type = Automated;
+    User.choice.function = WarningEnergySaving;
     dato dato1 = {{10,00},12,6,2017};
     dato dato2 = {{18,00},12,6,2017};
     User.choice.lookup = Meter;
     User.choice.mean_or_median = Mean;
+    User.settings.id = 200;
+    strcpy(User.settings.language,"DK");
+    strcpy(User.settings.residence,"DK1");
     //endmock
 
     Data = get_price_for_timeinterval_in_area(dato1,dato2,Dk1);
@@ -66,8 +69,6 @@ int main(void){
     }
 
     debug_user(User);
-    future_data(User,Data);
-    system_information(User,Data);
     
     return EXIT_SUCCESS;
 }
@@ -94,9 +95,11 @@ int prompt_user(user User, data *Data){
     printf("Tryk %d for brugerindstillinger\n",UpdateSettings);
     printf("Tryk %d for info om dine energibesparelser\n",InfoEnergySaving);
     printf("Tryk %d for at lave et elcheck",ConsumptionCheck);
+    printf("Tryk %d for informationer om dette system\n",SystemInformation);
+    printf("Tryk %d for et gaet om fremtidige priser",FutureData);
 
     scanf(" %d", &User.choice.function);
-    
+    /*Ja, dette kunne godt være en switch :P*/
     if(User.choice.function == UserHistory){
         info = user_history(User,Data);
     }
@@ -104,10 +107,19 @@ int prompt_user(user User, data *Data){
         update_settings();
     }
     else if(User.choice.function == InfoEnergySaving){
-        info = info_energy_saving(User,Data);
+        info = info_energy_saving(User,*Data);
     }
     else if(User.choice.function == ConsumptionCheck){
         info = consumption_check(User,Data);
+    }
+    else if(User.choice.function == SystemInformation){
+        info = system_information(User,Data);
+    }
+    else if(User.choice.function == FutureData){
+        future_data(User,Data);
+    }    
+    else if(User.choice.function == 0){
+        return 0;
     }
     else{
         error_message(ErrorChoiceDoesntExist);

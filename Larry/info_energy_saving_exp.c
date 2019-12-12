@@ -7,15 +7,15 @@
 #define KWH_TO_MWH 0.001
 #define NMB_OF_ELEMENTS 24
 
-double info_energy_saving2(data data_array[], user user_choice);
+double info_energy_saving(user User,data data_array[]);
 data *cheapest(data data_array[]);
 int cmpfunc(const void * a, const void * b);
 void print_information(data return_array[], data cheapest_struct, double user_price, user User);
-
+/*
 int main(void)
 {
     double savings;
-    /* int tidspunkt = 19;*/
+    //int tidspunkt = 19;
     double user_price;
     data cheapest_struct;
     data *return_array;
@@ -33,24 +33,24 @@ int main(void)
     printf("\n");
     return 0;   
 }
-
+*/
 
 
 /* Funktionen returnerer besparelsen forbrugeren kan opnå hvis vedkommende flytter sit forbrug til det billigste tidspunkt 
  * Funktionen tager udgangspunkt i et 24 element-langt data-array samt et user_choice der afgører om det er DK1 eller DK2 vi kigger på */
-double info_energy_saving2(data data_array[], user User)
+double info_energy_saving(user User, data data_array[])
 {
     double current_consumption = 0.0;
     double current_price = 0.0;
     double user_price_current = 0.0;
     double user_price_after = 0.0;
     double cheapest_price = 0.0;
-       
+    
     if (strcmp(User.settings.residence, "DK1") == 0)
     {   
         current_price = data_array[User.choice.from.time.hour].prize.DK1price;
         current_consumption = data_array[User.choice.from.time.hour].meter.value;
-
+        
         if (current_price < 0)
             printf("Prisen er pt. negativ!\n");
 
