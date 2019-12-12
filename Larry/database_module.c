@@ -337,7 +337,7 @@ int copy_file_to_myconsumpdata(char *filename){
         myconsumpdata[j].to     = date_from_stringYMDH(data_txt[2]);
                 
         myconsumpdata[j].value = consumption_from_string(data_txt[3]);
-        print_consump_index(j);
+        // print_consump_index(j);
         j++;
     }
     /* ;%2dÊ-Ê%2d;%*d,%*d;%*d;%*d;%*d;196;196;162,28;196;196;196;196;196;196;196;196;196;196
