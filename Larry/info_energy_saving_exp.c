@@ -143,8 +143,8 @@ void print_information(data return_array[], data cheapest_struct, double user_pr
 /* Basic compare function */
 int cmpfunc(const void * a, const void * b)
 {
-    data *priserA = (data*)a;
-    data *priserB = (data*)b;
+    const data *priserA = (data*)a;
+    const data *priserB = (data*)b;
 
     return priserA->prize.DK1price - priserB->prize.DK1price;
 }
