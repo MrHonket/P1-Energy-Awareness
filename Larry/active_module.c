@@ -39,8 +39,8 @@ int main(void){
     check_activation(User);
     
     //MockData!
-    User.type = Automated;
-    User.choice.function = info_energy_saving;
+    User.type = Human;
+    User.choice.function = InfoEnergySaving;
     dato dato1 = {{10,00},12,6,2017};
     dato dato2 = {{18,00},12,6,2017};
     User.choice.lookup = Meter;
