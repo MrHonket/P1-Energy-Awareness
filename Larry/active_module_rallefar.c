@@ -39,7 +39,7 @@ int main(void){
     int confirmation;
     double user_price;
     double info;
-    
+
     // User.settings = load_settings();
     //check_activation(User);
     
@@ -56,19 +56,10 @@ int main(void){
     End mock */
 
     Data = get_price_for_timeinterval_in_area(from, to, Dk1);
-    printf("\n\n\n\nTidspunkt vi kigger efter: %d\n\n\n\n", User.choice.from.time.hour);
     for (int i = 0; i < 24; i++)
         printf("Dato: %d\t| Tidspunkt: %d - %d\t| Priser: %.2f\t| Forbrug: %.2f\n", Data[i].prize.from.day, Data[i].prize.from.time.hour, 
                                                                  Data[i].prize.to.time.hour, Data[i].prize.DK1price, Data[i].meter.value);
-
-    printf("\n\n");
-    //for (int i = 0; i < 100; i++)
-       // printf("Forbrug: %.1f\n", Data[i].meter.value);
-
-        /* cheapest_struct = *cheapest(Data);
-        print_information(Data, cheapest_struct, user_price, User);
-        info = info_energy_saving(User, Data);
-        printf("Din besparelse er: %.5f DKK\n", info); */
+    // printf("\n\n\n\nTidspunkt vi kigger efter: %d\n\n\n\n", User.choice.from.time.hour); //
 
     if (User.type == Human){
         prompt_user(User, Data, cheapest_struct);

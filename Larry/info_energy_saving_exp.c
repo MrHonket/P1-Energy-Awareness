@@ -46,8 +46,6 @@ double info_energy_saving(user User, data data_array[])
     double user_price_current = 0.0;
     double user_price_after = 0.0;
     double cheapest_price = 0.0;
-
-    data *cheapest_date_and_time;
     
     if (strcmp(User.settings.residence, "DK1") == 0)
     {   
