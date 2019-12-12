@@ -1,7 +1,8 @@
 #ifndef USER_HISTORY_H
 #define USER_HISTORY_H
 
-double user_history(int mean_or_median, double dataset[], int number_of_elements);
+#include "global.h"
 
+double user_history(user User, data *Data);
 
 #endif //USER_HISTORY_H
