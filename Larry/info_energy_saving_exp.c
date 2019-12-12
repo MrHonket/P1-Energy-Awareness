@@ -157,7 +157,7 @@ int cmpfunc(const void * a, const void * b)
 void dialog_with_user(data data_array[], user User, double info, data cheapest_struct)
 {
     int choice;
-    printf("Velkommen tiæ modulet energibesparelser - du har nu følgende to valgmuligheder:\n");
+    printf("Velkommen til modulet energibesparelser - du har nu følgende to valgmuligheder:\n");
     printf("Tryk 1 for information om strømpris for en given time og hvornår på døgnet strømmen er billigst\n");
     printf("Tryk 2 for for strømpris i et givent tidsrum\n");
 
