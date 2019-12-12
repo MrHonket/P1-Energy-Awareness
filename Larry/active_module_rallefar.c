@@ -31,7 +31,7 @@ int prompt_user(user User, data *Data, data cheapest);
 void log_data(user User);
 /*main vil modtage information om det er en måler eller sig selv (Automatisk) der aktivere eller en app (Human)*/
 int main(void){
-    user User = { {200, "DK1", "DK"}, InfoEnergySaving, Mean, {{12, 0}, 0, Januar, 2017}, {{21, 0}, 0, Januar, 2017}, Price, Human};       
+    user User = { {200, "DK1", "DK"}, InfoEnergySaving, Mean, {{18, 0}, 0, Januar, 2017}, {{21, 0}, 0, Januar, 2017}, Price, Human};       
     dato from = {{00, 00}, 20, Januar, 2017};
     dato to = {{00, 00}, 21, Januar, 2017};                      
     data *Data;
@@ -55,10 +55,11 @@ int main(void){
     strcpy(User.settings.residence,"DK1");
     End mock */
     Data = get_price_for_timeinterval_in_area(from, to, Dk1);
+    printf("\n");
     for (int i = 0; i < 24; i++)
         printf("Dato: %d\t| Tidspunkt: %d - %d\t| Priser: %.2f\t| Forbrug: %.2f\n", Data[i].prize.from.day, Data[i].prize.from.time.hour, 
                                                                  Data[i].prize.to.time.hour, Data[i].prize.DK1price, Data[i].meter.value);
-    printf("\n\n\n\nTidspunkt vi kigger efter: %d\n\n\n\n", User.choice.from.time.hour); 
+    printf("\n\nTidspunkt vi kigger efter: %d\n\n", User.choice.from.time.hour); 
 
     if (User.type == Human){
         prompt_user(User, Data, cheapest_struct);

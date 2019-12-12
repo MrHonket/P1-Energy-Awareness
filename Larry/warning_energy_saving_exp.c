@@ -23,14 +23,14 @@ double warning_energy_saving(user User, data *Data){
            median_consumption;
     if(User.settings.residence=="DK1")
     {
-        one_price= Data[time_now].prize.DK1price;  
+        one_price= Data[Time_now].prize.DK1price;  
     }
     else if(User.settings.residence=="DK2")
     {
-        one_price =Data[time_now].prize.DK2price;
+        one_price =Data[Time_now].prize.DK2price;
     }
     //Skal findes i Data.prize.DK1/2price men kan IKKE tilgås sådan grundet det er en pointer til et struct.
-    one_consumption = Data[time_now].meter.value; 
+    one_consumption = Data[Time_now].meter.value; 
     //Skal findes i Data.meter.unit el. value men kan IKKE tilgås sådan grundet det er en pointer til et struct.
     median_consumption = user_history(User, Data);
        //= user_history hvor User.choice.mean_or_median = Median før User sendes i funktionen.
