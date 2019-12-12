@@ -22,7 +22,7 @@ user_history
 #include <stdlib.h>
 #include "global.h"
 #include "database_module.h"
-#include  "calc_time.h"
+#include "calc_time.h"
 
 double calc_mean(double dataset[], int number_of_elements);
 double calc_median(double dataset[], int number_of_elements);
@@ -32,14 +32,14 @@ int sort_array_for_median(const void *a, const void *b);
 int user_history(user User, data *Data) {
     int i = 0;
     int number_of_elements = 0;
-    double *dataset;
-
+    double *pointer_to_dataset;
     /*Lav en array ud fra Data-structen og baseret på, om dataen er fra meter eller pris. Det er denne, der skal regnes på.*/
     /*User.choice.meter & price skal lige defineres i global.c & global.h*/
     if (User.choice.lookup == Meter) {
         /*Initialiserer number_of_elements, samt den array, der skal bruges. Lav om til egen funktion.*/
-        number_of_elements = 2;/*calc_time(Data->meter.to, Data->meter.from);/*Finder antal timer*/
-        dataset[number_of_elements];
+        number_of_elements = 24;/*calc_time(Data->meter.to, Data->meter.from);/*Finder antal timer*/
+        double dataset[number_of_elements];
+        pointer_to_dataset = dataset;
         /*Assigner arrayelementer fra Data og en for-løkke*/
         for (i = 0; i <= number_of_elements; i++) {
             dataset[i] = Data[i].meter.value;
@@ -48,8 +48,11 @@ int user_history(user User, data *Data) {
     } else
     if (User.choice.lookup == Price) {
         /*Initialiserer number_of_elements, samt den array, der skal bruges. Lav om til egen funktion.*/
-        number_of_elements = 3;/*calc_time(Data->prize.to, Data->prize.from);/*Finder antal timer*/
+        number_of_elements = 24;/*calc_time(Data->prize.to, Data->prize.from);/*Finder antal timer*/
+        double dataset[number_of_elements];
+        pointer_to_dataset = dataset;
         dataset[number_of_elements];
+
         /*Assigner arrayelementer vha Data og en for-løkke*/
         for (i = 0; i <= number_of_elements; i++) {
             dataset[i] = Data[i].prize.DK1price; /*Gør de to DK1priser til en valutastruct og user-setting*/
@@ -64,11 +67,11 @@ int user_history(user User, data *Data) {
 
     if (User.choice.mean_or_median == Mean) {
         /*return calc_mean(dataset, number_of_elements);*/
-        printf("Mean:  %lf", calc_mean(dataset, number_of_elements));
+        printf("Mean:  %lf", calc_mean(pointer_to_dataset, number_of_elements));
     } else
     if (User.choice.mean_or_median == Median) {
         /*return calc_median(dataset, number_of_elements);*/
-        printf("Median:  %lf", calc_mean(dataset, number_of_elements));
+        printf("Median:  %lf", calc_mean(pointer_to_dataset, number_of_elements));
     } else {
         /*Error*/
     }

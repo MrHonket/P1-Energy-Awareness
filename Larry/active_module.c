@@ -41,8 +41,7 @@ int main(void){
     // MockData!
     User.type = Human;
     User.choice.function = InfoEnergySaving;
-    dato dato1 = {{18, 00}, 4, Januar, 2018};
-    dato dato2 = {{19, 00}, 4, Januar, 2018};
+    dato dato_test = {{18, 00}, 4, Januar, 2018};
     User.choice.lookup = Price;
     User.choice.mean_or_median = Mean;
     User.settings.id = 200;
@@ -52,7 +51,7 @@ int main(void){
 
     
 
-    Data = get_price_for_timeinterval_in_area(from, to, Dk1);
+    Data = get_price_for_timeinterval_in_area(dato_test, dato_test, Dk1);
 
 
     if (User.type == Human){
