@@ -1,5 +1,5 @@
 /* FIX THIS!!! */
-/* sørg for at doubles indlæses selv om der ikke er komma i tallet 
+/*DONE sørg for at doubles indlæses selv om der ikke er komma i tallet 
     det klares ved at acceptere scanres>0 */
 
 /* spring over hvis data_txt ikke indeholder et tal
@@ -45,6 +45,7 @@
 
 #include <stdio.h>
 #include <string.h>
+#include <ctype.h>
 #include "global.h"
 
 #define MAX_LINE_WIDTH 400
@@ -256,21 +257,21 @@ int copy_file_to_mypricedata(char *filename){
             i++;
         }
         
-     
+            
+            sscanf(data_txt[1],"%dÊ-Ê",&houra);
         
-        sscanf(data_txt[1],"%dÊ-Ê",&houra);
+        //   printf("hra:%d,hrb:%d\n",houra, hourb_int);
+            mypricedata[j].from  = date_from_stringDMYI(data_txt[0],houra);
+            mypricedata[j].to    = date_from_stringDMYI(data_txt[0],get_next_hour(houra));
+            
+            mypricedata[j].DK1price = price_from_string(data_txt[8]);
+            mypricedata[j].DK2price = price_from_string(data_txt[9]);
+
+            print_price_index(j);
+            j++;
+        
        
-
         
-      //   printf("hra:%d,hrb:%d\n",houra, hourb_int);
-        mypricedata[j].from  = date_from_stringDMYI(data_txt[0],houra);
-        mypricedata[j].to    = date_from_stringDMYI(data_txt[0],get_next_hour(houra));
-        
-        mypricedata[j].DK1price = price_from_string(data_txt[8]);
-        mypricedata[j].DK2price = price_from_string(data_txt[9]);
-
-        print_price_index(j);
-        j++;
     }
     /* ;%2dÊ-Ê%2d;%*d,%*d;%*d;%*d;%*d;196;196;162,28;196;196;196;196;196;196;196;196;196;196
  */    
@@ -351,7 +352,7 @@ FILE *check_file(char*filename){
     }
 
     if(f!=NULL){
-        printf("%s",filename);
+        printf("%s\n",filename);
         return f;
     }
 
@@ -409,18 +410,24 @@ void prompt_for_filename(char *str){
 
 
 dato date_from_stringDMYI(char *date, int time){
-    dato ret_date;
-    sscanf(date,"%2d-%2d-%4d",&ret_date.day, &ret_date.month, &ret_date.year);
+    dato ret_date ={{0,0},0,0,0};
+    if(sscanf(date,"%2d-%2d-%4d",&ret_date.day, &ret_date.month, &ret_date.year)==3){
     ret_date.time.hour = time;
     ret_date.time.minute =0;
+    }
+    else {
+          printf("error tried to convert string %s and int %d to date\n",date , time); 
+    }
     return ret_date;
+    
 }
 
 
 dato date_from_stringYMDH(char *date){
-    dato ret_date;
-    sscanf(date,"%4d-%2d-%2d %d.%d",&ret_date.year, &ret_date.month, &ret_date.day, &ret_date.time.hour, &ret_date.time.minute);
-    
+    dato ret_date = {{0,0},0,0,0};
+    if(sscanf(date,"%4d-%2d-%2d %d.%d",&ret_date.year, &ret_date.month, &ret_date.day, &ret_date.time.hour, &ret_date.time.minute)<4){
+        printf("error tried to convert string %s to date\n",date); 
+    }
     return ret_date;
 }
 
@@ -428,7 +435,7 @@ double price_from_string(char *price){
    double value1=0,value2=0;
    int scanres=0;
    
-   if ((scanres = sscanf(price," %lf,%lf " ,&value1,&value2))>1){
+   if ((scanres = sscanf(price," %lf,%lf " ,&value1,&value2))>0){
       return  value1 + value2/100;
    }
    
@@ -440,7 +447,7 @@ double consumption_from_string(char *price){
     double value1=0,value2=0;
     int scanres=0;
     
-    if ((scanres = sscanf(price," %lf,%lf " ,&value1,&value2))>1){
+    if ((scanres = sscanf(price," %lf,%lf " ,&value1,&value2))>0){
         return  value1 + value2/1000;
     }
     
