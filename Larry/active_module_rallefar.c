@@ -59,11 +59,12 @@ int main(void){
     Data = get_price_for_timeinterval_in_area(from, to, Dk1);
 
     for (int i = 0; i < 100; i++)
-        printf("Priser: %.1f\n", Data[i].prize.DK1price);
+        printf("Dato: %d | Tidspunkt: %d - %d | Priser: %.1f\n", Data[i].prize.from.day, Data[i].prize.from.time.hour, 
+                                                                 Data[i].prize.to.time.hour, Data[i].prize.DK1price);
 
     printf("\n\n");
-    for (int i = 0; i < 100; i++)
-        printf("Forbrug: %.1f\n", Data[i].meter.value);
+    //for (int i = 0; i < 100; i++)
+       // printf("Forbrug: %.1f\n", Data[i].meter.value);
 
         /* cheapest_struct = *cheapest(Data);
         print_information(Data, cheapest_struct, user_price, User);

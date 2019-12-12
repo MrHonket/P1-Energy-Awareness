@@ -93,9 +93,9 @@ double info_energy_saving(user User, data data_array[])
 data *cheapest(data data_array[], user User)
 {
     data *cheapest;
-    cheapest = (data*)malloc(1 * sizeof(data));
+    cheapest = (data*)malloc(1 * sizeof(pricedata));
     
-    qsort(data_array, NMB_OF_ELEMENTS, sizeof(data), cmpfunc);
+    qsort(data_array, NMB_OF_ELEMENTS, sizeof(pricedata), cmpfunc);
 
     cheapest->prize.from = data_array[User.choice.from.day].prize.from;
     cheapest->prize.to = data_array[User.choice.from.day].prize.to;
@@ -103,7 +103,7 @@ data *cheapest(data data_array[], user User)
     cheapest->prize.DK2price = data_array[User.choice.from.day].prize.DK2price;
 
     /* Informerer forbrugeren om hvorvidt det billigste tidspunkt er sent om aftenen */
-    if (data_array[0].prize.from.time.hour > 21)
+    if (data_array[User.choice.from.day].prize.from.time.hour > 21)
         printf("Det billigste tidspunkt er efter kl 21 om aftenen\n");
 
     return cheapest;
