@@ -40,7 +40,11 @@ int main(void){
     
     //MockData!
     User.type = Human;
+<<<<<<< HEAD
     User.choice.function = WarningEnergySaving;
+=======
+    User.choice.function = InfoEnergySaving;
+>>>>>>> 166354abe3528b068c7cc46155bd921015260335
     dato dato1 = {{10,00},12,6,2017};
     dato dato2 = {{18,00},12,6,2017};
     User.choice.lookup = Meter;
