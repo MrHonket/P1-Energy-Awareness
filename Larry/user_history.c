@@ -28,7 +28,7 @@ double calc_median(double dataset[], int number_of_elements);
 int sort_array_for_median(const void *a, const void *b);
 
 /*Denne main skal hedde user_history og have inputparametre User og Data (indeholder en value-array)*/
-int user_history(user User, data *Data) {
+double user_history(user User, data *Data) {
     int i = 0;
     int number_of_elements = 0;
     double *pointer_to_dataset;
@@ -42,6 +42,7 @@ int user_history(user User, data *Data) {
         /*Assigner arrayelementer fra Data og en for-løkke*/
         for (i = 0; i < number_of_elements; i++) {
             dataset[i] = Data[i].meter.value;
+            printf("%lf\n", Data[i].meter.value);
         }
         /*printf("Usorteret:\n");
         for (i = 0; i < number_of_elements; i++) {
