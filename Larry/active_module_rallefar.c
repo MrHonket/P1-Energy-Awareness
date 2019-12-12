@@ -130,10 +130,6 @@ int prompt_user(user User, data *Data, data cheapest_struct, double user_price){
         info = info_energy_saving(User, Data);
         print_information(Data, cheapest_struct, user_price, User);
         printf("Din besparelse bliver: %.5f DKK\n", info);
-        printf("--------- SORTERET --------\n");
-        for (int i = 0; i < 24; i++)
-            printf("Dato: %d\tTidspunkt: %d - %d\tPris: %.2f\n", Data[i].prize.from.day, 
-                                        Data[i].prize.from.time.hour, Data[i].prize.to.time.hour, Data[i].prize.DK1price);
         
     }
     else if(User.choice.function == ConsumptionCheck){
