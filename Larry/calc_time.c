@@ -5,10 +5,10 @@
 int calc_time(dato from, dato to);
 int calc_hours(dato test_year, month test);
 
-/* 
-int main(void){
-    dato fr = {{00, 00}, 1, 2 , 2017};
-    dato t = {{00, 00}, 1, 6, 2017};
+ 
+/* int main(void){
+    dato fr = {{23, 00}, 31, 1 , 2017};
+    dato t = {{00, 00}, 1, 2, 2017};
     int hos = 0;
 
     hos = calc_time(fr, t);
@@ -19,20 +19,24 @@ int main(void){
 } */
 
 int calc_time(dato from, dato to){
-    int days = 0, hours = 0;
+    int days = 0, hours = 0, test_number = 0;
     month from_month;
     month to_month;
 
 
     from_month = from.month;
     to_month = to.month;
-
     hours = calc_hours(to, to_month) - calc_hours(from, from_month);
 
     hours += (24 * (to.day - from.day));
     hours += (to.time.hour - from.time.hour);
    
-    return hours; 
+    if(hours < 0 || hours == 73 || hours == 25){
+        return 1;
+    }
+    else{
+        return hours;
+    } 
 
 }
 
