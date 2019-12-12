@@ -215,6 +215,7 @@ typedef struct{
     int id;
     char residence[5];
     char language[5];
+    dato next_activation;
 }settings;
 
 

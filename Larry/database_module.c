@@ -47,13 +47,15 @@
 #include <string.h>
 #include <ctype.h>
 #include "global.h"
-#include "calc_time.h"
+
 
 #define MAX_LINE_WIDTH 400
 // #define HOURS_PR_YEAR 8765
 // #define FILENAME_PRICE "/Users/saxjax/Documents/GitHub/P1-Energy-Awareness/Larry/database_module/elspot-prices_2018_hourly_dkk.csv"
 #define DATE_DMY "%2d-%2d-%4d %2dÊ-Ê%2d"
 #define DATE_YMD "%4d %2d %2d %2d.%2d"
+#define FIRST_PRICEINDEX 3
+#define FIRST_CONSUMPINDEX 1
 
 pricedata mypricedata[HOURS_PR_YEAR*3];
 meterdata myconsumpdata[HOURS_PR_YEAR*3];
@@ -61,6 +63,7 @@ int price_initialised = 0;
 int consumption_initialised = 0;
 
 
+data        *get_price_for_timeinterval_in_area(dato from, dato to,  area area);
 void        init_database(void);
 void        init_pricestruct(pricedata data[]);
 pricedata   *init_price_array(pricedata mypricedata[]);
@@ -86,10 +89,11 @@ double consumption_from_string(char *price);
 
 int     get_next_hour(int hour);
 int     hours_since_index(dato first_index, dato to);
+int     calc_time(dato from, dato to);
+int     calc_hours(dato test_year, month test);
+
 
 void    get_db_start_end_index(int start_index,int end_index);
-
-
 
 
 
@@ -110,7 +114,7 @@ void init_database(void){
    date2.time.hour =23;
    date1.time.minute=date2.time.minute=0;
 
-   //
+   
    init_pricestruct(mypricedata);
 
 //    printf("hent pris for index: ");
@@ -195,7 +199,7 @@ void init_meterstruct(meterdata data[]){
 data *get_price_for_timeinterval_in_area(dato from, dato to,  area area){
     data *tempdata;
     
-    
+    int first_data_index = FIRST_PRICEINDEX;
     int i=0 , start_index = 0, end_index = 23;
     int nr_of_elements = 24;
     int db_cur_index = 0;
@@ -205,23 +209,23 @@ data *get_price_for_timeinterval_in_area(dato from, dato to,  area area){
         init_database();
     }
     /* init VARIABLES and return structure*/
-    printf("dato 0 er : %d-%d-%d kl: %d:%d",mypricedata[3].from.year);
-    start_index     = hours_since_index(mypricedata[3].from, from);
-    end_index       = hours_since_index(from, to)+100;
+    printf("dato 0 er : %d-%d-%d kl: %d:%d\n",mypricedata[first_data_index].from.year, mypricedata[first_data_index].from.month,mypricedata[first_data_index].from.day,mypricedata[first_data_index].from.time.hour,mypricedata[first_data_index].from.time.minute);
+    start_index     = hours_since_index(mypricedata[first_data_index].from, from);
+    end_index       = hours_since_index(mypricedata[first_data_index].from, to);
     nr_of_elements  = abs(end_index-start_index);
     tempdata        = malloc(nr_of_elements*sizeof(data));
     db_cur_index    = start_index;
 
 
     for (i=0 ; i < nr_of_elements ; i++) { 
-        tempdata[i].prize.from    = mypricedata[db_cur_index].from;      
-        tempdata[i].prize.to      = mypricedata[db_cur_index].to;      
-        tempdata[i].prize.DK1price= mypricedata[db_cur_index].DK1price;
-        tempdata[i].prize.DK2price= mypricedata[db_cur_index].DK2price;
+        tempdata[i].prize.from    = mypricedata[db_cur_index+FIRST_PRICEINDEX].from;      
+        tempdata[i].prize.to      = mypricedata[db_cur_index+FIRST_PRICEINDEX].to;      
+        tempdata[i].prize.DK1price= mypricedata[db_cur_index+FIRST_PRICEINDEX].DK1price;
+        tempdata[i].prize.DK2price= mypricedata[db_cur_index+FIRST_PRICEINDEX].DK2price;
 
-        tempdata[i].meter.from    = myconsumpdata[db_cur_index].from;      
-        tempdata[i].meter.to      = myconsumpdata[db_cur_index].to;      
-        tempdata[i].meter.value   = myconsumpdata[db_cur_index].value; 
+        tempdata[i].meter.from    = myconsumpdata[db_cur_index+FIRST_CONSUMPINDEX].from;      
+        tempdata[i].meter.to      = myconsumpdata[db_cur_index+FIRST_CONSUMPINDEX].to;      
+        tempdata[i].meter.value   = myconsumpdata[db_cur_index+FIRST_CONSUMPINDEX].value; 
         
         db_cur_index++;
     }
@@ -491,12 +495,86 @@ int get_next_hour(int hour){
 }
 
 int hours_since_index(dato first_index, dato to){
-    return 100;
-    //calc_time(first_index,to);
+    printf("calc_time returnerer: %d",calc_time(first_index,to));
+   return calc_time(first_index,to);
+    
+    
 }
 
 void    get_db_start_end_index(int start_index,int end_index){
     
+}
+
+
+int calc_time(dato from, dato to){
+    int days = 0, hours = 0;
+    month from_month;
+    month to_month;
+
+
+    from_month = from.month;
+    to_month = to.month;
+
+    printf("test %d\n", from_month);
+    printf("test %d\n", to_month);
+
+    hours = calc_hours(to, to_month) - calc_hours(from, from_month);
+    hours += (24* (to.day - from.day));
+    hours += (to.time.hour - from.time.hour);
+   
+    return hours; 
+
+}
+
+int calc_hours(dato test_year, month test){
+    int days = 0, hours = 0;
+    if(test_year.year % 4 == 0){
+        for (days = 0; test >= 1; test--)
+        {
+            if(test == 2){
+                days += 29;
+            }
+            else if(test <= 6 && test % 2 == 0){
+                days += 30;
+            }
+            else if(test <= 7 && test % 2 != 0){
+                days += 31;
+            }
+            else if(test > 6 && test % 2 == 0){
+                days += 31;
+            }
+            else if(test >= 9 && test % 2 != 0){
+                days += 30;
+            }
+        }
+        hours = days * 24;
+        return hours;
+    }
+    else if (test_year.year % 4 != 0){
+        for (days = 0; test >= 1; test--)
+        {
+            if(test == 2){
+                days += 28;
+            }
+            else if(test <= 6 && test % 2 == 0){
+                days += 30;
+            }
+            else if(test <= 7 && test % 2 != 0){
+                days += 31;
+            }
+            else if(test > 6 && test % 2 == 0){
+                days += 31;
+            }
+            else if(test >= 9 && test % 2 != 0){
+                days += 30;
+            }
+        }
+        hours = days * 24;
+        return hours;
+        
+    }
+    return 0;
+
 }
 
 

@@ -4,6 +4,7 @@
       "chrono": "c",
       "complex": "c",
       "type_traits": "c",
-      "stdlib.h": "c"
+      "stdlib.h": "c",
+      "update_settings.h": "c"
    }
 }
