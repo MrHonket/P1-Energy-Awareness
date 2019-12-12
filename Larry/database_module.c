@@ -13,7 +13,7 @@
 
 /* sæt index0 til første index som indeholder en gyldig dato */
 
-/*brug ovenstående til at beregne hvilket index interval der skal returnes*/
+/*brug ovenstående til at beregne hvilket index nr_of_elements der skal returnes*/
 
 
 
@@ -47,6 +47,7 @@
 #include <string.h>
 #include <ctype.h>
 #include "global.h"
+#include "calc_time.h"
 
 #define MAX_LINE_WIDTH 400
 // #define HOURS_PR_YEAR 8765
@@ -54,10 +55,10 @@
 #define DATE_DMY "%2d-%2d-%4d %2dÊ-Ê%2d"
 #define DATE_YMD "%4d %2d %2d %2d.%2d"
 
-pricedata mypricedata[HOURS_PR_YEAR];
-meterdata myconsumpdata[HOURS_PR_YEAR];
-int pricinitialised = 0;
-int consumptioninitialised = 0;
+pricedata mypricedata[HOURS_PR_YEAR*3];
+meterdata myconsumpdata[HOURS_PR_YEAR*3];
+int price_initialised = 0;
+int consumption_initialised = 0;
 
 
 void        init_database(void);
@@ -84,6 +85,10 @@ double  price_from_string(char *price);
 double consumption_from_string(char *price);
 
 int     get_next_hour(int hour);
+int     hours_since_index(dato first_index, dato to);
+
+void    get_db_start_end_index(int start_index,int end_index);
+
 
 
 
@@ -116,7 +121,7 @@ void init_database(void){
 //    }
    
    //  printf("vi skal til at hente fil indhold\n");
-    pricinitialised =  copy_file_to_mypricedata(FILENAME_PRICE);
+    price_initialised =  copy_file_to_mypricedata(FILENAME_PRICE);
     printf("vi har hentet prisfil indhold\n");
 
 
@@ -131,7 +136,7 @@ void init_database(void){
     init_meterstruct(myconsumpdata);
 
    //  printf("vi skal til at hente fil indhold\n");
-   consumptioninitialised = copy_file_to_myconsumpdata(FILENAME_METER);
+   consumption_initialised = copy_file_to_myconsumpdata(FILENAME_METER);
     printf("vi har hentet consumption-fil indhold\n");
 
 
@@ -188,35 +193,40 @@ void init_meterstruct(meterdata data[]){
 
 
 data *get_price_for_timeinterval_in_area(dato from, dato to,  area area){
-   int interval = 24 ;
+    data *tempdata;
+    
+    
+    int i=0 , start_index = 0, end_index = 23;
+    int nr_of_elements = 24;
+    int db_cur_index = 0;
+    
+
+    if (price_initialised == 0 && consumption_initialised == 0){
+        init_database();
+    }
+    /* init VARIABLES and return structure*/
+    printf("dato 0 er : %d-%d-%d kl: %d:%d",mypricedata[3].from.year);
+    start_index     = hours_since_index(mypricedata[3].from, from);
+    end_index       = hours_since_index(from, to)+100;
+    nr_of_elements  = abs(end_index-start_index);
+    tempdata        = malloc(nr_of_elements*sizeof(data));
+    db_cur_index    = start_index;
 
 
-   int year=2018,month=02,day=10,hour1=0,hour2=1;
-   double dk1=135,dk2=156;
-   // abs(to.time.hour - from.time.hour);
-   data *tempdata;
-   int i =0;
-   int db_index = from.day;
-   tempdata = malloc(interval*sizeof(data));
-   if (pricinitialised == 0 && consumptioninitialised == 0){
-      init_database();
+    for (i=0 ; i < nr_of_elements ; i++) { 
+        tempdata[i].prize.from    = mypricedata[db_cur_index].from;      
+        tempdata[i].prize.to      = mypricedata[db_cur_index].to;      
+        tempdata[i].prize.DK1price= mypricedata[db_cur_index].DK1price;
+        tempdata[i].prize.DK2price= mypricedata[db_cur_index].DK2price;
 
-   }
-   
-   for (i=0 ; i < interval ; i++) { 
-      tempdata[i].prize.from    = mypricedata[db_index].from;      
-      tempdata[i].prize.to      = mypricedata[db_index].to;      
-      tempdata[i].prize.DK1price= mypricedata[db_index].DK1price;
-      tempdata[i].prize.DK2price= mypricedata[db_index].DK2price;
+        tempdata[i].meter.from    = myconsumpdata[db_cur_index].from;      
+        tempdata[i].meter.to      = myconsumpdata[db_cur_index].to;      
+        tempdata[i].meter.value   = myconsumpdata[db_cur_index].value; 
+        
+        db_cur_index++;
+    }
 
-      tempdata[i].meter.from    = myconsumpdata[db_index].from;      
-      tempdata[i].meter.to      = myconsumpdata[db_index].to;      
-      tempdata[i].meter.value   = myconsumpdata[db_index].value; 
-      
-      db_index++;
-   }
-
-   return tempdata;
+    return tempdata;
 }
 
 
@@ -267,7 +277,7 @@ int copy_file_to_mypricedata(char *filename){
             mypricedata[j].DK1price = price_from_string(data_txt[8]);
             mypricedata[j].DK2price = price_from_string(data_txt[9]);
 
-            print_price_index(j);
+            // print_price_index(j);
             j++;
         
        
@@ -460,18 +470,18 @@ double consumption_from_string(char *price){
 
 
 void print_price_index(int index){
-//    printf("from: %d-%d-%d %d:%d\nto  : %d-%d-%d %d:%d\n DK1: %f\nDK2: %f \n\n",
-//    mypricedata[index].from.year,mypricedata[index].from.month,mypricedata[index].from.day,mypricedata[index].from.time.hour,mypricedata[index].from.time.minute,
-//    mypricedata[index].to.year  ,mypricedata[index].to.month  ,mypricedata[index].to.day  ,mypricedata[index].to.time.hour  ,mypricedata[index].to.time.minute,
-//    mypricedata[index].DK1price,mypricedata[index].DK2price);
+   printf("from: %d-%d-%d %d:%d\nto  : %d-%d-%d %d:%d\n DK1: %f\nDK2: %f \n\n",
+   mypricedata[index].from.year,mypricedata[index].from.month,mypricedata[index].from.day,mypricedata[index].from.time.hour,mypricedata[index].from.time.minute,
+   mypricedata[index].to.year  ,mypricedata[index].to.month  ,mypricedata[index].to.day  ,mypricedata[index].to.time.hour  ,mypricedata[index].to.time.minute,
+   mypricedata[index].DK1price,mypricedata[index].DK2price);
     
 }
 
 void print_consump_index(int index){
-//    printf("from: %d-%d-%d %d:%d\nto  : %d-%d-%d %d:%d\n VALUE: %f\n\n",
-//    myconsumpdata[index].from.year,myconsumpdata[index].from.month,myconsumpdata[index].from.day,myconsumpdata[index].from.time.hour,myconsumpdata[index].from.time.minute,
-//    myconsumpdata[index].to.year  ,myconsumpdata[index].to.month  ,myconsumpdata[index].to.day  ,myconsumpdata[index].to.time.hour  ,myconsumpdata[index].to.time.minute,
-//    myconsumpdata[index].value);
+   printf("from: %d-%d-%d %d:%d\nto  : %d-%d-%d %d:%d\n VALUE: %f\n\n",
+   myconsumpdata[index].from.year,myconsumpdata[index].from.month,myconsumpdata[index].from.day,myconsumpdata[index].from.time.hour,myconsumpdata[index].from.time.minute,
+   myconsumpdata[index].to.year  ,myconsumpdata[index].to.month  ,myconsumpdata[index].to.day  ,myconsumpdata[index].to.time.hour  ,myconsumpdata[index].to.time.minute,
+   myconsumpdata[index].value);
     
 }
 
@@ -479,4 +489,14 @@ void print_consump_index(int index){
 int get_next_hour(int hour){
     return hour < 23 ? hour+1 : 0;
 }
+
+int hours_since_index(dato first_index, dato to){
+    return 100;
+    //calc_time(first_index,to);
+}
+
+void    get_db_start_end_index(int start_index,int end_index){
+    
+}
+
 
