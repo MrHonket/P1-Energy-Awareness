@@ -11,6 +11,8 @@ double info_energy_saving(user User, data data_array[]);
 data *cheapest(data data_array[], user User);
 int cmpfunc(const void * a, const void * b);
 void print_information(data return_array[], data cheapest_struct, double user_price, user User);
+int price_for_hours(data return_array[], user User);
+
 /*
 int main(void)
 {
@@ -135,7 +137,6 @@ void print_information(data return_array[], data cheapest_struct, double user_pr
         printf("\n");
     }
 }
-
 
 /* Basic compare function */
 int cmpfunc(const void * a, const void * b)
