@@ -58,7 +58,7 @@ double info_energy_saving(user User, data data_array[])
         user_price_current = current_consumption * KWH_TO_MWH * current_price;
 
         /* Sorterer pris-array så den billigste pris ligger først */
-        qsort(data_array, NMB_OF_ELEMENTS, sizeof(pricedata), cmpfunc);
+        qsort(data_array, NMB_OF_ELEMENTS, sizeof(data), cmpfunc);
         cheapest_price = data_array[0].prize.DK1price;
 
         /* Dette giver brugerens strømpris baseret ud fra hvornår det er billigst at bruge strøm */
@@ -76,7 +76,7 @@ double info_energy_saving(user User, data data_array[])
         user_price_current = current_consumption * KWH_TO_MWH * current_price;
 
         /* Sorterer pris-array så den billigste pris ligger først */
-        qsort(data_array, NMB_OF_ELEMENTS, sizeof(pricedata), cmpfunc);
+        qsort(data_array, NMB_OF_ELEMENTS, sizeof(data), cmpfunc);
         cheapest_price = data_array[0].prize.DK2price;
 
         /* Dette giver brugerens strømpris baseret ud fra hvornår det er billigst at bruge strøm */
@@ -93,17 +93,17 @@ double info_energy_saving(user User, data data_array[])
 data *cheapest(data data_array[], user User)
 {
     data *cheapest;
-    cheapest = (data*)malloc(1 * sizeof(pricedata));
+    cheapest = (data*)malloc(1 * sizeof(data));
     
-    qsort(data_array, NMB_OF_ELEMENTS, sizeof(pricedata), cmpfunc);
+    qsort(data_array, NMB_OF_ELEMENTS, sizeof(data), cmpfunc);
 
-    cheapest->prize.from = data_array[User.choice.from.day].prize.from;
-    cheapest->prize.to = data_array[User.choice.from.day].prize.to;
-    cheapest->prize.DK1price = data_array[User.choice.from.day].prize.DK1price;
-    cheapest->prize.DK2price = data_array[User.choice.from.day].prize.DK2price;
+    cheapest->prize.from = data_array[0].prize.from;
+    cheapest->prize.to = data_array[0].prize.to;
+    cheapest->prize.DK1price = data_array[0].prize.DK1price;
+    cheapest->prize.DK2price = data_array[0].prize.DK2price;
 
     /* Informerer forbrugeren om hvorvidt det billigste tidspunkt er sent om aftenen */
-    if (data_array[User.choice.from.day].prize.from.time.hour > 21)
+    if (data_array[0].prize.from.time.hour > 21)
         printf("Det billigste tidspunkt er efter kl 21 om aftenen\n");
 
     return cheapest;
