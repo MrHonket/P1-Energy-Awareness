@@ -14,6 +14,10 @@ dato    date_from_stringYMDH(char *date);
 
 void    print_price_index(int index);
 void    print_consump_index(int index);
+int     calc_time(dato from, dato to);
+
+int     calc_time(dato from, dato to);
+
 
 
 

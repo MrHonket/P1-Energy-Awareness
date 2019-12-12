@@ -68,7 +68,8 @@ void        init_database(void);
 void        init_pricestruct(pricedata data[]);
 pricedata   *init_price_array(pricedata mypricedata[]);
 void        init_meterstruct(meterdata data[]);
-
+pricedata   empty_pricestruct(void);
+meterdata   empty_consumpstruct(void);
 
 
 
@@ -85,7 +86,7 @@ void    prompt_for_filename(char *str);
 dato    date_from_stringDMYI(char *str,int time);
 dato    date_from_stringYMDH(char *date);
 double  price_from_string(char *price);
-double consumption_from_string(char *price);
+double  consumption_from_string(char *price);
 
 int     get_next_hour(int hour);
 int     hours_since_index(dato first_index, dato to);
@@ -117,41 +118,51 @@ void init_database(void){
    
    init_pricestruct(mypricedata);
 
-//    printf("hent pris for index: ");
-//    while (scanf("%d",&index)&& index != -1){
-//          if(index != -1){
-//             printf("her er prisen på index%d %f ",index, mypricedata[index].DK1price);
-//          }
-//    }
-   
-   //  printf("vi skal til at hente fil indhold\n");
     price_initialised =  copy_file_to_mypricedata(FILENAME_PRICE);
-    printf("vi har hentet prisfil indhold\n");
-
-
-   //  printf("hent pris for index: ");
-   //  while (scanf("%d",&index)&& index != -1){
-   //       if(index != -1){
-   //          printf("her er prisen på index%d\n DK1:%f  DK2:%f \n",index, mypricedata[index].DK1price, mypricedata[index].DK2price);
-   //       }
-   //  }
-
+    printf("har hentet pris-fil indhold\n");
 
     init_meterstruct(myconsumpdata);
 
-   //  printf("vi skal til at hente fil indhold\n");
    consumption_initialised = copy_file_to_myconsumpdata(FILENAME_METER);
-    printf("vi har hentet consumption-fil indhold\n");
+    printf("har hentet consumption-fil indhold\n");
+
+}
 
 
-   //  printf("hent pris for index: ");
-   //  while (scanf("%d",&index)&& index != -1){
-   //       if(index != -1){
-   //          printf("her er forbruget på index%d\n VALUE:%f \n",index, myconsumpdata[index].value);
-   //       }
-   //  }
+pricedata empty_pricestruct(void){
+    pricedata data;
+    data.DK1price=0;
+    data.DK2price=0;
+    data.from.year=0;
+    data.from.month=0;
+    data.from.day=0;
+    data.from.time.hour=0;
+    data.from.time.minute=0;
+    data.to.year=0;
+    data.to.month=0;
+    data.to.day=0;
+    data.to.time.hour=0;
+    data.to.time.minute=0;
 
+    return data;
 
+}
+
+meterdata empty_consumpstruct(void){
+    meterdata data;
+    data.value=0;
+    data.from.year=0;
+    data.from.month=0;
+    data.from.day=0;
+    data.from.time.hour=0;
+    data.from.time.minute=0;
+    data.to.year=0;
+    data.to.month=0;
+    data.to.day=0;
+    data.to.time.hour=0;
+    data.to.time.minute=0;
+
+    return data;
 }
 
 
@@ -304,6 +315,7 @@ int copy_file_to_mypricedata(char *filename){
 */
 int copy_file_to_myconsumpdata(char *filename){
     int i=0,j=0;
+    int dist = 0;
     char str[MAX_LINE_WIDTH];
     double value1=0,value2=0;
     const char s[2] = ";";
@@ -341,7 +353,26 @@ int copy_file_to_myconsumpdata(char *filename){
         myconsumpdata[j].to     = date_from_stringYMDH(data_txt[2]);
                 
         myconsumpdata[j].value = consumption_from_string(data_txt[3]);
+        if(j>1 &&(dist=calc_time(myconsumpdata[j-1].from,myconsumpdata[j].from))!=1){
+        printf("index %5d : på dato: %d-%d-%d kl%d dist %d\n ",j-1,myconsumpdata[j-1].from.year, myconsumpdata[j-1].from.month, myconsumpdata[j-1].from.day,myconsumpdata[j-1].from.time.hour, dist);
+        printf("      %5d : på dato: %d-%d-%d kl%d dist %d\n\n ",j,myconsumpdata[j].from.year, myconsumpdata[j].from.month, myconsumpdata[j].from.day,myconsumpdata[j].from.time.hour, dist);
+  
+    }
+        
         // print_consump_index(j);
+        // if(j>0 && (dist = calc_time(myconsumpdata[j-1].from,myconsumpdata[j].from))>1){
+        //     printf("hul i data dist = %d year %d", dist, myconsumpdata[j-1].from.year);
+        //     int k = 0;
+        //     for(k=0; k<dist; k++){
+        //         printf("tomt data tilføjet index : %d\n",j+k);
+        //         myconsumpdata[j+k] = empty_consumpstruct();
+        //     }
+        //     j += k;
+        //     strcpy(myconsumpdata[j].id,data_txt[0]);
+        //     myconsumpdata[j].from   = date_from_stringYMDH(data_txt[1]);
+        //     myconsumpdata[j].to     = date_from_stringYMDH(data_txt[2]);
+
+        // }
         j++;
     }
     /* ;%2dÊ-Ê%2d;%*d,%*d;%*d;%*d;%*d;196;196;162,28;196;196;196;196;196;196;196;196;196;196
@@ -515,8 +546,8 @@ int calc_time(dato from, dato to){
     from_month = from.month;
     to_month = to.month;
 
-    printf("test %d\n", from_month);
-    printf("test %d\n", to_month);
+    // printf("test %d\n", from_month);
+    // printf("test %d\n", to_month);
 
     hours = calc_hours(to, to_month) - calc_hours(from, from_month);
     hours += (24* (to.day - from.day));
