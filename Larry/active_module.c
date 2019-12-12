@@ -31,16 +31,14 @@ int prompt_user(user User,data *Data);
 void log_data(user User);
 /*main vil modtage information om det er en måler eller sig selv (Automatisk) der aktivere eller en app (Human)*/
 int main(void){
-    user User = { {200, "DK1", "DK"}, InfoEnergySaving, Mean, Human};       
-    dato from = {{18, 00}, 15, Januar, 2018};
-    dato to = {{19, 00}, 15, Januar, 2018};                         
+    user User;                           
     data *Data;
     int confirmation;
     
-    // User.settings = load_settings();
-    //check_activation(User);
+    User.settings = load_settings();
+    check_activation(User);
     
-    /* MockData!
+    // MockData!
     User.type = Human;
     User.choice.function = InfoEnergySaving;
     dato dato1 = {{18, 00}, 4, Januar, 2018};
@@ -50,11 +48,12 @@ int main(void){
     User.settings.id = 200;
     strcpy(User.settings.language,"DK");
     strcpy(User.settings.residence,"DK1");
-    // End mock */
+    // End mock 
 
     
 
     Data = get_price_for_timeinterval_in_area(from, to, Dk1);
+
 
     if (User.type == Human){
         prompt_user(User,Data);
