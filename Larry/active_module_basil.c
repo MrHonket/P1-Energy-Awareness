@@ -31,26 +31,26 @@ int prompt_user(user User,data *Data);
 void log_data(user User);
 /*main vil modtage information om det er en måler eller sig selv (Automatisk) der aktivere eller en app (Human)*/
 int main(void){
-    user User = { {200, "DK1", "DK"}, InfoEnergySaving, Mean, Human};       
-    dato from = {{18, 00}, 15, Januar, 2018};
-    dato to = {{19, 00}, 15, Januar, 2018};                         
+    user User = { {200, "DK1", "DK"}, UserHistory, Median, {{15, 0}, 0, Januar, 2017}, {{21, 0}, 0, Januar, 2017}, Price, Human};
+    dato from = {{00, 00}, 20, Januar, 2017};
+    dato to = {{00, 00}, 21, Januar, 2017};
     data *Data;
     int confirmation;
     
     // User.settings = load_settings();
     //check_activation(User);
     
-    //MockData!
+    /*//MockData!
     User.type = Human;
     User.choice.function = UserHistory;
     dato dato1 = {{18, 00}, 4, Januar, 2018};
-    dato dato2 = {{19, 00}, 4, Januar, 2018};
+    dato dato2 = {{23, 00}, 4, Januar, 2018};
     User.choice.lookup = Meter;
-    User.choice.mean_or_median = Median;
+    User.choice.mean_or_median = Mean;
     User.settings.id = 200;
     strcpy(User.settings.language,"DK");
     strcpy(User.settings.residence,"DK1");
-    // End mock
+    // End mock*/
 
     
 
