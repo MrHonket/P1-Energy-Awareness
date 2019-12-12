@@ -8,7 +8,7 @@
 #define NMB_OF_ELEMENTS 24
 
 double info_energy_saving(user User, data data_array[]);
-data *cheapest(data data_array[]);
+data *cheapest(data data_array[], user User);
 int cmpfunc(const void * a, const void * b);
 void print_information(data return_array[], data cheapest_struct, double user_price, user User);
 /*
@@ -90,17 +90,17 @@ double info_energy_saving(user User, data data_array[])
 } 
 
 /* Funktionen returnerer en data-struct således vi kan se, hvornår på dagen det er billigst at forbruge strøm */
-data *cheapest(data data_array[])
+data *cheapest(data data_array[], user User)
 {
     data *cheapest;
     cheapest = (data*)malloc(1 * sizeof(data));
     
     qsort(data_array, NMB_OF_ELEMENTS, sizeof(data), cmpfunc);
 
-    cheapest->prize.from = data_array[0].prize.from;
-    cheapest->prize.to = data_array[0].prize.to;
-    cheapest->prize.DK1price = data_array[0].prize.DK1price;
-    cheapest->prize.DK2price = data_array[0].prize.DK2price;
+    cheapest->prize.from = data_array[User.choice.from.day].prize.from;
+    cheapest->prize.to = data_array[User.choice.from.day].prize.to;
+    cheapest->prize.DK1price = data_array[User.choice.from.day].prize.DK1price;
+    cheapest->prize.DK2price = data_array[User.choice.from.day].prize.DK2price;
 
     /* Informerer forbrugeren om hvorvidt det billigste tidspunkt er sent om aftenen */
     if (data_array[0].prize.from.time.hour > 21)
