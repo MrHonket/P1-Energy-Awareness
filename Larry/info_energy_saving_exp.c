@@ -58,8 +58,9 @@ double info_energy_saving(user User, data data_array[])
         user_price_current = current_consumption * KWH_TO_MWH * current_price;
 
         /* Sorterer pris-array så den billigste pris ligger først */
-        qsort(data_array, NMB_OF_ELEMENTS, sizeof(data), cmpfunc);
+        qsort(data_array, NMB_OF_ELEMENTS, sizeof(pricedata), cmpfunc);
         cheapest_price = data_array[0].prize.DK1price;
+        printf("Den billigste pris er: %.2f\n", cheapest_price);
 
         /* Dette giver brugerens strømpris baseret ud fra hvornår det er billigst at bruge strøm */
         user_price_after = current_consumption * KWH_TO_MWH * cheapest_price;
@@ -76,8 +77,9 @@ double info_energy_saving(user User, data data_array[])
         user_price_current = current_consumption * KWH_TO_MWH * current_price;
 
         /* Sorterer pris-array så den billigste pris ligger først */
-        qsort(data_array, NMB_OF_ELEMENTS, sizeof(data), cmpfunc);
+        qsort(data_array, NMB_OF_ELEMENTS, sizeof(pricedata), cmpfunc);
         cheapest_price = data_array[0].prize.DK2price;
+        printf("Den billigste pris er: %.2f\n", cheapest_price);
 
         /* Dette giver brugerens strømpris baseret ud fra hvornår det er billigst at bruge strøm */
         user_price_after = current_consumption * KWH_TO_MWH * cheapest_price;
@@ -96,6 +98,8 @@ data *cheapest(data data_array[], user User)
     cheapest = (data*)malloc(1 * sizeof(data));
     
     qsort(data_array, NMB_OF_ELEMENTS, sizeof(pricedata), cmpfunc);
+    for (int i = 0; i < 23; i++)
+        printf("Dato: %d og pris: %.2f\n", data_array[i].prize.from.day, data_array[i].prize.DK1price);
 
     cheapest->prize.from = data_array[0].prize.from;
     cheapest->prize.to = data_array[0].prize.to;
@@ -116,22 +120,22 @@ void print_information(data return_array[], data cheapest_struct, double user_pr
     {
         user_price = return_array[User.choice.from.time.hour].meter.value * KWH_TO_MWH * return_array[User.choice.from.time.hour].prize.DK1price;
         printf("Nuværende pris: %.2f DKK\n\n", return_array[User.choice.from.time.hour].prize.DK1price); 
-        printf("Nuværende forbrug: %.2f \n\n", return_array[User.choice.from.time.hour].meter.value); 
+        printf("Nuværende forbrug: %.2f KWH \n\n", return_array[User.choice.from.time.hour].meter.value); 
         printf("Nuværende pris baseret på nuværende forbrug: %.2f DKK\n\n", user_price); 
         printf("Det billigste tidspunkt at forbruge på er: \n");
         printf("\n");
-        printf("Dato: %d | Klokkeslæt: %d - %d | Pris DK1: %.f DKK\n\n", cheapest_struct.prize.from.day,
+        printf("Dato: %d | Klokkeslæt: %d - %d | Pris DK1: %.2f DKK\n\n", cheapest_struct.prize.from.day,
                          cheapest_struct.prize.from.time.hour, cheapest_struct.prize.to.time.hour, cheapest_struct.prize.DK1price);
     }
     else
     {
         user_price = return_array[User.choice.from.time.hour].meter.value * KWH_TO_MWH * return_array[User.choice.from.time.hour].prize.DK2price;
-        printf("Nuværende pris: %.1f\n\n", return_array[User.choice.from.time.hour].prize.DK2price); 
+        printf("Nuværende pris: %.2f\n\n", return_array[User.choice.from.time.hour].prize.DK2price); 
         printf("Nuværende forbrug: %.2f\n\n", return_array[User.choice.from.time.hour].meter.value); 
         printf("Nuværende pris baseret på nuværende forbrug: %.2f DKK\n\n", user_price); 
         printf("Det billigste tidspunkt at forbruge på er: \n");
         printf("\n");
-        printf("Dato: %d | Klokkeslæt: %d - %d | Pris DK2: %.5lf DKK\n\n", cheapest_struct.prize.from.day,
+        printf("Dato: %d | Klokkeslæt: %d - %d | Pris DK2: %.2lf DKK\n\n", cheapest_struct.prize.from.day,
                          cheapest_struct.prize.from.time.hour, cheapest_struct.prize.to.time.hour, cheapest_struct.prize.DK2price);
     }
 }
@@ -142,6 +146,6 @@ int cmpfunc(const void * a, const void * b)
     data *priserA = (data*)a;
     data *priserB = (data*)b;
 
-    return priserA->prize.DK1price - priserB->prize.DK1price;
+    return priserB->prize.DK1price - priserA->prize.DK1price;
 }
 
