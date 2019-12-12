@@ -58,7 +58,7 @@ double info_energy_saving(user User, data data_array[])
         user_price_current = current_consumption * KWH_TO_MWH * current_price;
 
         /* Sorterer pris-array så den billigste pris ligger først */
-        qsort(data_array, NMB_OF_ELEMENTS, sizeof(data), cmpfunc);
+        qsort(data_array, NMB_OF_ELEMENTS, sizeof(pricedata), cmpfunc);
         cheapest_price = data_array[0].prize.DK1price;
         printf("Den billigste pris er: %.2f\n", cheapest_price);
 
@@ -77,7 +77,7 @@ double info_energy_saving(user User, data data_array[])
         user_price_current = current_consumption * KWH_TO_MWH * current_price;
 
         /* Sorterer pris-array så den billigste pris ligger først */
-        qsort(data_array, NMB_OF_ELEMENTS, sizeof(data), cmpfunc);
+        qsort(data_array, NMB_OF_ELEMENTS, sizeof(pricedata), cmpfunc);
         cheapest_price = data_array[0].prize.DK2price;
         printf("Den billigste pris er: %.2f\n", cheapest_price);
 
@@ -140,7 +140,7 @@ void print_information(data return_array[], data cheapest_struct, double user_pr
     }
 }
 
-/* Basic compare function */
+/* Basic compare function 
 int cmpfunc(const void * a, const void * b)
 {
     data *priserA = (data*)a;
@@ -148,4 +148,17 @@ int cmpfunc(const void * a, const void * b)
 
     return priserA->prize.DK1price - priserB->prize.DK1price;
 }
+*/
 
+int cmpfunc(const void * a, const void * b)
+{
+    data *priserA = (data*)a;
+    data *priserB = (data*)b;
+
+    if priserA->prize.DK1price > priserB->prize.DK1price;
+        return 1;
+    else if priserA->prize.DK1price < priserB->prize.DK1price;
+        return -1;
+    else
+        return 0;  
+}
