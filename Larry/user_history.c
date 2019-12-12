@@ -31,35 +31,41 @@ int sort_array_for_median(const void *a, const void *b);
 /*Denne main skal hedde user_history og have inputparametre User og Data (indeholder en value-array)*/
 int user_history(user User, data *Data) {
     int i = 0;
+    int number_of_elements = 0;
+    double *dataset;
 
     /*Lav en array ud fra Data-structen og baseret på, om dataen er fra meter eller pris. Det er denne, der skal regnes på.*/
     /*User.choice.meter & price skal lige defineres i global.c & global.h*/
     if (User.choice.lookup == Meter) {
         /*Initialiserer number_of_elements, samt den array, der skal bruges. Lav om til egen funktion.*/
-        int number_of_elements = calc_time(Data.meterdata.to, Data.meterdata.from);/*Finder antal timer*/
-        double dataset[number_of_elements];
+        number_of_elements = 2;/*calc_time(Data->meter.to, Data->meter.from);/*Finder antal timer*/
+        dataset[number_of_elements];
         /*Assigner arrayelementer fra Data og en for-løkke*/
         for (i = 0; i <= number_of_elements; i++) {
-            dataset[i] = Data[i]->meterdata->value;
+            dataset[i] = Data[i].meter.value;
         }
+        dataset[i] = '\0';
     } else
     if (User.choice.lookup == Price) {
         /*Initialiserer number_of_elements, samt den array, der skal bruges. Lav om til egen funktion.*/
-        int number_of_elements = calc_time(Data.pricedata.to, Data.pricedata.from);/*Finder antal timer*/
-        double dataset[number_of_elements];
+        number_of_elements = 3;/*calc_time(Data->prize.to, Data->prize.from);/*Finder antal timer*/
+        dataset[number_of_elements];
         /*Assigner arrayelementer vha Data og en for-løkke*/
         for (i = 0; i <= number_of_elements; i++) {
-            dataset[i] = Data[i]->pricedata->value;
+            dataset[i] = Data[i].prize.DK1price; /*Gør de to DK1priser til en valutastruct og user-setting*/
         }
+        /*Gør det sidste element til '/0'*/
+        dataset[i] = '\0';
     } else {
         /*Error*/
         //error_message()
+        return 0;
     }
 
-    if (User.choice.mean_or_median == mean) {
+    if (User.choice.mean_or_median == Mean) {
         return calc_mean(dataset, number_of_elements);
     } else
-    if (User.choice.mean_or_median == median) {
+    if (User.choice.mean_or_median == Median) {
         return calc_median(dataset, number_of_elements);
     } else {
         /*Error*/
