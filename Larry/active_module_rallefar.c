@@ -31,9 +31,9 @@ int prompt_user(user User, data *Data, data cheapest, double user_price);
 void log_data(user User);
 /*main vil modtage information om det er en måler eller sig selv (Automatisk) der aktivere eller en app (Human)*/
 int main(void){
-    user User = { {200, "DK1", "DK"}, InfoEnergySaving, Mean, Human};       
-    dato from = {{04, 00}, 20, Januar, 2017};
-    dato to = {{05, 00}, 20, Januar, 2017};                      
+    user User = { {200, "DK1", "DK"}, InfoEnergySaving, Mean, {{18, 0}, 21, Januar, 2017}, {{19, 0}, 21, Januar, 2017}, Price, Human};       
+    dato from = {{01, 00}, 20, Januar, 2017};
+    dato to = {{20, 00}, 25, Januar, 2017};                      
     data *Data;
     data cheapest_struct;
     int confirmation;
@@ -53,7 +53,7 @@ int main(void){
     User.settings.id = 200;
     strcpy(User.settings.language,"DK");
     strcpy(User.settings.residence,"DK1");
-     End mock */
+    End mock */
 
     
 
@@ -61,15 +61,15 @@ int main(void){
 
     for (int i = 0; i < 100; i++)
         printf("Priser: %.1f\n", Data[i].prize.DK1price);
-        
+
     printf("\n\n");
     for (int i = 0; i < 100; i++)
         printf("Forbrug: %.1f\n", Data[i].meter.value);
 
-        cheapest_struct = *cheapest(Data);
+        /* cheapest_struct = *cheapest(Data);
         print_information(Data, cheapest_struct, user_price, User);
         info = info_energy_saving(User, Data);
-        printf("Din besparelse er: %.5f DKK\n", info);
+        printf("Din besparelse er: %.5f DKK\n", info); */
 
     if (User.type == Human){
         prompt_user(User, Data, cheapest_struct, user_price);
@@ -148,7 +148,7 @@ int prompt_user(user User, data *Data, data cheapest_struct, double user_price){
     }
 
     //Test af om info_str er blevet retuneret korrekt
-    if(info_str != NULL){
+    if(info_str){
         printf("%s\n",info_str);
     }
     else{
