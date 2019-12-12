@@ -42,6 +42,7 @@ int user_history(user User, data *Data) {
         /*Assigner arrayelementer fra Data og en for-løkke*/
         for (i = 0; i < number_of_elements; i++) {
             dataset[i] = Data[i].meter.value;
+            printf("%lf\n", Data[i].meter.value);
         }
         /*printf("Usorteret:\n");
         for (i = 0; i < number_of_elements; i++) {
