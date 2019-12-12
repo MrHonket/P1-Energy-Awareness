@@ -1,5 +1,5 @@
 #ifndef DEBUG_H
-#define DEBUG
+#define DEBUG_H
 
 #include "global.h"
 

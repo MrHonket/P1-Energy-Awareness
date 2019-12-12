@@ -1,13 +1,10 @@
 
-/*                                                                                                          *
- *      ____               _  _  _                 _                                       _         _      * 
- *     |  _ \             (_)| |( )               (_)                                     | |       | |     * 
- *     | |_) |  __ _  ___  _ | ||/ ___      _ __   _   ___  ___      _ __ ___    ___    __| | _   _ | |     *
- *     |  _ <  / _` |/ __|| || |  / __|    | '_ \ | | / __|/ _ \    | '_ ` _ \  / _ \  / _` || | | || |     *
- *     | |_) || (_| |\__ \| || |  \__ \    | | | || || (__|  __/    | | | | | || (_) || (_| || |_| || |     *
- *     |____/  \__,_||___/|_||_|  |___/    |_| |_||_| \___|\___|    |_| |_| |_| \___/  \__,_| \__,_||_|     *
- *                                                                                                          *
- *                                                                                                          *
+/*
+_____
+
+Basil
+_____
+
 user_history
 - Inputparameter er User (en user-struct) og Data (en struct, der indeholder en value-array)
     - User.choice.mean_or_median afgør om det skal findes gennemsnit eller median, samt om det skal findes for meterdata
@@ -25,6 +22,7 @@ user_history
 #include <stdlib.h>
 #include "global.h"
 #include "database_module.h"
+#include "calctime.h"
 
 double calc_mean(double dataset[], int number_of_elements);
 double calc_median(double dataset[], int number_of_elements);
@@ -32,22 +30,30 @@ int cmpfunc(const void *a, const void *b);
 
 /*Denne main skal hedde user_history og have inputparametre User og Data (indeholder en value-array)*/
 int main(void) {
-    user User; /*Indeholder indstillinger*/
+    user User; /*Indeholder indstillinger og brugervalg, User.choice*/
     data *Data; /*Indeholder data for både meter-data og elpris*/
-    double dataset[];
+    int i = 0;
 
     /*Lav en array ud fra data og baseret på, om dataen er fra meter eller pris. Det er denne, der skal regnes på.
       Funktioner fra datamodulet*/
-    /*User.choice.meter & price skal lige defineres i global.h*/
-    if (User.choice == meter) {
-        int number_of_elements = Data.meter.to - Data.meter.from;/*Erstat med Jakobs calctime, der finder antal timer*/
-        data consumption_array[number_of_elements];
-        consumption_array = get_consumption_for_timeinterval_at_id(Data.meter.from, Data.meter.to, User.id);
+    /*User.choice.meter & price skal lige defineres i global.c & global.h*/
+    if (User.choice.lookup_type == Meter) {
+        /*Initialiserer number_of_elements, samt den array, der skal bruges. Lav om til egen funktion.*/
+        int number_of_elements = calctime(Data.meterdata.to, Data.meterdata.from);/*Finder antal timer*/
+        double dataset[number_of_elements];
+        /*Assigner arrayelementer fra Data og en for-løkke*/
+        for (i = 0; i <= number_of_elements; i++) {
+            dataset[i] = Data->meterdata->value[i];
+        }
     } else
-    if (User.choice == price) {
-        int number_of_elements = Data.prize.to - Data.prize.from;
-        data prize_array[number_of_elements];
-        prize_array = get_price_for_timeinterval_in_area(Data.prize.from, Data.prize.to, User.settings.residence);
+    if (User.choice.lookup_type == Price) {
+        /*Initialiserer number_of_elements, samt den array, der skal bruges. Lav om til egen funktion.*/
+        int number_of_elements = calctime(Data.pricedata.to, Data.pricedata.from);/*Finder antal timer*/
+        double dataset[number_of_elements];
+        /*Assigner arrayelementer vha Data og en for-løkke*/
+        for (i = 0; i <= number_of_elements; i++) {
+            dataset[i] = Data->pricedata->value[i];
+        }
     }
 
     if (User.choice.mean_or_median == mean) {
