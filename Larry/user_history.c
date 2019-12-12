@@ -22,7 +22,6 @@ user_history
 #include <stdlib.h>
 #include "global.h"
 #include "database_module.h"
-#include "calc_time.h"
 
 double calc_mean(double dataset[], int number_of_elements);
 double calc_median(double dataset[], int number_of_elements);
@@ -37,46 +36,73 @@ int user_history(user User, data *Data) {
     /*User.choice.meter & price skal lige defineres i global.c & global.h*/
     if (User.choice.lookup == Meter) {
         /*Initialiserer number_of_elements, samt den array, der skal bruges. Lav om til egen funktion.*/
-        number_of_elements = 24;/*calc_time(Data->meter.to, Data->meter.from);/*Finder antal timer*/
-        double dataset[number_of_elements];
-        pointer_to_dataset = dataset;
+        number_of_elements = calc_time(Data->meter.from, Data->meter.to);/*Finder antal timer*/
+        double *dataset = malloc(sizeof(double)*number_of_elements);
+
         /*Assigner arrayelementer fra Data og en for-løkke*/
-        for (i = 0; i <= number_of_elements; i++) {
+        for (i = 0; i < number_of_elements; i++) {
             dataset[i] = Data[i].meter.value;
         }
-        dataset[i] = '\0';
+        /*printf("Usorteret:\n");
+        for (i = 0; i < number_of_elements; i++) {
+            printf("%lf\n", dataset[i]);
+        }*/
+
+        /*Sorterer dataset*/
+        qsort(dataset, number_of_elements, sizeof(double), sort_array_for_median);
+
+        /*
+        printf("Sorteret:\n");
+        for (i = 0; i < number_of_elements; i++) {
+            printf("%lf\n", dataset[i]);
+        }
+        */
+        pointer_to_dataset = dataset;
+        //printf("heeeey heeey baby (hoo) (ha)\n");
     } else
     if (User.choice.lookup == Price) {
         /*Initialiserer number_of_elements, samt den array, der skal bruges. Lav om til egen funktion.*/
-        number_of_elements = 24;/*calc_time(Data->prize.to, Data->prize.from);/*Finder antal timer*/
-        double dataset[number_of_elements];
-        pointer_to_dataset = dataset;
-        dataset[number_of_elements];
+        number_of_elements = calc_time(Data->prize.from, Data->prize.to);/*Finder antal timer*/
+        double *dataset = malloc(sizeof(double)*number_of_elements);
 
         /*Assigner arrayelementer vha Data og en for-løkke*/
-        for (i = 0; i <= number_of_elements; i++) {
+        for (i = 0; i < number_of_elements; i++) {
             dataset[i] = Data[i].prize.DK1price; /*Gør de to DK1priser til en valutastruct og user-setting*/
         }
-        /*Gør det sidste element til '/0'*/
-        dataset[i] = '\0';
+        /*printf("Usorteret:\n");
+        for (i = 0; i < number_of_elements; i++) {
+            printf("%lf\n", dataset[i]);
+        }*/
+
+        /*Sorterer dataset*/
+        //printf("Sorteret: ");
+        qsort(dataset, number_of_elements, sizeof(double), sort_array_for_median);
+        /*for (i = 0; i < number_of_elements; i++) {
+            printf("%lf\n", dataset[i]);
+        }*/
+        pointer_to_dataset = dataset;
+        //printf("heeeey heeey baby (hoo) (ha)\n");
     } else {
-        /*Error*/
-        //error_message()
+        //Error
+        //error_message() 
         return 0;
     }
 
     if (User.choice.mean_or_median == Mean) {
         /*return calc_mean(dataset, number_of_elements);*/
-        printf("Mean:  %lf", calc_mean(pointer_to_dataset, number_of_elements));
+        printf("\nMean:  %lf", calc_mean(pointer_to_dataset, number_of_elements));
         return(calc_mean(pointer_to_dataset, number_of_elements));
     } else
     if (User.choice.mean_or_median == Median) {
         /*return calc_median(dataset, number_of_elements);*/
-        printf("Median:  %lf", calc_mean(pointer_to_dataset, number_of_elements));
+        printf("\nMedian:  %lf", calc_median(pointer_to_dataset, number_of_elements));
         return(calc_median(pointer_to_dataset, number_of_elements));
     } else {
         /*Error*/
+        return 0;
     }
+
+    free(pointer_to_dataset);
 }
 
 /*dataset[] laves til data *array */
@@ -95,7 +121,11 @@ double calc_mean(double dataset[], int number_of_elements) {
 
 double calc_median(double dataset[], int number_of_elements) {
     /*Udregner median*/
-    qsort(dataset, number_of_elements, sizeof(double), sort_array_for_median);
+    /*int j = 0;
+    printf("\nInde i medianfunktionen:");
+    for (j = 0; j < number_of_elements; j++) {
+        printf("\n%lf", dataset[j]);
+    }*/
 
     /*Returnerer median*/
     return dataset[number_of_elements/2];
@@ -103,5 +133,14 @@ double calc_median(double dataset[], int number_of_elements) {
 
 /*qsort*/
 int sort_array_for_median(const void *a, const void *b) {
-   return (*(double*)a - *(double*)b);
+    //printf("Hey gurl it's been a long time lets catch up :)");
+    //return (*(double*)a - *(double*)b);
+
+    if (*(double*)a < *(double*)b) {
+        return -1;
+    }
+    else if (*(double*)a > *(double*)b) {
+        return 1;
+    } else
+        return 0;
 }
