@@ -1,5 +1,5 @@
-#ifndef CALC_TIME.H
-#define CALC_TIME.H
+#ifndef CALC_TIME.H 
+#define CALC_TIME.H 
 
 #include "global.h"
 
