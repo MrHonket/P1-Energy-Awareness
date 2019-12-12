@@ -27,7 +27,7 @@
 
 /*Dette er prototyper i programmet.*/
 void check_activation(user User);
-int prompt_user(user User,data *Data, data cheapest);
+int prompt_user(user User, data *Data, data cheapest, double user_price);
 void log_data(user User);
 /*main vil modtage information om det er en måler eller sig selv (Automatisk) der aktivere eller en app (Human)*/
 int main(void){
@@ -37,6 +37,7 @@ int main(void){
     data *Data;
     data *cheapest_struct;
     int confirmation;
+    double user_price;
     
     // User.settings = load_settings();
     //check_activation(User);
@@ -96,7 +97,7 @@ void log_data(user User){
 
 }
 /*Funktionen som fungere som en brugers interface*/
-int prompt_user(user User, data *Data, data cheapest){
+int prompt_user(user User, data *Data, data cheapest, double user_price){
     char info_str[60] = {'T','E','S','T'};
     double info;
     int new_command = 0;
@@ -121,6 +122,7 @@ int prompt_user(user User, data *Data, data cheapest){
         info = info_energy_saving(User, Data);
         cheapest = *cheapest(Data);
         printf("Din besparelse er: %.5f DKK\n", info);
+        print_information(Data, cheapest, user_price, User);
     }
     else if(User.choice.function == ConsumptionCheck){
         info = consumption_check(User, Data);
@@ -151,7 +153,7 @@ int prompt_user(user User, data *Data, data cheapest){
     scanf("%d", &new_command);
 
     if(new_command){
-        return prompt_user(User,Data);
+        return prompt_user(User,Data, cheapest, user_price);
     }
     else{
         return 0;
