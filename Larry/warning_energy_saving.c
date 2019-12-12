@@ -4,60 +4,49 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "global.h"
-//#include "database_module.h"
+#include "user_history.h"
 #define KWH 1000
 #define NMB_OF_ELEMENTS 24
+
+double warning_energy_saving(user User, data *Data); 
 double warning_consumption(double price, double consumption,double median_consumption);
-/* int warning_energy_saving(data *data_array,user choices)? 
-   user_history median data
-   time data hvor får vi det fra?*/
 
-int main(void)
-{
-  double price_treshold = 200;
-  double median_consumption=0.5;
-  int timeframe;
-  data *data_array;
-  user User;
+double warning_energy_saving(user User, data *Data){
+    int Time_now=1;
+    dato to= {{24, 00}, 15, Januar, 2018};
+    double value,
+           one_price,          
+           one_consumption,    
+           median_consumption;
+    if(User.settings.residence=="DK1")
+    {
+        one_price= Data[Time_now].prize.DK1price;  
+    }
+    else if(User.settings.residence=="DK2")
+    {
+        one_price =Data[Time_now].prize.DK2price;
+    }
+    one_consumption = Data[Time_now].meter.value; 
+    median_consumption = user_history(User, Data);
 
-  median_consumption= User.choice.
-  dato from={{00, 00}, 15, Januar, 2018};
-  dato to= {{24, 00}, 15, Januar, 2018};
-  printf("hello and welcome to the gokkeslaet\n");
-  printf("enter timeframe, median consumption and price threshold: ");
-   scanf("%d %lf %lf",&timeframe, &median_consumption, &price_treshold);
-  data_array =get_price_for_timeinterval_in_area(from, to, Dk1);
-  if(choices.settings.residence==Dk1 && data_array[timeframe].prize.DK1price>=price_treshold)
-  {
-    printf("your consumption is %.2lf percent off the median consumption\n",warning_consumption(data_array[timeframe].prize.DK1price,
-    data_array[timeframe-1].meter.value,median_consumption));
-  }
-  else if (choices.settings.residence==Dk2 && data_array[timeframe].prize.DK2price>=price_treshold)
-  {
-    printf("your consumption is %.2lf percent off the  median consumption\n",warning_consumption(data_array[timeframe].prize.DK2price,
-    data_array[timeframe-1].meter.value,median_consumption));
-  }
-  else
-  {
-  printf("Price is lower than threshold no worries\n");
-  }
-    return EXIT_SUCCESS;
+    value = warning_consumption(one_price,one_consumption,median_consumption);
+    return value;  
 }
-
 double warning_consumption(double price,double consumption,double median_consumption){
-double price_difference;
-consumption/=KWH;
-if(consumption>median_consumption){
-  price_difference=((price*consumption)/(price*median_consumption)-1);
-  printf("your energy consumption is higher than normally right now.\n");
-  return price_difference;
-}
-else if(consumption<=median_consumption)
-{
-  price_difference=((price*median_consumption)/(price*consumption)-1);
-  printf("your consumption is not higher than normal\n");
-  return price_difference;
-}
-else 
-  return FALSE;
+    double price_difference;
+    if(consumption>median_consumption)
+    {
+       price_difference=((price*consumption)/(price*median_consumption)-1);
+       return MakeWarning;
+    }
+    else if(consumption<=median_consumption)
+    {
+       price_difference=((price*median_consumption)/(price*consumption)-1);
+       return NoWarning;
+    }
+    else
+    {
+        error_message(ErrorInWarningConsumption);
+        return Failure;
+    }
 }

@@ -6,6 +6,7 @@ char* translate(int choice_of_function);
 int debug_user(user User);
 
 int debug_user(user User){
+    printf("\nDebugger for user structs!\n");
     printf("ID = %d ; Sprog = %s ; Bosted = %s\n",User.settings.id,User.settings.language,User.settings.residence);
     printf("Valgte funktion = %s ; Brugeren er %s\n",translate(User.choice.function),(User.type == Human ? "menneske" : "automatisk"));
     return EXIT_SUCCESS;

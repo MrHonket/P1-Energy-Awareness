@@ -20,7 +20,8 @@
  *Kald derefter error_message(Error...) på stedet i koden.*/
 typedef enum{ErrorConfirmationPassiveModule,ErrorChoiceDoesntExist,
              ErrorInfoStrNotFound,ErrorUserType,ErrorNotImplemented,
-             ErrorUserLookupHistory,ErrorUserMeanMedianHistory}error_types;
+             ErrorUserLookupHistory,ErrorUserMeanMedianHistory,
+             ErrorPassiveModuleFuncChoice,ErrorInWarningConsumption}error_types;
 int error_message(int error);
 
 /*VARIABLE TIL data*/
@@ -48,6 +49,9 @@ typedef struct{
    pricedata prize;
 }data;
 
+/*Enums for passive module*/
+typedef enum{Failure,Success,NoWarning,MakeWarning}passive_warnings;
+
 /*Tid omdannet til tekst prototypes: ugedag_txt[], month_txt[]*/
 const char *ugedag_txt;
 const char *month_txt;
@@ -55,7 +59,7 @@ const char *month_txt;
 /*VARIABLE TIL user*/
     /*symbolske konstanter for brugertypen og valg af funktion*/
     typedef enum {Human,Automated}user_type;
-    typedef enum {Exit,UserHistory,InfoEnergySaving,UpdateSettings,
+    typedef enum {Presentation,Exit,UserHistory,InfoEnergySaving,UpdateSettings,
               SystemInformation,ConsumptionCheck,FutureData,WarningEnergySaving,
               MachineActivation}choice_function;
     typedef enum {Mean = 1,Median}mean_or_median;

@@ -19,7 +19,9 @@ typedef enum{
     ErrorUserType,
     ErrorNotImplemented,
     ErrorUserLookupHistory,
-    ErrorUserMeanMedianHistory
+    ErrorUserMeanMedianHistory,
+    ErrorPassiveModuleFuncChoice,
+    ErrorInWarningConsumption
 }error_types;
 
 int error_message(int error){
@@ -44,6 +46,12 @@ int error_message(int error){
     }
     else if(error == ErrorUserMeanMedianHistory){
         printf("Error because the chosen mean_or_median choice in user_history.c is wrongly implemented\n");
+    }
+    else if(error == ErrorPassiveModuleFuncChoice){
+        printf("Error because the automatically chosen function isnt one compatible with the passive module.\n");
+    }
+    else if(error == ErrorInWarningConsumption){
+        printf("Error in warning_consumption function because of consumption and median_consumption isn't comparable.\n");
     }
     else{
         printf("Error because the error_message nr. %d in error_types hasn't been implemented yet\n",error);
@@ -199,6 +207,7 @@ typedef enum {
 }user_type;
 
 typedef enum {
+    Presentation,
     Exit,
     UserHistory,
     InfoEnergySaving,
@@ -245,6 +254,9 @@ typedef struct{
     choice choice;
     user_type type;
 }user;
+
+/*Enums for passive module*/
+typedef enum{Failure, Success,NoWarning,MakeWarning}passive_warnings;
 
 /*Calc time funktionen!*/
 /*Prototypes*/

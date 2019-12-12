@@ -39,7 +39,6 @@ double user_history(user User, data *Data) {
         /*Assigner arrayelementer fra Data og en for-løkke*/
         for (i = 0; i < number_of_elements; i++) {
             dataset[i] = Data[i].meter.value;
-            printf("%lf\n", Data[i].meter.value);
         }
 
         /*Sorterer dataset*/
@@ -66,11 +65,9 @@ double user_history(user User, data *Data) {
     }
 
     if (User.choice.mean_or_median == Mean) {
-        /*return calc_mean(dataset, number_of_elements);*/
         return(calc_mean(pointer_to_dataset, number_of_elements));
     } else
     if (User.choice.mean_or_median == Median) {
-        /*return calc_median(dataset, number_of_elements);*/
         return(calc_median(pointer_to_dataset, number_of_elements));
     } else {
         error_message(ErrorUserMeanMedianHistory);
@@ -80,37 +77,23 @@ double user_history(user User, data *Data) {
     free(pointer_to_dataset);
 }
 
-/*dataset[] laves til data *array */
 double calc_mean(double dataset[], int number_of_elements) {
     int i = 0;
     double mean = 0;
-
-    /*Udregner gennemsnit*/
+    /*Addere alle værdier i datasættet*/
     for (i = 0; i < number_of_elements; i++) {
         mean += dataset[i];
     }
-
     /*Returnerer gennemsnittet*/
     return (mean/i);
 }
 
 double calc_median(double dataset[], int number_of_elements) {
-    /*Udregner median*/
-    /*int j = 0;
-    printf("\nInde i medianfunktionen:");
-    for (j = 0; j < number_of_elements; j++) {
-        printf("\n%lf", dataset[j]);
-    }*/
-
-    /*Returnerer median*/
     return dataset[number_of_elements/2];
 }
 
 /*qsort*/
 int sort_array_for_median(const void *a, const void *b) {
-    //printf("Hey gurl it's been a long time lets catch up :)");
-    //return (*(double*)a - *(double*)b);
-
     if (*(double*)a < *(double*)b) {
         return -1;
     }

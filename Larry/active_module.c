@@ -16,7 +16,7 @@
 #include "update_settings.h"        //Implementeret og brugbart!
 #include "info_energy_saving.h"     //Implementeret og brugbart!
 #include "passive_module.h"         //Implementeret og brugbart!
-#include "warning_energy_saving_exp.h"//IMPLEMENTERET SOM EXP! Der bruges dog pt. MockData i funktionen for at kalde underfunktioner.
+#include "warning_energy_saving.h"  //Implementeret og brugbart!
 #include "system_information.h"     //Implemented som error_message!
 #include "machine_activation.h"     //Implemented som error_message!
 #include "future_data.h"            //Implemented som error_message!
@@ -30,8 +30,8 @@ void log_data_use(user User);
 /*main vil modtage information om det er en måler eller sig selv (Automatisk) der aktivere eller en app (Human)*/
 int main(void){
 /*Raller*/ //user User = { {200, "DK1", "DK"}, InfoEnergySaving, Mean, {{19, 0}, 0, Januar, 2017}, {{21, 0}, 0, Januar, 2017}, Price, Human};
-/*Basil*/  //user User = { {200, "DK1", "DK"}, UserHistory, Median, {{15, 0}, 0, Januar, 2017}, {{21, 0}, 0, Januar, 2017}, Price, Human};    
-/*Niller*/ user User = { {200, "DK1", "DK"}, WarningEnergySaving, Median, {{15, 0}, 0, Januar, 2017}, {{21, 0}, 0, Januar, 2017}, Meter, Automated};    
+/*Basil*/  user User = { {200, "DK1", "DK"}, UserHistory, Median, {{15, 0}, 0, Januar, 2017}, {{21, 0}, 0, Januar, 2017}, Price, Human};    
+/*Niller*/ //user User = { {200, "DK1", "DK"}, WarningEnergySaving, Median, {{15, 0}, 0, Januar, 2017}, {{21, 0}, 0, Januar, 2017}, Meter, Automated};    
     dato dato_from = {{00, 00}, 20, Januar, 2017};
     dato dato_to = {{00, 00}, 21, Januar, 2017};                       
     data *Data;
@@ -47,9 +47,17 @@ int main(void){
             prompt_user(User,Data);
         }
         else if(User.type == Automated){
+            printf("\n\nTest funktion for at se hvornaar det passive module start\n");
             confirmation = passive_module(User,Data);
             if(confirmation){
                 log_data_use(User);
+                if(confirmation == MakeWarning){
+                    printf("ADVARSEL TIL BRUGER! Du forbruger nu hvor prisen er hoej!\n");
+                }
+                else if(confirmation == NoWarning){
+                    printf("Test Print for at se om funktionen virker som den skal\n");
+                    printf("Aka funktionen koerte rigtigt og det blev vurderet til ingen advarsel var noedvendig\n");
+                }
             }
             else{
                 error_message(ErrorConfirmationPassiveModule);
@@ -75,9 +83,9 @@ int main(void){
  *Hvis den er automatisk men vurderes til ikke at aktivere nu, så skal den returnere main(Automated) efter X antal tid(1 time?)*/
 int check_for_run_module(user User){
     if(User.type == Automated){
-        dato time_now=User.choice.from;/*rigtig tid skal hentes fra time library*/
+        dato time_now=User.settings.next_activation;/*rigtig tid skal hentes fra time library*/
         if(User.settings.next_activation.time.hour == time_now.time.hour){
-            return 1;
+            return TRUE;
         }
         else if(User.settings.next_activation.day < time_now.day){
             update_next_activation();
@@ -106,14 +114,14 @@ int prompt_user(user User, data *Data){
     double info;
     data cheapest_struct;
     
-    printf("\n\nIndtast venligst et af de angivne heltal\n");
-    printf("Tryk %d for at gaa ud af programmet\n",Exit);
-    printf("Tryk %d for brugerhistorik\n",UserHistory);
-    printf("Tryk %d for info om dine energibesparelser\n",InfoEnergySaving);
-    printf("Tryk %d for brugerindstillinger\n",UpdateSettings);
-    printf("Tryk %d for informationer om dette system\n",SystemInformation);
-    printf("Tryk %d for at lave et elcheck\n",ConsumptionCheck);
-    printf("Tryk %d for et gaet om fremtidige priser\n",FutureData);
+    l_prompt_user(User.settings.language,Presentation);
+    l_prompt_user(User.settings.language,Exit);
+    l_prompt_user(User.settings.language,UserHistory);
+    l_prompt_user(User.settings.language,InfoEnergySaving);
+    l_prompt_user(User.settings.language,UpdateSettings);
+    l_prompt_user(User.settings.language,SystemInformation);
+    l_prompt_user(User.settings.language,ConsumptionCheck);
+    l_prompt_user(User.settings.language,FutureData);
 
     scanf(" %d", &User.choice.function);
     
@@ -126,6 +134,7 @@ int prompt_user(user User, data *Data){
     }
     else if(User.choice.function == UpdateSettings){
         update_settings();
+        User.settings = load_settings();
     }
     else if(User.choice.function == InfoEnergySaving){
         cheapest_struct = *cheapest(Data, User);
@@ -143,9 +152,6 @@ int prompt_user(user User, data *Data){
     else if(User.choice.function == FutureData){
         future_data(User, Data);
     }    
-    else if(User.choice.function == 0){
-        return 0;
-    }
     else{
         error_message(ErrorChoiceDoesntExist);
     }
