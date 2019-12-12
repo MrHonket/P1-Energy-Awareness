@@ -104,8 +104,6 @@ data *cheapest(data data_array[], user User)
     cheapest->prize.DK2price = data_array[0].prize.DK2price;
 
     /* Informerer forbrugeren om hvorvidt det billigste tidspunkt er sent om aftenen */
-    if (data_array[0].prize.from.time.hour > 21)
-        printf("Det billigste tidspunkt er efter kl 21 om aftenen\n");
 
     if (strcmp(User.settings.residence, "DK1") == 0)
         printf("Dato: %d | Klokkeslæt: %d - %d | Pris DK1: %.2f DKK\n\n", cheapest->prize.from.day,
