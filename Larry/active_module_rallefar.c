@@ -54,7 +54,6 @@ int main(void){
     strcpy(User.settings.language,"DK");
     strcpy(User.settings.residence,"DK1");
     End mock */
-
     Data = get_price_for_timeinterval_in_area(from, to, Dk1);
     for (int i = 0; i < 24; i++)
         printf("Dato: %d\t| Tidspunkt: %d - %d\t| Priser: %.2f\t| Forbrug: %.2f\n", Data[i].prize.from.day, Data[i].prize.from.time.hour, 
