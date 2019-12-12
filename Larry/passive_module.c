@@ -11,7 +11,6 @@ int passive_module(user User, data *Data);
 int passive_module(user User, data *Data)
 {
    int run_module; 
-   run_module = check_for_run_module(User, Data);
    update_next_activation();
 
    if(User.choice.function == WarningEnergySaving)
