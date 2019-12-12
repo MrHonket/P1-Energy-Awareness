@@ -5,14 +5,15 @@
 int calc_time(dato from, dato to);
 int calc_hours(dato test_year, month test);
 
-/* int main(void){
+/* 
+int main(void){
     dato fr = {{00, 00}, 1, 2 , 2017};
     dato t = {{00, 00}, 1, 6, 2017};
     int hos = 0;
 
     hos = calc_time(fr, t);
 
-    printf("ola %d \n", hos);
+    printf("test print: %d \n", hos);
 
     return 0;
 } */
@@ -26,10 +27,10 @@ int calc_time(dato from, dato to){
     from_month = from.month;
     to_month = to.month;
 
-    printf("test %d\n", from_month);
-    printf("test %d\n", to_month);
-
     hours = calc_hours(to, to_month) - calc_hours(from, from_month);
+
+    hours += (24 * (to.day - from.day));
+    hours += (to.time.hour - from.time.hour);
    
     return hours; 
 
