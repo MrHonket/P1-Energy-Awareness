@@ -13,7 +13,7 @@ int debug_user(user User){
 
 char* translate(int choice_of_function){
     switch(choice_of_function){
-        case ErrorTest           : return "error_test";
+        case Exit                : return "exit from function";
         case UserHistory         : return "user_history";
         case InfoEnergySaving    : return "info_energy_saving";
         case UpdateSettings      : return "update_settings";

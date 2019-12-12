@@ -6,10 +6,11 @@
 #include <stdlib.h>
 
 /*Symbolske konstanter*/
-#define FALSE       0
-#define TRUE        1
-#define SUCCESS     2
+#define FALSE         0
+#define TRUE          1
+#define SUCCESS       2
 #define HOURS_PR_YEAR 8765*20
+#define KWH_TO_MWH    0.001
 #define FILENAME_METER "Meterdata.csv"
 #define FILENAME_PRICE "elspot-prices_2017_hourly_dkk.csv"
 
@@ -18,7 +19,8 @@
 /*For inklusion af fejlsøgning i program, lav en ny Error... i error_types.
  *Kald derefter error_message(Error...) på stedet i koden.*/
 typedef enum{ErrorConfirmationPassiveModule,ErrorChoiceDoesntExist,
-             ErrorInfoStrNotFound,ErrorUserType,ErrorNotImplemented}error_types;
+             ErrorInfoStrNotFound,ErrorUserType,ErrorNotImplemented,
+             ErrorUserLookupHistory,ErrorUserMeanMedianHistory}error_types;
 int error_message(int error);
 
 /*VARIABLE TIL data*/
@@ -53,9 +55,9 @@ const char *month_txt;
 /*VARIABLE TIL user*/
     /*symbolske konstanter for brugertypen og valg af funktion*/
     typedef enum {Human,Automated}user_type;
-    typedef enum {ErrorTest,UserHistory,InfoEnergySaving,UpdateSettings,
-              SystemInformation,WarningEnergySaving,MachineActivation,
-              ConsumptionCheck,FutureData}choice_function;
+    typedef enum {Exit,UserHistory,InfoEnergySaving,UpdateSettings,
+              SystemInformation,ConsumptionCheck,FutureData,WarningEnergySaving,
+              MachineActivation}choice_function;
     typedef enum {Mean = 1,Median}mean_or_median;
     typedef enum {Meter,Price,Green}lookup_type;
     /*settings valg: settings*/
@@ -70,5 +72,9 @@ typedef struct{
     choice choice;
     user_type type;
 }user;
+
+/*Calc time prototypes*/
+int calc_time(dato from, dato to);
+int calc_hours(dato test_year, month test);
 
 #endif //GLOBAL_H

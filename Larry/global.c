@@ -3,10 +3,13 @@
 #include <stdlib.h>
 
 /*Symbolske konstanter*/
-#define FALSE       0
-#define TRUE        1
-#define SUCCESS     2
+#define FALSE         0
+#define TRUE          1
+#define SUCCESS       2
 #define HOURS_PR_YEAR 8765
+#define KWH_TO_MWH    0.001
+#define FILENAME_METER "Meterdata.csv"
+#define FILENAME_PRICE "elspot-prices_2017_hourly_dkk.csv"
 
 /*ERROR MESSAGES*/
 typedef enum{
@@ -14,7 +17,9 @@ typedef enum{
     ErrorChoiceDoesntExist,
     ErrorInfoStrNotFound,
     ErrorUserType,
-    ErrorNotImplemented
+    ErrorNotImplemented,
+    ErrorUserLookupHistory,
+    ErrorUserMeanMedianHistory
 }error_types;
 
 int error_message(int error){
@@ -33,6 +38,12 @@ int error_message(int error){
     else if(error == ErrorNotImplemented){
         printf("Error because a function in choice_function hasn't been implemented yet\n");
         printf("Please lookup this error_message in one of the .c files.\n");
+    }
+    else if(error == ErrorUserLookupHistory){
+        printf("Error because the chosen lookup choice in user_history.c isn't implemented yet\n");
+    }
+    else if(error == ErrorUserMeanMedianHistory){
+        printf("Error because the chosen mean_or_median choice in user_history.c is wrongly implemented\n");
     }
     else{
         printf("Error because the error_message nr. %d in error_types hasn't been implemented yet\n",error);
@@ -188,15 +199,15 @@ typedef enum {
 }user_type;
 
 typedef enum {
-    ErrorTest,
+    Exit,
     UserHistory,
     InfoEnergySaving,
     UpdateSettings,
     SystemInformation,
-    WarningEnergySaving,
-    MachineActivation,
     ConsumptionCheck,
-    FutureData
+    FutureData,
+    WarningEnergySaving,
+    MachineActivation
 }choice_function;
 
 typedef enum {
@@ -234,3 +245,77 @@ typedef struct{
     choice choice;
     user_type type;
 }user;
+
+/*Calc time funktionen!*/
+/*Prototypes*/
+int calc_time(dato from, dato to);
+int calc_hours(dato test_year, month test);
+/*Funktionerne er listet herunder*/
+int calc_time(dato from, dato to){
+    int days = 0, hours = 0, test_number = 0;
+    month from_month;
+    month to_month;
+
+    from_month = from.month;
+    to_month = to.month;
+    hours = calc_hours(to, to_month) - calc_hours(from, from_month);
+
+    hours += (24 * (to.day - from.day));
+    hours += (to.time.hour - from.time.hour);
+   
+    if(hours < 0 || hours == 73 || hours == 25){
+        return 1;
+    }
+    else{
+        return hours;
+    } 
+}
+
+int calc_hours(dato test_year, month test){
+    int days = 0, hours = 0;
+    if(test_year.year % 4 == 0){
+        for (days = 0; test >= 1; test--)
+        {
+            if(test == 2){
+                days += 29;
+            }
+            else if(test <= 6 && test % 2 == 0){
+                days += 30;
+            }
+            else if(test <= 7 && test % 2 != 0){
+                days += 31;
+            }
+            else if(test > 6 && test % 2 == 0){
+                days += 31;
+            }
+            else if(test >= 9 && test % 2 != 0){
+                days += 30;
+            }
+        }
+        hours = days * 24;
+        return hours;
+    }
+    else if (test_year.year % 4 != 0){
+        for (days = 0; test >= 1; test--)
+        {
+            if(test == 2){
+                days += 28;
+            }
+            else if(test <= 6 && test % 2 == 0){
+                days += 30;
+            }
+            else if(test <= 7 && test % 2 != 0){
+                days += 31;
+            }
+            else if(test > 6 && test % 2 == 0){
+                days += 31;
+            }
+            else if(test >= 9 && test % 2 != 0){
+                days += 30;
+            }
+        }
+        hours = days * 24;
+        return hours;
+    }
+    return 0;
+}

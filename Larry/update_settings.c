@@ -50,8 +50,6 @@ settings load_settings(void){
     strcpy(Settings.language, language);
     strcpy(Settings.residence, location);
 
-    printf("Settings = %d\n",Settings.id);
-
     return Settings;
 }
 /*Skal sætte den næste dato for automatisk aktivering ind i settings.txt filen*/

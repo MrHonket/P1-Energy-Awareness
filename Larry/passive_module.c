@@ -10,7 +10,6 @@ int passive_module(user User, data *Data);
 /* returns 1 for exit_succes and 0 for exit_failure */
 int passive_module(user User, data *Data)
 {
-   int run_module; 
    update_next_activation();
 
    if(User.choice.function == WarningEnergySaving)

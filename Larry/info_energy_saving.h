@@ -3,6 +3,9 @@
 
 #include "global.h"
 
-double info_energy_saving(meterdata forbrug_array[], pricedata priser_array[], int time_frame, user user_choice);
+double info_energy_saving(user User, data* Data);
+data *cheapest(data data_array[], user User);
+int cmpfunc(const void * a, const void * b);
+void print_information(data return_array[], data cheapest_struct, user User);
 
 #endif //INFO_ENERGY_SAVING_H
