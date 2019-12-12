@@ -125,7 +125,7 @@ int prompt_user(user User, data *Data, data cheapest_struct, double user_price){
         update_settings();
     }
     else if(User.choice.function == InfoEnergySaving){
-        cheapest_struct = *cheapest(Data);
+        cheapest_struct = *cheapest(Data, User);
         print_information(Data, cheapest_struct, user_price, User);
         info = info_energy_saving(User, Data);
         printf("Din besparelse er: %.5f DKK\n", info);
