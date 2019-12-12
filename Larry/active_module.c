@@ -31,14 +31,14 @@ int prompt_user(user User,data *Data);
 void log_data(user User);
 /*main vil modtage information om det er en måler eller sig selv (Automatisk) der aktivere eller en app (Human)*/
 int main(void){
-    user User = { {200, "DK1", "DK"}, InfoEnergySaving, Mean, Human};                                
+    user User = { {200, "DK1", "DK"}, InfoEnergySaving, Mean, Human};       
+    dato from = {{18, 00}, 15, Januar, 2018};
+    dato to = {{19, 00}, 15, Januar, 2018};                         
     data *Data;
     int confirmation;
-    dato from = {{18, 00}, 15, Januar, 2018};
-    dato to = {{19, 00}, 15, Januar, 2018};
-
-    User.settings = load_settings();
-    check_activation(User);
+    
+    // User.settings = load_settings();
+    //check_activation(User);
     
     /* MockData!
     User.type = Human;
