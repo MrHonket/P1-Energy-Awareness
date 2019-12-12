@@ -31,9 +31,9 @@ int prompt_user(user User, data *Data, data cheapest, double user_price);
 void log_data(user User);
 /*main vil modtage information om det er en måler eller sig selv (Automatisk) der aktivere eller en app (Human)*/
 int main(void){
-    user User = { {200, "DK1", "DK"}, InfoEnergySaving, Mean, {{12, 0}, 10, Januar, 2017}, {{13, 0}, 25, Januar, 2017}, Price, Human};       
-    dato from = {{25, 00}, 20, Januar, 2017};
-    dato to = {{26, 00}, 25, Januar, 2017};                      
+    user User = { {200, "DK1", "DK"}, InfoEnergySaving, Mean, {{18, 0}, 22, Januar, 2017}, {{16, 0}, 22, Januar, 2017}, Price, Human};       
+    dato from = {{00, 00}, 20, Januar, 2017};
+    dato to = {{00, 00}, 29, Januar, 2017};                      
     data *Data;
     data cheapest_struct;
     int confirmation;
@@ -55,7 +55,6 @@ int main(void){
     strcpy(User.settings.residence,"DK1");
     End mock */
 
-    
 
     Data = get_price_for_timeinterval_in_area(from, to, Dk1);
 
