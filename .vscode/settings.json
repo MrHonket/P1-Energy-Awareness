@@ -3,6 +3,7 @@
       "global.h": "c",
       "chrono": "c",
       "complex": "c",
-      "type_traits": "c"
+      "type_traits": "c",
+      "stdlib.h": "c"
    }
 }
