@@ -31,7 +31,7 @@ int prompt_user(user User, data *Data, data cheapest, double user_price);
 void log_data(user User);
 /*main vil modtage information om det er en måler eller sig selv (Automatisk) der aktivere eller en app (Human)*/
 int main(void){
-    user User = { {200, "DK1", "DK"}, InfoEnergySaving, Mean, {{13, 0}, 0, Januar, 2017}, {{14, 0}, 0, Januar, 2017}, Price, Human};       
+    user User = { {200, "DK1", "DK"}, InfoEnergySaving, Mean, {{14, 0}, 0, Januar, 2017}, {{21, 0}, 0, Januar, 2017}, Price, Human};       
     dato from = {{00, 00}, 20, Januar, 2017};
     dato to = {{00, 00}, 21, Januar, 2017};                      
     data *Data;
@@ -126,9 +126,9 @@ int prompt_user(user User, data *Data, data cheapest_struct, double user_price){
         update_settings();
     }
     else if(User.choice.function == InfoEnergySaving){
-        cheapest_struct = *cheapest(Data, User);
-        info = info_energy_saving(User, Data);
         print_information(Data, cheapest_struct, user_price, User);
+        info = info_energy_saving(User, Data);
+        cheapest_struct = *cheapest(Data, User);
         printf("Din besparelse bliver: %.5f DKK\n", info);
         
     }

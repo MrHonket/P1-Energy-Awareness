@@ -107,6 +107,12 @@ data *cheapest(data data_array[], user User)
     if (data_array[0].prize.from.time.hour > 21)
         printf("Det billigste tidspunkt er efter kl 21 om aftenen\n");
 
+    if (strcmp(User.settings.residence, "DK1") == 0)
+        printf("Dato: %d | Klokkeslæt: %d - %d | Pris DK1: %.2f DKK\n\n", cheapest->prize.from.day,
+                         cheapest->prize.from.time.hour, cheapest->prize.to.time.hour, cheapest->prize.DK1price);
+    else       
+        printf("Dato: %d | Klokkeslæt: %d - %d | Pris DK2: %.2lf DKK\n\n", cheapest->prize.from.day,
+                         cheapest->prize.from.time.hour, cheapest->prize.to.time.hour, cheapest->prize.DK2price);
     return cheapest;
 }
 
@@ -115,14 +121,13 @@ void print_information(data return_array[], data cheapest_struct, double user_pr
 {
     if (strcmp(User.settings.residence, "DK1") == 0)
     {
+        printf("Tidspunkt valgt af bruger: %d\n", User.choice.from.time.hour);
         user_price = return_array[User.choice.from.time.hour].meter.value * KWH_TO_MWH * return_array[User.choice.from.time.hour].prize.DK1price;
         printf("Nuværende pris: %.2f DKK\n\n", return_array[User.choice.from.time.hour].prize.DK1price); 
         printf("Nuværende forbrug: %.2f KWH \n\n", return_array[User.choice.from.time.hour].meter.value); 
         printf("Nuværende pris baseret på nuværende forbrug: %.2f DKK\n\n", user_price); 
         printf("Det billigste tidspunkt at forbruge på er: \n");
         printf("\n");
-        printf("Dato: %d | Klokkeslæt: %d - %d | Pris DK1: %.2f DKK\n\n", cheapest_struct.prize.from.day,
-                         cheapest_struct.prize.from.time.hour, cheapest_struct.prize.to.time.hour, cheapest_struct.prize.DK1price);
     }
     else
     {
@@ -132,8 +137,6 @@ void print_information(data return_array[], data cheapest_struct, double user_pr
         printf("Nuværende pris baseret på nuværende forbrug: %.2f DKK\n\n", user_price); 
         printf("Det billigste tidspunkt at forbruge på er: \n");
         printf("\n");
-        printf("Dato: %d | Klokkeslæt: %d - %d | Pris DK2: %.2lf DKK\n\n", cheapest_struct.prize.from.day,
-                         cheapest_struct.prize.from.time.hour, cheapest_struct.prize.to.time.hour, cheapest_struct.prize.DK2price);
     }
 }
 
