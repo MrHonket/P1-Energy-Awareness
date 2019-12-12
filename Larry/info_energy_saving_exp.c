@@ -95,7 +95,7 @@ data *cheapest(data data_array[], user User)
     data *cheapest;
     cheapest = (data*)malloc(1 * sizeof(data));
     
-    qsort(data_array, NMB_OF_ELEMENTS, sizeof(data), cmpfunc);
+    qsort(data_array, NMB_OF_ELEMENTS, sizeof(pricedata), cmpfunc);
 
     cheapest->prize.from = data_array[0].prize.from;
     cheapest->prize.to = data_array[0].prize.to;
@@ -131,7 +131,7 @@ void print_information(data return_array[], data cheapest_struct, double user_pr
         printf("Nuværende pris baseret på nuværende forbrug: %.2f DKK\n\n", user_price); 
         printf("Det billigste tidspunkt at forbruge på er: \n");
         printf("\n");
-        printf("Dato: %d | Klokkeslæt: %d - %d | Pris DK2: %.f DKK\n\n", cheapest_struct.prize.from.day,
+        printf("Dato: %d | Klokkeslæt: %d - %d | Pris DK2: %.3f DKK\n\n", cheapest_struct.prize.from.day,
                          cheapest_struct.prize.from.time.hour, cheapest_struct.prize.to.time.hour, cheapest_struct.prize.DK2price);
     }
 }
