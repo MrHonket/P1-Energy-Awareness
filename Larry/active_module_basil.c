@@ -45,8 +45,8 @@ int main(void){
     User.choice.function = UserHistory;
     dato dato1 = {{18, 00}, 4, Januar, 2018};
     dato dato2 = {{19, 00}, 4, Januar, 2018};
-    User.choice.lookup = Price;
-    User.choice.mean_or_median = Mean;
+    User.choice.lookup = Meter;
+    User.choice.mean_or_median = Median;
     User.settings.id = 200;
     strcpy(User.settings.language,"DK");
     strcpy(User.settings.residence,"DK1");
@@ -95,7 +95,7 @@ int prompt_user(user User, data *Data){
     int new_command = 0;
     
     /*Basil was here & coded user interaction*/
-    printf("Tryk %d for brugerhistorik\n",UserHistory);
+    printf("\nTryk %d for brugerhistorik\n",UserHistory);
     printf("Tryk %d for brugerindstillinger\n",UpdateSettings);
     printf("Tryk %d for info om dine energibesparelser\n",InfoEnergySaving);
     printf("Tryk %d for at lave et elcheck",ConsumptionCheck);
@@ -139,7 +139,7 @@ int prompt_user(user User, data *Data){
     }
 
     //scanf for om der ønskes ny kommando. Basil was here
-    printf("Tryk paa enhver tast for at kore programmet igen.\nTryk 0 for at lukke programmet");
+    printf("\nTryk paa enhver tast for at kore programmet igen.\nTryk 0 for at lukke programmet");
     scanf("%d", &new_command);
 
     if(new_command){
