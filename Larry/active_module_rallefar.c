@@ -38,6 +38,7 @@ int main(void){
     data cheapest_struct;
     int confirmation;
     double user_price;
+    double info;
     
     // User.settings = load_settings();
     //check_activation(User);
@@ -60,9 +61,15 @@ int main(void){
 
     for (int i = 0; i < 100; i++)
         printf("Priser: %.1f\n", Data[i].prize.DK1price);
+        
     printf("\n\n");
     for (int i = 0; i < 100; i++)
         printf("Forbrug: %.1f\n", Data[i].meter.value);
+
+        cheapest_struct = *cheapest(Data);
+        print_information(Data, cheapest_struct, user_price, User);
+        info = info_energy_saving(User, Data);
+        printf("Din besparelse er: %.5f DKK\n", info);
 
     if (User.type == Human){
         prompt_user(User, Data, cheapest_struct, user_price);
