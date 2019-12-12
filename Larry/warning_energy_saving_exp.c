@@ -29,26 +29,33 @@ double warning_energy_saving(user User, data *Data){
         one_price =Data[0].prize.DK2price;
     }
     //Skal findes i Data.prize.DK1/2price men kan IKKE tilgås sådan grundet det er en pointer til et struct.
-    one_consumption = Data[0].meter.value; //Skal findes i Data.meter.unit el. value men kan IKKE tilgås sådan grundet det er en pointer til et struct.
+    one_consumption = Data[0].meter.value; 
+    //Skal findes i Data.meter.unit el. value men kan IKKE tilgås sådan grundet det er en pointer til et struct.
     median_consumption = user_history(User, Data);/*  user_history(User,Data); */
+    printf("%lf",one_consumption);
        //= user_history hvor User.choice.mean_or_median = Median før User sendes i funktionen.
     /*Endmock*/
     value = warning_consumption(one_price,one_consumption,median_consumption);
+    printf("medianconsumption%lf\n",median_consumption);
     return value;  
 }
 double warning_consumption(double price,double consumption,double median_consumption){
     double price_difference;
-    if(consumption>median_consumption){
-    price_difference=((price*consumption)/(price*median_consumption)-1);
-    printf("your energy consumption is higher than normally right now.\n");
-    return TRUE;
+    if(consumption>median_consumption)
+    {
+       price_difference=((price*consumption)/(price*median_consumption)-1);
+       printf("your energy consumption is higher than normally right now.\n");
+       return TRUE;
     }
     else if(consumption<=median_consumption)
     {
-    price_difference=((price*median_consumption)/(price*consumption)-1);
-    printf("your consumption is not higher than normal\n");
-    return FALSE;
+       price_difference=((price*median_consumption)/(price*consumption)-1);
+       printf("your consumption is not higher than normal\n");
+       return FALSE;
     }
-    else 
-    return FALSE;
+    else
+    {
+        printf("something went wrong...\n");
+        return FALSE;
+    }
 }

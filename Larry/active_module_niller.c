@@ -31,17 +31,20 @@ int prompt_user(user User,data *Data);
 void log_data(user User);
 /*main vil modtage information om det er en måler eller sig selv (Automatisk) der aktivere eller en app (Human)*/
 int main(void){
-    user User;                           
+
+    user User = { {200, "DK1", "DK"}, WarningEnergySaving, Median, {{15, 0}, 0, Januar, 2017}, {{21, 0}, 0, Januar, 2017}, Meter, Automated};
+    dato from = {{00, 00}, 20, Januar, 2017};
+    dato to = {{00, 00}, 21, Januar, 2017};                           
     data *Data;
     int confirmation;
     
-    User.settings = load_settings();
-    
-    // MockData!
+    /* User.settings = load_settings(); */
+    User.settings.next_activation.time.hour = User.choice.from.time.hour;
+    /* MockData!
     User.type = Automated;
     User.choice.function = WarningEnergySaving;
-    dato dato1 = {{18, 00}, 4, Januar, 2018};
-    dato dato2 = {{19, 00}, 4, Januar, 2018};
+    dato dato1 = {{00, 00}, 4, Januar, 2018};
+    dato dato2 = {{23, 00}, 4, Januar, 2018};
     User.choice.lookup = Meter;
     User.choice.mean_or_median = Median;
     User.settings.id = 200;
@@ -49,12 +52,12 @@ int main(void){
     User.settings.next_activation.time.hour = User.choice.from.time.hour;
     strcpy(User.settings.language,"DK");
     strcpy(User.settings.residence,"DK1");
-    // End mock 
+    // End mock */
 
     confirmation = check_for_run_module(User);
 
     if(confirmation){
-        Data = get_price_for_timeinterval_in_area(dato1,dato2, Dk1);
+        Data = get_price_for_timeinterval_in_area(from, to, Dk1);
 
         if (User.type == Human){
             prompt_user(User,Data);
