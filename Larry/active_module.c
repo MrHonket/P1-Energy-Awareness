@@ -2,7 +2,7 @@
 //"Rigtige" gcc compilation
 //gcc active_module.c global.c language.c database_module.c passive_module.c update_settings.c info_energy_saving.c user_history.c warning_energy_saving.c system_information.c machine_activation.c future_data.c consumption_check.c debug.c
 //"Experimental" gcc compilation
-//gcc active_module.c global.c language.c database_module.c update_settings.c info_energy_saving_exp.c passive_module.c warning_energy_saving_exp.c system_information.c machine_activation.c future_data.c consumption_check.c debug.c
+//gcc active_module.c global.c language.c database_module.c user_history_exp.c update_settings.c info_energy_saving_exp.c passive_module.c warning_energy_saving_exp.c system_information.c machine_activation.c future_data.c consumption_check.c debug.c
 
 #include <stdio.h>
 #include <stdlib.h>

@@ -26,7 +26,7 @@ user_history
 
 double calc_mean(double dataset[], int number_of_elements);
 double calc_median(double dataset[], int number_of_elements);
-int cmpfunc(const void *a, const void *b);
+int cmpdatamedian(const void *a, const void *b);
 
 /*Denne main skal hedde user_history og have inputparametre User og Data (indeholder en value-array)*/
 int user_history(user User, data *Data) {
@@ -67,13 +67,13 @@ double calc_mean(double dataset[], int number_of_elements) {
 
 double calc_median(double dataset[], int number_of_elements) {
     /*Udregner median*/
-    qsort(dataset, number_of_elements, sizeof(double), cmpfunc);
+    qsort(dataset, number_of_elements, sizeof(double), cmpdatamedian);
 
     /*Returnerer median*/
     return dataset[number_of_elements/2];
 }
 
 /*qsort*/
-int cmpfunc(const void *a, const void *b) {
+int cmpdatamedian(const void *a, const void *b) {
    return (*(double*)a - *(double*)b);
 }
