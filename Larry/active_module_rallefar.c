@@ -25,14 +25,12 @@
 #include "consumption_check.h"      //Implemented som error_message!
 #include "debug.h"                  //implementeret og brugbart!
 
-/*Dette er prototyper i programmet*/
+/*Dette er prototyper i programmet.*/
 void check_activation(user User);
-int prompt_user(user User, data *Data, data cheapest, double user_price);
+int prompt_user(user User, data *Data, data cheapest);
 void log_data(user User);
-
 /*main vil modtage information om det er en måler eller sig selv (Automatisk) der aktivere eller en app (Human)*/
 int main(void){
-    /* PT er det således at dataene påvirkes af den time brugeren vælger FROM */
     user User = { {200, "DK1", "DK"}, InfoEnergySaving, Mean, {{15, 0}, 0, Januar, 2017}, {{21, 0}, 0, Januar, 2017}, Price, Human};       
     dato from = {{00, 00}, 20, Januar, 2017};
     dato to = {{00, 00}, 21, Januar, 2017};                      
@@ -57,7 +55,7 @@ int main(void){
     strcpy(User.settings.residence,"DK1");
     End mock */
 
-    /* Data er kun baseret ud fra hvornår vi ønsker at kigge fra og til */
+
     Data = get_price_for_timeinterval_in_area(from, to, Dk1);
     printf("Tidspunkt vi kigger efter: %d\n", User.choice.from.time.hour);
     for (int i = 0; i < 24; i++)
@@ -74,7 +72,7 @@ int main(void){
         printf("Din besparelse er: %.5f DKK\n", info); */
 
     if (User.type == Human){
-        prompt_user(User, Data, cheapest_struct, user_price);
+        prompt_user(User, Data, cheapest_struct);
     }
     else if(User.type == Automated){
         confirmation = passive_module(User,Data);
@@ -93,8 +91,6 @@ int main(void){
     
     return EXIT_SUCCESS;
 }
-
-
 /*Checker for om der skal aktiveresSætter næste automatiske aktivering
  *Hvis aktivatitionen sker automatisk skal den lave en udregning. 
  *Ellers hvis aktivationen sker af et menneske skal den bare gå videre.
@@ -108,7 +104,7 @@ void log_data(user User){
 
 }
 /*Funktionen som fungere som en brugers interface*/
-int prompt_user(user User, data *Data, data cheapest_struct, double user_price){
+int prompt_user(user User, data *Data, data cheapest_struct){
     char info_str[60] = {'T','E','S','T'};
     double info;
     int new_command = 0;
@@ -130,7 +126,7 @@ int prompt_user(user User, data *Data, data cheapest_struct, double user_price){
         update_settings();
     }
     else if(User.choice.function == InfoEnergySaving){
-        print_information(Data, cheapest_struct, user_price, User);
+        print_information(Data, cheapest_struct, User);
         info = info_energy_saving(User, Data);
         cheapest_struct = *cheapest(Data, User);
         printf("Din besparelse bliver: %.5f DKK\n", info);
@@ -165,7 +161,7 @@ int prompt_user(user User, data *Data, data cheapest_struct, double user_price){
     scanf("%d", &new_command);
 
     if(new_command){
-        return prompt_user(User,Data, cheapest_struct, user_price);
+        return prompt_user(User,Data, cheapest_struct);
     }
     else{
         return 0;

@@ -10,7 +10,8 @@
 double info_energy_saving(user User, data data_array[]);
 data *cheapest(data data_array[], user User);
 int cmpfunc(const void * a, const void * b);
-void print_information(data return_array[], data cheapest_struct, double user_price, user User);
+void print_information(data return_array[], data cheapest_struct, user User);
+
 /*
 int main(void)
 {
@@ -45,6 +46,8 @@ double info_energy_saving(user User, data data_array[])
     double user_price_current = 0.0;
     double user_price_after = 0.0;
     double cheapest_price = 0.0;
+
+    data *cheapest_date_and_time;
     
     if (strcmp(User.settings.residence, "DK1") == 0)
     {   
@@ -103,10 +106,6 @@ data *cheapest(data data_array[], user User)
     cheapest->prize.DK1price = data_array[0].prize.DK1price;
     cheapest->prize.DK2price = data_array[0].prize.DK2price;
 
-    /* Informerer forbrugeren om hvorvidt det billigste tidspunkt er sent om aftenen */
-    if (data_array[0].prize.from.time.hour > 21)
-        printf("Det billigste tidspunkt er efter kl 21 om aftenen\n");
-
     if (strcmp(User.settings.residence, "DK1") == 0)
         printf("Dato: %d | Klokkeslæt: %d - %d | Pris DK1: %.2f DKK\n\n", cheapest->prize.from.day,
                          cheapest->prize.from.time.hour, cheapest->prize.to.time.hour, cheapest->prize.DK1price);
@@ -117,8 +116,9 @@ data *cheapest(data data_array[], user User)
 }
 
 /* En samlet print funktion der tager højde for om vi kigger på DK1 eller DK2 */
-void print_information(data return_array[], data cheapest_struct, double user_price, user User)
+void print_information(data return_array[], data cheapest_struct, user User)
 {
+    double user_price;
     if (strcmp(User.settings.residence, "DK1") == 0)
     {
         printf("Tidspunkt valgt af bruger: %d\n", User.choice.from.time.hour);
@@ -139,7 +139,6 @@ void print_information(data return_array[], data cheapest_struct, double user_pr
         printf("\n");
     }
 }
-
 
 /* Basic compare function */
 int cmpfunc(const void * a, const void * b)
