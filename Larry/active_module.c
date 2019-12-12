@@ -28,7 +28,7 @@
 /*Dette er prototyper i programmet.*/
 int check_for_run_module(user User);
 int prompt_user(user User,data *Data);
-void log_data(user User);
+void log_data_use(user User);
 /*main vil modtage information om det er en måler eller sig selv (Automatisk) der aktivere eller en app (Human)*/
 int main(void){
     user User;                           
@@ -58,7 +58,7 @@ int main(void){
         else if(User.type == Automated){
             confirmation = passive_module(User,Data);
             if(confirmation){
-                log_data(User);
+                log_data_use(User);
             }
             else{
                 error_message(ErrorConfirmationPassiveModule);
@@ -78,7 +78,7 @@ int main(void){
     
 }
 /*Checker for om der skal aktiveresSætter næste automatiske aktivering
- *Hvis aktivatitionen sker automatisk skal den lave en udregning. 
+ *Hvis aktivatitionen sker automatisk skal den vurdere om next activation stemmer overens med nuværende tidspunkt
  *Ellers hvis aktivationen sker af et menneske skal den bare gå videre.
  *Hvis den er automatisk og vurderes til at aktivere nu skal den hurtigt udregne næste gang den vurdere at aktivere hele programmet.
  *Hvis den er automatisk men vurderes til ikke at aktivere nu, så skal den returnere main(Automated) efter X antal tid(1 time?)*/
@@ -93,6 +93,8 @@ int check_for_run_module(user User){
             check_for_run_module(User);
         }
         else{
+            //pause for 1 times tid for at simulere måler
+            //return main(Automated) (når det er muligt)
             return 0;
         }
     }
@@ -103,8 +105,8 @@ int check_for_run_module(user User){
         error_message(ErrorUserType);
     }
 }
-/*Funktion der logger brugen af programmet og de data der måtte komme derigennem.*/
-void log_data(user User){
+/*Funktion der logger brugen af programmet og måden de data der måtte komme derigennem.*/
+void log_data_use(user User){
 
 }
 /*Funktionen som fungere som en brugers interface*/
