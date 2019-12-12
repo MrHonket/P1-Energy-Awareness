@@ -59,7 +59,7 @@ const char *month_txt;
     typedef enum {Mean = 1,Median}mean_or_median;
     typedef enum {Meter,Price,Green}lookup_type;
     /*settings valg: settings*/
-    typedef struct{int id;char residence[5];char language[5];}settings;
+    typedef struct{int id;char residence[5];char language[5];dato next_activation;}settings;
     /*aktive valg: choice*/
     typedef struct{int function; mean_or_median mean_or_median;
                    dato from;dato to;lookup_type lookup;}choice;
