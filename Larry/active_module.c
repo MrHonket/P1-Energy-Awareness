@@ -40,7 +40,7 @@ int main(void){
     
     //MockData!
     User.type = Automated;
-    User.choice.function = WarningEnergySaving;
+    User.choice.function = info_energy_saving;
     dato dato1 = {{10,00},12,6,2017};
     dato dato2 = {{18,00},12,6,2017};
     User.choice.lookup = Meter;
@@ -107,7 +107,7 @@ int prompt_user(user User, data *Data){
         update_settings();
     }
     else if(User.choice.function == InfoEnergySaving){
-        info = info_energy_saving(User,*Data);
+        info = info_energy_saving(User,Data);
     }
     else if(User.choice.function == ConsumptionCheck){
         info = consumption_check(User,Data);
