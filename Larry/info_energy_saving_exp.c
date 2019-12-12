@@ -10,8 +10,7 @@
 double info_energy_saving(user User, data data_array[]);
 data *cheapest(data data_array[], user User);
 int cmpfunc(const void * a, const void * b);
-void print_information(data return_array[], data cheapest_struct, double user_price, user User);
-int price_for_hours(data return_array[], user User);
+void print_information(data return_array[], data cheapest_struct, user User);
 
 /*
 int main(void)
@@ -47,6 +46,8 @@ double info_energy_saving(user User, data data_array[])
     double user_price_current = 0.0;
     double user_price_after = 0.0;
     double cheapest_price = 0.0;
+
+    data *cheapest_date_and_time;
     
     if (strcmp(User.settings.residence, "DK1") == 0)
     {   
@@ -115,8 +116,9 @@ data *cheapest(data data_array[], user User)
 }
 
 /* En samlet print funktion der tager højde for om vi kigger på DK1 eller DK2 */
-void print_information(data return_array[], data cheapest_struct, double user_price, user User)
+void print_information(data return_array[], data cheapest_struct, user User)
 {
+    double user_price;
     if (strcmp(User.settings.residence, "DK1") == 0)
     {
         printf("Tidspunkt valgt af bruger: %d\n", User.choice.from.time.hour);
