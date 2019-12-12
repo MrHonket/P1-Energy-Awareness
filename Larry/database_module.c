@@ -94,9 +94,6 @@ int     calc_time(dato from, dato to);
 int     calc_hours(dato test_year, month test);
 
 
-void    get_db_start_end_index(int start_index,int end_index);
-
-
 
 
 
@@ -343,40 +340,37 @@ int copy_file_to_myconsumpdata(char *filename){
             i++;
         }
         
-      //   printf("linie:169 i=%d  j=%d\n",i,j);
-        
-        
-        
+        //   printf("linie:169 i=%d  j=%d\n",i,j);
+                
         strcpy(myconsumpdata[j].id,data_txt[0]);
         // printf("---%s---\n",data_txt[1]);
         myconsumpdata[j].from   = date_from_stringYMDH(data_txt[1]);
         myconsumpdata[j].to     = date_from_stringYMDH(data_txt[2]);
-                
         myconsumpdata[j].value = consumption_from_string(data_txt[3]);
-        if(j>1 &&(dist=calc_time(myconsumpdata[j-1].from,myconsumpdata[j].from))!=1){
-        printf("index %5d : på dato: %d-%d-%d kl%d dist %d\n ",j-1,myconsumpdata[j-1].from.year, myconsumpdata[j-1].from.month, myconsumpdata[j-1].from.day,myconsumpdata[j-1].from.time.hour, dist);
-        printf("      %5d : på dato: %d-%d-%d kl%d dist %d\n\n ",j,myconsumpdata[j].from.year, myconsumpdata[j].from.month, myconsumpdata[j].from.day,myconsumpdata[j].from.time.hour, dist);
-  
-    }
-        
-        // print_consump_index(j);
-        // if(j>0 && (dist = calc_time(myconsumpdata[j-1].from,myconsumpdata[j].from))>1){
-        //     printf("hul i data dist = %d year %d", dist, myconsumpdata[j-1].from.year);
+
+        // if(j>1 &&( dist = calc_time(myconsumpdata[j-1].from,myconsumpdata[j].from))>1){
+        // // printf("hul i data dist = %d year %d", dist, myconsumpdata[j-1].from.year);
         //     int k = 0;
+            
         //     for(k=0; k<dist; k++){
-        //         printf("tomt data tilføjet index : %d\n",j+k);
         //         myconsumpdata[j+k] = empty_consumpstruct();
         //     }
-        //     j += k;
+        //     printf("%d tomme datafelter tilføjet fra index %d til index %d\n",dist,j,j+k);
+        //     printf("index %5d : på dato: %d-%d-%d kl%d dist %d\n ",j-1,myconsumpdata[j-1].from.year, myconsumpdata[j-1].from.month, myconsumpdata[j-1].from.day,myconsumpdata[j-1].from.time.hour, dist);
+         
+        //     j += dist;
         //     strcpy(myconsumpdata[j].id,data_txt[0]);
         //     myconsumpdata[j].from   = date_from_stringYMDH(data_txt[1]);
         //     myconsumpdata[j].to     = date_from_stringYMDH(data_txt[2]);
+        //     myconsumpdata[j].value = consumption_from_string(data_txt[3]);
+
+        //     printf("     %5d : på dato: %d-%d-%d kl%d dist %d\n\n ",j,myconsumpdata[j].from.year, myconsumpdata[j].from.month, myconsumpdata[j].from.day,myconsumpdata[j].from.time.hour, dist);
 
         // }
         j++;
     }
-    /* ;%2dÊ-Ê%2d;%*d,%*d;%*d;%*d;%*d;196;196;162,28;196;196;196;196;196;196;196;196;196;196
- */    
+        
+   
 
 
 
@@ -388,8 +382,6 @@ int copy_file_to_myconsumpdata(char *filename){
 
 
 
-
-
 FILE *check_file(char*filename){
     FILE *f = fopen(filename,"r");
     if(f!=NULL){
@@ -397,7 +389,7 @@ FILE *check_file(char*filename){
     }
 
     if(f!=NULL){
-        printf("%s\n",filename);
+        printf("\n\n%s\n",filename);
         return f;
     }
 
@@ -461,7 +453,7 @@ dato date_from_stringDMYI(char *date, int time){
     ret_date.time.minute =0;
     }
     else {
-          printf("error tried to convert string %s and int %d to date\n",date , time); 
+          printf("did not convert  -\"%s\"- and int --%d-- to date\n",date , time); 
     }
     return ret_date;
     
@@ -471,10 +463,11 @@ dato date_from_stringDMYI(char *date, int time){
 dato date_from_stringYMDH(char *date){
     dato ret_date = {{0,0},0,0,0};
     if(sscanf(date,"%4d-%2d-%2d %d.%d",&ret_date.year, &ret_date.month, &ret_date.day, &ret_date.time.hour, &ret_date.time.minute)<4){
-        printf("error tried to convert string %s to date\n",date); 
+        printf("did not convert  -\"%s\"-   to date\n",date); 
     }
     return ret_date;
 }
+
 
 double price_from_string(char *price){
    double value1=0,value2=0;
@@ -484,9 +477,10 @@ double price_from_string(char *price){
       return  value1 + value2/100;
    }
    
-   printf("error tried to convert string %s to doubles %lf %lf to number\n",price ,value1,value2);
+   printf("did not convert  -\"%s\"-   to doubles %lf %lf to number\n",price ,value1,value2);
    return -1000;
 }
+
 
 double consumption_from_string(char *price){
     double value1=0,value2=0;
@@ -496,7 +490,7 @@ double consumption_from_string(char *price){
         return  value1 + value2/1000;
     }
     
-   printf("error tried to convert string %s to doubles %lf %lf to number\n",price ,value1,value2);
+   printf("did not convert  -\"%s\"-   to doubles %lf %lf to number\n",price ,value1,value2);
     return -1000;
 }
 
@@ -527,33 +521,30 @@ int get_next_hour(int hour){
 
 int hours_since_index(dato first_index, dato to){
     printf("calc_time returnerer: %d",calc_time(first_index,to));
-   return calc_time(first_index,to);
-    
-    
+   return calc_time(first_index,to);    
 }
 
-void    get_db_start_end_index(int start_index,int end_index){
-    
-}
 
 
 int calc_time(dato from, dato to){
-    int days = 0, hours = 0;
+    int days = 0, hours = 0, test_number = 0;
     month from_month;
     month to_month;
 
 
     from_month = from.month;
     to_month = to.month;
-
-    // printf("test %d\n", from_month);
-    // printf("test %d\n", to_month);
-
     hours = calc_hours(to, to_month) - calc_hours(from, from_month);
-    hours += (24* (to.day - from.day));
+
+    hours += (24 * (to.day - from.day));
     hours += (to.time.hour - from.time.hour);
    
-    return hours; 
+    if(hours < 0 || hours == 73 || hours == 25){
+        return 1;
+    }
+    else{
+        return hours;
+    } 
 
 }
 
