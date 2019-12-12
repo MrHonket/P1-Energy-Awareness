@@ -2,74 +2,81 @@
 #include <stdio.h>
 #include "global.h"
 
-/* int calc_time(dato from, dato to);
+int calc_time(dato from, dato to);
+int calc_hours(dato test_year, month test);
 
+/* 
 int main(void){
-    dato fr = {{0,0},Januar,1,2017}; 
-    dato t = {{0,0},Februar,1,2017};
+    dato fr = {{00, 00}, 1, 2 , 2017};
+    dato t = {{00, 00}, 1, 6, 2017};
     int hos = 0;
 
     hos = calc_time(fr, t);
 
-    printf("ola %d \n", hos);
+    printf("test print: %d \n", hos);
 
     return 0;
 } */
 
 int calc_time(dato from, dato to){
     int days = 0, hours = 0;
-    int local_month;
+    month from_month;
+    month to_month;
 
-    local_month = from.month;
 
+    from_month = from.month;
+    to_month = to.month;
 
-    if(from.year % 4 == 0){
-        while(local_month >= 1){
-            if(local_month == 2){
+    hours = calc_hours(to, to_month) - calc_hours(from, from_month);
+
+    hours += (24 * (to.day - from.day));
+    hours += (to.time.hour - from.time.hour);
+   
+    return hours; 
+
+}
+
+int calc_hours(dato test_year, month test){
+    int days = 0, hours = 0;
+    if(test_year.year % 4 == 0){
+        for (days = 0; test >= 1; test--)
+        {
+            if(test == 2){
                 days += 29;
-                local_month--;
             }
-            else if(local_month <= 6 && local_month % 2 == 0){
+            else if(test <= 6 && test % 2 == 0){
                 days += 30;
-                local_month--;
             }
-            else if(local_month <= 7 && local_month % 2 != 0){
+            else if(test <= 7 && test % 2 != 0){
                 days += 31;
-                local_month--;
             }
-            else if(local_month > 6 && local_month % 2 == 0){
+            else if(test > 6 && test % 2 == 0){
                 days += 31;
-                local_month--;
             }
-            else if(local_month >= 9 && local_month % 2 != 0){
+            else if(test >= 9 && test % 2 != 0){
                 days += 30;
-                local_month--;
             }
         }
         hours = days * 24;
         return hours;
     }
-    else if (from.year % 4 != 0){
-        while(local_month >= 1){
-            if(local_month == 2){
+    else if (test_year.year % 4 != 0){
+        for (days = 0; test >= 1; test--)
+        {
+            if(test == 2){
                 days += 28;
-                local_month--;
             }
-            else if(local_month <= 6 && local_month % 2 == 0){
+            else if(test <= 6 && test % 2 == 0){
                 days += 30;
-                local_month--;
             }
-            else if(local_month <= 7 && local_month % 2 != 0){
+            else if(test <= 7 && test % 2 != 0){
                 days += 31;
-                local_month--;
             }
-            else if(local_month > 6 && local_month % 2 == 0){
+            else if(test > 6 && test % 2 == 0){
                 days += 31;
-                local_month--;
             }
-            else if(local_month >= 9 && local_month % 2 != 0){
+            else if(test >= 9 && test % 2 != 0){
                 days += 30;
-                local_month--;
             }
         }
         hours = days * 24;

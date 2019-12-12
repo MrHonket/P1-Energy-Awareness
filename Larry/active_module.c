@@ -26,7 +26,7 @@
 #include "debug.h"                  //implementeret og brugbart!
 
 /*Dette er prototyper i programmet.*/
-void check_activation(user User);
+int check_for_run_module(user User);
 int prompt_user(user User,data *Data);
 void log_data(user User);
 /*main vil modtage information om det er en måler eller sig selv (Automatisk) der aktivere eller en app (Human)*/
@@ -36,7 +36,6 @@ int main(void){
     int confirmation;
     
     User.settings = load_settings();
-    check_activation(User);
     
     // MockData!
     User.type = Human;
@@ -49,38 +48,60 @@ int main(void){
     strcpy(User.settings.residence,"DK1");
     // End mock 
 
-    
+    confirmation = check_for_run_module(User);
 
-    Data = get_price_for_timeinterval_in_area(dato_test, dato_test, Dk1);
-
-
-    if (User.type == Human){
-        prompt_user(User,Data);
-    }
-    else if(User.type == Automated){
-        confirmation = passive_module(User,Data);
-        if(confirmation){
-            log_data(User);
+    if(confirmation){
+        Data = get_price_for_timeinterval_in_area(dato_test, dato_test, Dk1);
+        if (User.type == Human){
+            prompt_user(User,Data);
+        }
+        else if(User.type == Automated){
+            confirmation = passive_module(User,Data);
+            if(confirmation){
+                log_data(User);
+            }
+            else{
+                error_message(ErrorConfirmationPassiveModule);
+            }
         }
         else{
-            error_message(ErrorConfirmationPassiveModule);
+            error_message(ErrorUserType);
         }
     }
     else{
-        error_message(ErrorUserType);
+        //don't run
     }
 
     debug_user(User);
-    
+        
     return EXIT_SUCCESS;
+    
 }
 /*Checker for om der skal aktiveresSætter næste automatiske aktivering
  *Hvis aktivatitionen sker automatisk skal den lave en udregning. 
  *Ellers hvis aktivationen sker af et menneske skal den bare gå videre.
  *Hvis den er automatisk og vurderes til at aktivere nu skal den hurtigt udregne næste gang den vurdere at aktivere hele programmet.
  *Hvis den er automatisk men vurderes til ikke at aktivere nu, så skal den returnere main(Automated) efter X antal tid(1 time?)*/
-void check_activation(user User){
-    
+int check_for_run_module(user User){
+    if(User.type == Automated){
+        dato time_now=User.choice.from;/*rigtig tid skal hentes fra time library*/
+        if(User.settings.next_activation.time.hour == time_now.time.hour){
+            return 1;
+        }
+        else if(User.settings.next_activation.day < time_now.day){
+            update_next_activation();
+            check_for_run_module(User);
+        }
+        else{
+            return 0;
+        }
+    }
+    else if(User.type == Human){
+        return 1;
+    }
+    else{
+        error_message(ErrorUserType);
+    }
 }
 /*Funktion der logger brugen af programmet og de data der måtte komme derigennem.*/
 void log_data(user User){

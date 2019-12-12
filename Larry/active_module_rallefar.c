@@ -31,9 +31,9 @@ int prompt_user(user User, data *Data, data cheapest, double user_price);
 void log_data(user User);
 /*main vil modtage information om det er en måler eller sig selv (Automatisk) der aktivere eller en app (Human)*/
 int main(void){
-    user User = { {200, "DK1", "DK"}, InfoEnergySaving, Mean, {{18, 0}, 21, Januar, 2017}, {{19, 0}, 21, Januar, 2017}, Price, Human};       
-    dato from = {{01, 00}, 20, Januar, 2017};
-    dato to = {{20, 00}, 25, Januar, 2017};                      
+    user User = { {200, "DK1", "DK"}, InfoEnergySaving, Mean, {{13, 0}, 0, Januar, 2017}, {{14, 0}, 0, Januar, 2017}, Price, Human};       
+    dato from = {{00, 00}, 20, Januar, 2017};
+    dato to = {{23, 00}, 20, Januar, 2017};                      
     data *Data;
     data cheapest_struct;
     int confirmation;
@@ -55,16 +55,16 @@ int main(void){
     strcpy(User.settings.residence,"DK1");
     End mock */
 
-    
 
     Data = get_price_for_timeinterval_in_area(from, to, Dk1);
-
-    for (int i = 0; i < 100; i++)
-        printf("Priser: %.1f\n", Data[i].prize.DK1price);
+    printf("Tidspunkt vi kigger efter: %d\n", User.choice.from.time.hour);
+    for (int i = 0; i < 23; i++)
+        printf("Dato: %d\t| Tidspunkt: %d - %d\t| Priser: %.2f\t| Forbrug: %.2f\n", Data[i].prize.from.day, Data[i].prize.from.time.hour, 
+                                                                 Data[i].prize.to.time.hour, Data[i].prize.DK1price, Data[i].meter.value);
 
     printf("\n\n");
-    for (int i = 0; i < 100; i++)
-        printf("Forbrug: %.1f\n", Data[i].meter.value);
+    //for (int i = 0; i < 100; i++)
+       // printf("Forbrug: %.1f\n", Data[i].meter.value);
 
         /* cheapest_struct = *cheapest(Data);
         print_information(Data, cheapest_struct, user_price, User);
@@ -126,10 +126,11 @@ int prompt_user(user User, data *Data, data cheapest_struct, double user_price){
         update_settings();
     }
     else if(User.choice.function == InfoEnergySaving){
-        cheapest_struct = *cheapest(Data);
-        print_information(Data, cheapest_struct, user_price, User);
+        cheapest_struct = *cheapest(Data, User);
         info = info_energy_saving(User, Data);
-        printf("Din besparelse er: %.5f DKK\n", info);
+        print_information(Data, cheapest_struct, user_price, User);
+        printf("Din besparelse bliver: %.5f DKK\n", info);
+        
     }
     else if(User.choice.function == ConsumptionCheck){
         info = consumption_check(User, Data);

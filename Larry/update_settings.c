@@ -9,6 +9,7 @@
 
 void update_settings(void);
 settings load_settings(void);
+void update_next_activation(void);
 
 void update_settings(void)
 {
@@ -52,4 +53,9 @@ settings load_settings(void){
     printf("Settings = %d\n",Settings.id);
 
     return Settings;
+}
+/*Skal sætte den næste dato for automatisk aktivering ind i settings.txt filen*/
+/*Husk at sørg for next_activation også bliver kørt i update_setings!*/
+void update_next_activation(void){
+    data *Data;
 }
