@@ -97,9 +97,7 @@ data *cheapest(data data_array[], user User)
     data *cheapest;
     cheapest = (data*)malloc(1 * sizeof(data));
     
-    qsort(data_array, NMB_OF_ELEMENTS, sizeof(pricedata), cmpfunc);
-    for (int i = 0; i < 23; i++)
-        printf("Dato: %d og pris: %.2f\n", data_array[i].prize.from.day, data_array[i].prize.DK1price);
+    qsort(data_array, NMB_OF_ELEMENTS, sizeof(data), cmpfunc);
 
     cheapest->prize.from = data_array[0].prize.from;
     cheapest->prize.to = data_array[0].prize.to;
@@ -140,11 +138,17 @@ void print_information(data return_array[], data cheapest_struct, double user_pr
     }
 }
 
+
 /* Basic compare function */
 int cmpfunc(const void * a, const void * b)
 {
     const data *priserA = (data*)a;
     const data *priserB = (data*)b;
 
-    return priserA->prize.DK1price - priserB->prize.DK1price;
+    if (priserA->prize.DK1price < priserB->prize.DK1price)
+        return -1;
+    else if (priserA->prize.DK1price > priserB->prize.DK1price)
+        return +1;
+    else
+        return 0;
 }
