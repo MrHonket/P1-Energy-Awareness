@@ -103,9 +103,9 @@ int prompt_user(user User, data *Data, data cheapest_struct){
     printf("Tryk %d for brugerhistorik\n",UserHistory);
     printf("Tryk %d for brugerindstillinger\n",UpdateSettings);
     printf("Tryk %d for info om dine energibesparelser\n",InfoEnergySaving);
-    printf("Tryk %d for at lave et elcheck",ConsumptionCheck);
+    printf("Tryk %d for at lave et elcheck\n",ConsumptionCheck);
     printf("Tryk %d for informationer om dette system\n",SystemInformation);
-    printf("Tryk %d for et gaet om fremtidige priser",FutureData);
+    printf("Tryk %d for et gaet om fremtidige priser\n",FutureData);
 
     scanf(" %d", &User.choice.function);
     /*Ja, dette kunne godt være en switch :P*/
@@ -116,11 +116,12 @@ int prompt_user(user User, data *Data, data cheapest_struct){
         update_settings();
     }
     else if(User.choice.function == InfoEnergySaving){
-        print_information(Data, cheapest_struct, User);
+        dialog_with_user(Data, User, info, cheapest_struct);
+        /*print_information(Data, cheapest_struct, User);
         info = info_energy_saving(User, Data);
         cheapest_struct = *cheapest(Data, User);
         printf("Din besparelse bliver: %.5f DKK\n", info);
-        printf("--------------------------------------------------------\n\n");
+        printf("--------------------------------------------------------\n\n"); */
         
     }
     else if(User.choice.function == ConsumptionCheck){

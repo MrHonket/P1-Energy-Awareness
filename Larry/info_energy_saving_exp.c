@@ -10,6 +10,7 @@ double info_energy_saving(user User, data data_array[]);
 data *cheapest(data data_array[], user User);
 int cmpfunc(const void * a, const void * b);
 void print_information(data return_array[], data cheapest_struct, user User);
+void dialog_with_user(data data_array[], user User, double info, data cheapest_struct);
 
 /*
 int main(void)
@@ -150,3 +151,31 @@ int cmpfunc(const void * a, const void * b)
     else
         return 0;
 }
+
+
+void dialog_with_user(data data_array[], user User, double info, data cheapest_struct)
+{
+    int choice;
+    printf("Velkommen til modulet energibesparelser - du har nu følgende to valgmuligheder:\n");
+    printf("Tryk 1 for information om strømpris for en given time og hvornår på døgnet strømmen er billigst\n");
+    printf("Tryk 2 for for strømpris i et givent tidsrum\n");
+
+    scanf(" %d", &choice);
+
+    switch(choice){
+        case 1: 
+            print_information(data_array, cheapest_struct, User);
+            info = info_energy_saving(User, data_array);
+            cheapest_struct = *cheapest(data_array, User);
+            printf("Din besparelse bliver: %.5f DKK\n", info);
+            printf("--------------------------------------------------------\n\n");
+            break;
+    }
+}
+
+
+
+
+
+
+
