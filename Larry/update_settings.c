@@ -37,7 +37,7 @@ int test_update_scan(char userdata[]){
     char test_lang[10];
     int test_id;
 
-    sscanf(userdata,"%s - %s - %d ",&test_res,&test_lang,&test_id);
+    sscanf(userdata,"%s - %s - %d ",test_res,test_lang,&test_id);
 
     printf("%s %s %d\n",test_res,test_lang,test_id);
 
