@@ -1,6 +1,6 @@
 /*MartinBM*/
 //"Rigtige" gcc compilation
-//gcc -Wall -prdantic -ansi -Wextra active_module.c global.c language.c database_module.c passive_module.c update_settings.c info_energy_saving.c user_history.c warning_energy_saving.c system_information.c machine_activation.c future_data.c consumption_check.c debug.c -o larry
+//gcc -Wall -pedantic -ansi -Wextra active_module.c global.c language.c database_module.c passive_module.c update_settings.c info_energy_saving.c user_history.c warning_energy_saving.c system_information.c machine_activation.c future_data.c consumption_check.c debug.c -o larry
 
 #include <stdio.h>
 #include <stdlib.h>
