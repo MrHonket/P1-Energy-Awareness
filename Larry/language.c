@@ -136,6 +136,7 @@ void l_update_settings(user User){
     }
     else{
         error_message(ErrorLanguageNotImplemented);
+        update_settings();
     }
 }
 
