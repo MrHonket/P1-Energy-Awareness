@@ -75,7 +75,7 @@ void l_user_history(user User, data *Data){
         printf("\nBemaerk at der traekkes to fra Hours Pr Year for ikke at komme udenfor indeks OG at gennemsnit == median!\n");
     }
 }
-
+/*De forskellige choice, from hour, info, etc. skal indlægges i User structet for at holde en clean struktur*/
 void l_info_energy_saving(user User,data *Data)
 {
     double info;
