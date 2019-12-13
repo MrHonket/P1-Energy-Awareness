@@ -30,8 +30,8 @@ int main(void){
 /*Raller*/ //user User = { {200, "DK1", "DK"}, InfoEnergySaving, Mean, {{19, 0}, 0, Januar, 2017}, {{21, 0}, 0, Januar, 2017}, Price, Human};
 /*Basil*/  user User = { {200, "DK1", "DK"}, UserHistory, Median, {{15, 0}, 0, Januar, 2017}, {{21, 0}, 0, Januar, 2017}, Price, Human};    
 /*Niller*/ //user User = { {200, "DK1", "DK"}, WarningEnergySaving, Median, {{15, 0}, 0, Januar, 2017}, {{21, 0}, 0, Januar, 2017}, Meter, Automated};    
-    dato dato_from = {{00, 00}, 20, Januar, 2017};
-    dato dato_to = {{00, 00}, 21, Januar, 2017};                       
+    dato dato_from = {{00, 00}, 1, Januar, 2017};
+    dato dato_to = {{23, 00}, 31, December, 2017};                       
     data *Data;
     int confirmation;
     
@@ -110,7 +110,7 @@ void log_data_use(user User){
 /*Funktionen som fungere som en brugers interface*/
 int prompt_user(user User, data *Data){
    
-    l_prompt_user(User.settings.language);
+    l_prompt_user(User);
 
     scanf(" %d", &User.choice.function);
     
@@ -118,8 +118,7 @@ int prompt_user(user User, data *Data){
         return EXIT_SUCCESS;
     }
     else if(User.choice.function == UserHistory){
-        user_history(User, Data);
-        printf("%s er %lf DKK\n",(User.choice.mean_or_median == Median ? "Medianen" : "Gennemsnittet"));
+        l_user_history(User,Data);
     }
     else if(User.choice.function == UpdateSettings){
         update_settings();

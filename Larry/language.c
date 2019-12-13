@@ -2,12 +2,28 @@
 #include <stdlib.h>
 #include <string.h>
 #include "global.h"
-#include "info_energy_saving.h"
+#include "user_history.h"           
+#include "update_settings.h"        
+#include "info_energy_saving.h"     
+#include "passive_module.h"         
+#include "warning_energy_saving.h"  
+#include "system_information.h"     
+#include "machine_activation.h"     
+#include "future_data.h"            
+#include "consumption_check.h"      
 
-void l_info_energy_saving(user User,data data_array[]);
+void l_prompt_user(user User);
+void l_user_history(user User, data *Data);
+void l_info_energy_saving(user User,data *Data);
+void l_update_settings(user User,data *Data);
+void l_system_information(user User,data *Data);
+void l_consumption_check(user User,data *Data);
+void l_future_data(user User,data *Data);
+void l_warning_energy_saving(user User,data *Data);
+void l_machine_activation(user User,data *Data);
 
-void l_prompt_user(char language[]){
-    if(strcmp(language,"DK") == 0){
+void l_prompt_user(user User){
+    if(strcmp(User.settings.language,"DK") == 0){
         printf("\n\nIndtast venligst et af de angivne heltal\n");                 
         printf("Tryk %d for at gaa ud af programmet\n",Exit);                     
         printf("Tryk %d for brugerhistorik\n",UserHistory);                       
@@ -17,7 +33,7 @@ void l_prompt_user(char language[]){
         printf("Tryk %d for at lave et elcheck\n",ConsumptionCheck);              
         printf("Tryk %d for et gaet om fremtidige priser\n",FutureData);       
     }
-    else if(strcmp(language,"ENG") == 0){
+    else if(strcmp(User.settings.language,"ENG") == 0){
         printf("\n\nPlease enter one of the available numbers\n");                
         printf("Enter %d to exit the program\n",Exit);                            
         printf("Enter %d for your user history\n",UserHistory);                   
@@ -27,9 +43,40 @@ void l_prompt_user(char language[]){
         printf("Enter %d to check your power consumption\n",ConsumptionCheck);    
         printf("Enter %d to get the prices of the future\n",FutureData);          
     }
+    else{
+        error_message(ErrorLanguageNotImplemented);
+    }
 }
 
-void l_info_energy_saving(user User,data data_array[])
+void l_user_history(user User, data *Data){
+    double result;
+    int test = 2;
+    
+    if(strcmp(User.settings.language,"DK") == 0){
+        printf("Her kan du se dit gennemsnitlige forbrug i aaret\nFra ");
+        print_date(Data[0].prize.from);
+        printf("Til ");
+        print_date(Data[HOURS_PR_YEAR - test].prize.to);
+        printf("Skriv venligst %d hvis du vil have det som gennemsnit eller %d hvis du vil have medianen",Mean,Median);
+
+        scanf(" %d",&User.choice.mean_or_median);
+
+        result = user_history(User, Data);
+        printf("%s er %lf DKK for perioden\n",(User.choice.mean_or_median == Median ? "Medianen" : "Gennemsnittet"), result);
+    }
+    else if(strcmp(User.settings.language,"ENG") == 0){
+        //skriv engelsk
+        error_message(ErrorLanguageNotImplemented);
+    }
+    else{
+        error_message(ErrorLanguageNotImplemented);
+    }
+    if(test){
+        printf("\nBemaerk at der traekkes to fra Hours Pr Year for ikke at komme udenfor indeks OG at gennemsnit == median!\n");
+    }
+}
+
+void l_info_energy_saving(user User,data *Data)
 {
     double info;
     data cheapest_struct;
@@ -50,16 +97,16 @@ void l_info_energy_saving(user User,data data_array[])
             case 1: 
                 printf("Indtast hvilken time du ønsker data fra: ");
                 scanf(" %d", &hour_choice);
-                print_information(data_array, cheapest_struct, User, hour_choice);
-                info = info_energy_saving(User, data_array, hour_choice);
-                cheapest_struct = *cheapest(data_array, User);
+                print_information(Data, cheapest_struct, User, hour_choice);
+                info = info_energy_saving(User, Data, hour_choice);
+                cheapest_struct = *cheapest(Data, User);
                 printf("Din besparelse bliver: %.5f DKK\n", info);
                 printf("--------------------------------------------------------\n\n");
                 break;
             case 2: 
                 printf("Indtast en start time og en slut time du ønsker at se priser for: \n");
                 scanf(" %d %d", &from_hour, &to_hour);
-                overview_for_interval(data_array, User, from_hour, to_hour);
+                overview_for_interval(Data, User, from_hour, to_hour);
                 break;
         }
     }
@@ -67,6 +114,102 @@ void l_info_energy_saving(user User,data data_array[])
         printf("Sorry, English not implemented for module, use danish (DK).\n");
     }
     else{
-        printf("Sorry, Language not implemented for module.\n");
+        error_message(ErrorLanguageNotImplemented);
+    }
+}
+
+void l_update_settings(user User, data *Data){
+    //skriv variable
+    
+    if(strcmp(User.settings.language,"DK") == 0){
+        //skriv dansk
+        error_message(ErrorLanguageNotImplemented);
+    }
+    else if(strcmp(User.settings.language,"ENG") == 0){
+        //skriv engelsk
+        error_message(ErrorLanguageNotImplemented);
+    }
+    else{
+        error_message(ErrorLanguageNotImplemented);
+    }
+}
+
+void l_system_information(user User, data *Data){
+    //skriv variable
+    
+    if(strcmp(User.settings.language,"DK") == 0){
+        //skriv dansk
+        error_message(ErrorLanguageNotImplemented);
+    }
+    else if(strcmp(User.settings.language,"ENG") == 0){
+        //skriv engelsk
+        error_message(ErrorLanguageNotImplemented);
+    }
+    else{
+        error_message(ErrorLanguageNotImplemented);
+    }
+}
+
+void l_consumption_check(user User, data *Data){
+    //skriv variable
+    
+    if(strcmp(User.settings.language,"DK") == 0){
+        //skriv dansk
+        error_message(ErrorLanguageNotImplemented);
+    }
+    else if(strcmp(User.settings.language,"ENG") == 0){
+        //skriv engelsk
+        error_message(ErrorLanguageNotImplemented);
+    }
+    else{
+        error_message(ErrorLanguageNotImplemented);
+    }
+}
+
+void l_future_data(user User, data *Data){
+    //skriv variable
+    
+    if(strcmp(User.settings.language,"DK") == 0){
+        //skriv dansk
+        error_message(ErrorLanguageNotImplemented);
+    }
+    else if(strcmp(User.settings.language,"ENG") == 0){
+        //skriv engelsk
+        error_message(ErrorLanguageNotImplemented);
+    }
+    else{
+        error_message(ErrorLanguageNotImplemented);
+    }
+}
+
+void l_warning_energy_saving(user User,data *Data){
+    //skriv variable
+    
+    if(strcmp(User.settings.language,"DK") == 0){
+        //skriv dansk
+        error_message(ErrorLanguageNotImplemented);
+    }
+    else if(strcmp(User.settings.language,"ENG") == 0){
+        //skriv engelsk
+        error_message(ErrorLanguageNotImplemented);
+    }
+    else{
+        error_message(ErrorLanguageNotImplemented);
+    }
+}
+
+void l_machine_activation(user User,data *Data){
+    //skriv variable
+    
+    if(strcmp(User.settings.language,"DK") == 0){
+        //skriv dansk
+        error_message(ErrorLanguageNotImplemented);
+    }
+    else if(strcmp(User.settings.language,"ENG") == 0){
+        //skriv engelsk
+        error_message(ErrorLanguageNotImplemented);
+    }
+    else{
+        error_message(ErrorLanguageNotImplemented);
     }
 }

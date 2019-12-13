@@ -102,10 +102,7 @@ int     calc_hours(dato test_year, month test); */
 
 void init_database(void){
    
-   int index=0;
    dato date1,date2;
-   data *testdata;
-   data temp;
    date1.day = date2.day =20;
    date1.month=date2.month=2;
    date1.day = date2.day =20;
@@ -268,7 +265,7 @@ int copy_file_to_mypricedata(char *filename){
     j=0;
 
     while (fgets(str,MAX_LINE_WIDTH,f)!=NULL){
-        char  hourb[7];
+        /* char  hourb[7]; */
         int   houra,hourb_int;
         token = strtok(str,s);
         i=0;

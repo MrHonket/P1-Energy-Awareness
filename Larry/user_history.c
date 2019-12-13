@@ -23,7 +23,6 @@ user_history
 #include "global.h"
 
 double calc_mean(double dataset[], int number_of_elements);
-double calc_median(double dataset[], int number_of_elements);
 int sort_array_for_median(const void *a, const void *b);
 
 double user_history(user User, data *Data) {
@@ -68,7 +67,7 @@ double user_history(user User, data *Data) {
         return(calc_mean(pointer_to_dataset, number_of_elements));
     } else
     if (User.choice.mean_or_median == Median) {
-        return(calc_median(pointer_to_dataset, number_of_elements));
+        return pointer_to_dataset[number_of_elements/2];
     } else {
         error_message(ErrorUserMeanMedianHistory);
         return 0;
@@ -86,10 +85,6 @@ double calc_mean(double dataset[], int number_of_elements) {
     }
     /*Returnerer gennemsnittet*/
     return (mean/i);
-}
-
-double calc_median(double dataset[], int number_of_elements) {
-    return dataset[number_of_elements/2];
 }
 
 /*qsort*/
