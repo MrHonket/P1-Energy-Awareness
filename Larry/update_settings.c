@@ -59,15 +59,14 @@ settings load_settings(void){
     FILE *f;
     char scan_data[40], language[5], location[5];
     int user_id; 
-    //herunder bruges unistd biblioteket til at se om der er access (File_Ok) til settings.txt. Hvis den ikke eksistere, skab settings fil.
-
+    
     f = fopen("settings.txt","r");
     
     fgets(scan_data,40,f);
     
     fclose(f);
 
-    sscanf(scan_data, " %3s - %s - %d", location, language, &user_id);
+    sscanf(scan_data, " %s - %s - %d", location, language, &user_id);
 
     Settings.id = user_id;
     strcpy(Settings.language, language);

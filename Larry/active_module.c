@@ -35,7 +35,7 @@ int main(void){
     data *Data;
     int confirmation;
 
-    if(access("settings.txt",F_OK) != -1){
+    if(access("settings.txt",F_OK) == 1){
         User.settings = load_settings();
     }
     else{

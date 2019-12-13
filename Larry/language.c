@@ -45,7 +45,7 @@ void l_prompt_user(user User){
     }
     else{
         error_message(ErrorLanguageNotImplemented);
-        update_settings();
+        l_update_settings(User);
     }
 }
 
@@ -137,7 +137,7 @@ void l_update_settings(user User){
     }
     else{
         error_message(ErrorLanguageNotImplemented);
-        update_settings();
+        l_update_settings(User);
     }
 }
 
