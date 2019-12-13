@@ -58,8 +58,8 @@
 #define FIRST_PRICEINDEX 3
 #define FIRST_CONSUMPINDEX 1
 
-pricedata mypricedata[HOURS_PR_YEAR*3];
-meterdata myconsumpdata[HOURS_PR_YEAR*3];
+static pricedata mypricedata[HOURS_PR_YEAR*3];
+static meterdata myconsumpdata[HOURS_PR_YEAR*3];
 int price_initialised = 0;
 int consumption_initialised = 0;
 
@@ -252,7 +252,7 @@ Data was last updated 31-12-2018;;;;;;;;;;;;;;;;;;
 01-01-2017;01 - 02;190,38;178,64;178,64;178,64;178,64;178,64;155,37;155,37;209,42;209,42;209,42;178,64;178,64;178,64;178,64;178,64;178,64
 */
 int copy_file_to_mypricedata(char *filename){
-    int i=0,j=0;
+    int i=0,j=0,dist=0;
     char str[MAX_LINE_WIDTH];
     double value1=0,value2=0;
     const char s[2] = ";";
@@ -281,7 +281,10 @@ int copy_file_to_mypricedata(char *filename){
         
             
         sscanf(data_txt[1],"%dÊ-Ê",&houra);
-    
+    // if(j>0 && hours_between(mypricedata[j].from, mypricedata[j-1].to)>1){
+    //     printf("stort spring i data fra index %d til index %d   afstanden er: %d\n",j-1,j,dist);
+    // }
+
     //   printf("hra:%d,hrb:%d\n",houra, hourb_int);
         mypricedata[j].from  = date_from_stringDMYI(data_txt[0],houra);
         mypricedata[j].to    = next_hour(mypricedata[j].from);
@@ -345,14 +348,16 @@ int copy_file_to_myconsumpdata(char *filename){
         if(j>1 &&( dist = hours_between(myconsumpdata[j-1].from,myconsumpdata[j].from))>1){
             dist--;
        
-        printf("hul i data dist = %d year %d\n", dist, myconsumpdata[j-1].from.year);
+            // printf("lappet hul i data :");
+            // prnt_date(myconsumpdata[j].from);
+            // printf("      afstand mlm datoer = %d \n", dist);
             int k = 0;
             
             for(k=0; k<dist; k++){
                 myconsumpdata[j+k] = empty_consumpstruct();
             }
             printf("%d tomme datafelter tilføjet fra index %d til index %d\n",dist,j,j+k);
-            printf("index %5d : på dato: %d-%d-%d kl%d dist %d\n ",j-1,myconsumpdata[j-1].from.year, myconsumpdata[j-1].from.month, myconsumpdata[j-1].from.day,myconsumpdata[j-1].from.time.hour, dist);
+            printf("index %5d : på dato: %d-%d-%d kl%d dist %d\n",j-1,myconsumpdata[j-1].from.year, myconsumpdata[j-1].from.month, myconsumpdata[j-1].from.day,myconsumpdata[j-1].from.time.hour, dist);
          
             j += dist;
             strcpy(myconsumpdata[j].id,data_txt[0]);
@@ -360,7 +365,7 @@ int copy_file_to_myconsumpdata(char *filename){
             myconsumpdata[j].to     = date_from_stringYMDH(data_txt[2]);
             myconsumpdata[j].value = consumption_from_string(data_txt[3]);
 
-            printf("     %5d : på dato: %d-%d-%d kl%d dist %d\n\n ",j,myconsumpdata[j].from.year, myconsumpdata[j].from.month, myconsumpdata[j].from.day,myconsumpdata[j].from.time.hour, dist);
+            printf("      %5d : på dato: %d-%d-%d kl%d dist %d\n\n",j,myconsumpdata[j].from.year, myconsumpdata[j].from.month, myconsumpdata[j].from.day,myconsumpdata[j].from.time.hour, dist);
 
         }
         j++;
@@ -445,7 +450,7 @@ dato date_from_stringDMYI(char *date, int time){
     ret_date.time.minute =0;
     }
     else {
-          printf("did not convert  -\"%s\"- and int --%d-- to date\n",date , time); 
+          printf("did not convert string  -\"%s\"- and int --%d-- to date\n",date , time); 
     }
     return ret_date;
     
@@ -455,7 +460,7 @@ dato date_from_stringDMYI(char *date, int time){
 dato date_from_stringYMDH(char *date){
     dato ret_date = {{0,0},0,0,0};
     if(sscanf(date,"%4d-%2d-%2d %d.%d",&ret_date.year, &ret_date.month, &ret_date.day, &ret_date.time.hour, &ret_date.time.minute)<4){
-        printf("did not convert  -\"%s\"-   to date\n",date); 
+        printf("did not convert string  -\"%s\"-   to date\n",date); 
     }
     return ret_date;
 }
@@ -469,7 +474,7 @@ double price_from_string(char *price){
       return  value1 + value2/100;
    }
    
-   printf("did not convert  -\"%s\"-   to doubles %lf %lf to number\n",price ,value1,value2);
+   printf("did not convert string  -\"%s\"-   to doubles %lf %lf to number\n",price ,value1,value2);
    return -1000;
 }
 
@@ -482,7 +487,7 @@ double consumption_from_string(char *price){
         return  value1 + value2/1000;
     }
     
-   printf("did not convert  -\"%s\"-   to doubles %lf %lf to number\n",price ,value1,value2);
+   printf("did not convert string -\"%s\"-   to doubles %lf %lf to number\n",price ,value1,value2);
     return -1000;
 }
 
@@ -517,78 +522,5 @@ int hours_since_index(dato first_index, dato to){
 }
 
 
-
-/* int calc_time(dato from, dato to){
-    int days = 0, hours = 0, test_number = 0;
-    month from_month;
-    month to_month;
-
-
-    from_month = from.month;
-    to_month = to.month;
-    hours = calc_hours(to, to_month) - calc_hours(from, from_month);
-
-    hours += (24 * (to.day - from.day));
-    hours += (to.time.hour - from.time.hour);
-   
-    if(hours < 0 || hours == 73 || hours == 25){
-        return 1;
-    }
-    else{
-        return hours;
-    } 
-
-} */
-
-/* int calc_hours(dato test_year, month test){
-    int days = 0, hours = 0;
-    if(test_year.year % 4 == 0){
-        for (days = 0; test >= 1; test--)
-        {
-            if(test == 2){
-                days += 29;
-            }
-            else if(test <= 6 && test % 2 == 0){
-                days += 30;
-            }
-            else if(test <= 7 && test % 2 != 0){
-                days += 31;
-            }
-            else if(test > 6 && test % 2 == 0){
-                days += 31;
-            }
-            else if(test >= 9 && test % 2 != 0){
-                days += 30;
-            }
-        }
-        hours = days * 24;
-        return hours;
-    }
-    else if (test_year.year % 4 != 0){
-        for (days = 0; test >= 1; test--)
-        {
-            if(test == 2){
-                days += 28;
-            }
-            else if(test <= 6 && test % 2 == 0){
-                days += 30;
-            }
-            else if(test <= 7 && test % 2 != 0){
-                days += 31;
-            }
-            else if(test > 6 && test % 2 == 0){
-                days += 31;
-            }
-            else if(test >= 9 && test % 2 != 0){
-                days += 30;
-            }
-        }
-        hours = days * 24;
-        return hours;
-        
-    }
-    return 0;
-
-} */
 
 
