@@ -80,5 +80,13 @@ typedef enum{Failure,Success}passive_warnings;
 /*Calc time prototypes*/
 int calc_time(dato from, dato to);
 int calc_hours(dato test_year, month test);
+int hours_between (dato d1, dato d2);
+int days_between(dato from, dato to);
+int months_between(dato d1, dato d2);
+int days_in_month(dato d);
+dato next_hour(dato d);
+dato next_day(dato d);
+int leapYear(int);
+void prnt_date(dato);
 
 #endif //GLOBAL_H
