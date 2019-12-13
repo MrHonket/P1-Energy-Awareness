@@ -346,7 +346,7 @@ int copy_file_to_myconsumpdata(char *filename){
             dist--;
        
            /*  printf("lappet hul i data :");
-            prnt_date(myconsumpdata[j].from);
+            print_date(myconsumpdata[j].from);
             printf("      afstand mlm datoer = %d \n", dist); */
             int k = 0;
             
