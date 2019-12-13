@@ -9,7 +9,7 @@
 #define FALSE         0
 #define TRUE          1
 #define SUCCESS       2
-#define HOURS_PR_YEAR 8765*20
+#define HOURS_PR_YEAR (365 * 24)
 #define KWH_TO_MWH    0.001
 #define FILENAME_METER "Meterdata.csv"
 #define FILENAME_PRICE "elspot-prices_2017_hourly_dkk.csv"
@@ -22,7 +22,7 @@ typedef enum{ErrorConfirmationPassiveModule,ErrorChoiceDoesntExist,
              ErrorInfoStrNotFound,ErrorUserType,ErrorNotImplemented,
              ErrorUserLookupHistory,ErrorUserMeanMedianHistory,
              ErrorPassiveModuleFuncChoice,ErrorInWarningConsumption,
-             ErrorLogDataNotImplemented}error_types;
+             ErrorLogDataNotImplemented,ErrorLanguageNotImplemented}error_types;
 int error_message(int error);
 
 /*VARIABLE TIL data*/
@@ -88,6 +88,6 @@ int days_in_month(dato d);
 dato next_hour(dato d);
 dato next_day(dato d);
 int leapYear(int);
-void prnt_date(dato);
+void print_date(dato);
 
 #endif //GLOBAL_H
