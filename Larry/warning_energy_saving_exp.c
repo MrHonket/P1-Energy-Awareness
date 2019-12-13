@@ -11,8 +11,7 @@
 
 double warning_energy_saving(user User, data *Data); 
 double warning_consumption(double price, double consumption,double median_consumption);
-   /*user_history median data
-   time data hvor får vi det fra?*/
+   /*time data hvor får vi det fra?*/
 
 double warning_energy_saving(user User, data *Data){
     int Time_now=1;
@@ -29,14 +28,9 @@ double warning_energy_saving(user User, data *Data){
     {
         one_price =Data[Time_now].prize.DK2price;
     }
-    //Skal findes i Data.prize.DK1/2price men kan IKKE tilgås sådan grundet det er en pointer til et struct.
     one_consumption = Data[Time_now].meter.value; 
-    //Skal findes i Data.meter.unit el. value men kan IKKE tilgås sådan grundet det er en pointer til et struct.
     median_consumption = user_history(User, Data);
-       //= user_history hvor User.choice.mean_or_median = Median før User sendes i funktionen.
-    /*Endmock*/
     value = warning_consumption(one_price,one_consumption,median_consumption);
-    printf("medianconsumption%lf\n",median_consumption);
     return value;  
 }
 double warning_consumption(double price,double consumption,double median_consumption){
@@ -45,7 +39,7 @@ double warning_consumption(double price,double consumption,double median_consump
     {
        price_difference=((price*consumption)/(price*median_consumption)-1);
        printf("your energy consumption is higher than normally right now.\n");
-       return TRUE;
+       return price_difference;
     }
     else if(consumption<=median_consumption)
     {

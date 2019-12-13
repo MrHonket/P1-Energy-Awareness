@@ -1,6 +1,6 @@
-/*RalleFar*/
-//"Rallefars" gcc compilation
-//gcc active_module_rallefar.c global.c language.c database_module.c passive_module.c update_settings.c info_energy_saving.c user_history.c warning_energy_saving.c system_information.c machine_activation.c future_data.c consumption_check.c debug.c
+/*MartinBM*/
+//"Martins" gcc compilation
+//gcc active_module_martin.c global.c language.c database_module.c passive_module.c update_settings.c info_energy_saving.c user_history.c warning_energy_saving.c system_information.c machine_activation.c future_data.c consumption_check.c debug.c
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -37,13 +37,29 @@ int main(void){
     
     User.settings = load_settings();
 
-    if (User.type == Human){
-        prompt_user(User, Data);
-    }
-    else if(User.type == Automated){
-        confirmation = passive_module(User,Data);
-        if(confirmation){
-            log_data(User);
+    confirmation = check_for_run_module(User);
+
+    if(confirmation){
+        Data = get_price_for_timeinterval_in_area(dato_from, dato_to, Dk1);
+        if (User.type == Human){
+            prompt_user(User,Data);
+        }
+        else if(User.type == Automated){
+            printf("\n\nTest funktion for at se hvornaar det passive module start\n");
+            confirmation = passive_module(User,Data);
+            if(confirmation){
+                log_data_use(User);
+                if(confirmation == MakeWarning){
+                    printf("ADVARSEL TIL BRUGER! Du forbruger nu hvor prisen er hoej!\n");
+                }
+                else if(confirmation == NoWarning){
+                    printf("Test Print for at se om funktionen virker som den skal\n");
+                    printf("Aka funktionen koerte rigtigt og det blev vurderet til ingen advarsel var noedvendig\n");
+                }
+            }
+            else{
+                error_message(ErrorConfirmationPassiveModule);
+            }
         }
         else{
             error_message(ErrorUserType);

@@ -4,7 +4,7 @@
 #include <unistd.h>
 #include "global.h"
 
-/* updatere settings.txt fil*/
+/* opdatere settings.txt fil*/
 /* Daniel */
 
 void update_settings(void);
@@ -49,8 +49,6 @@ settings load_settings(void){
     Settings.id = user_id;
     strcpy(Settings.language, language);
     strcpy(Settings.residence, location);
-
-    printf("Settings = %d\n",Settings.id);
 
     return Settings;
 }

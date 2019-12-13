@@ -46,6 +46,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <ctype.h>
+#include "calendar.h"
 #include "global.h"
 
 
@@ -88,10 +89,11 @@ dato    date_from_stringYMDH(char *date);
 double  price_from_string(char *price);
 double  consumption_from_string(char *price);
 
-int     get_next_hour(int hour);
-int     hours_since_index(dato first_index, dato to);
-int     calc_time(dato from, dato to);
-int     calc_hours(dato test_year, month test);
+/* int     get_next_hour(int hour);
+ */
+    int     hours_since_index(dato first_index, dato to);
+/* int     calc_time(dato from, dato to);
+int     calc_hours(dato test_year, month test); */
 
 
 
@@ -116,12 +118,10 @@ void init_database(void){
    init_pricestruct(mypricedata);
 
     price_initialised =  copy_file_to_mypricedata(FILENAME_PRICE);
-    printf("har hentet pris-fil indhold\n");
 
     init_meterstruct(myconsumpdata);
 
    consumption_initialised = copy_file_to_myconsumpdata(FILENAME_METER);
-    printf("har hentet consumption-fil indhold\n");
 
 }
 
@@ -280,26 +280,20 @@ int copy_file_to_mypricedata(char *filename){
         }
         
             
-            sscanf(data_txt[1],"%dÊ-Ê",&houra);
+        sscanf(data_txt[1],"%dÊ-Ê",&houra);
+    
+    //   printf("hra:%d,hrb:%d\n",houra, hourb_int);
+        mypricedata[j].from  = date_from_stringDMYI(data_txt[0],houra);
+        mypricedata[j].to    = next_hour(mypricedata[j].from);
         
-        //   printf("hra:%d,hrb:%d\n",houra, hourb_int);
-            mypricedata[j].from  = date_from_stringDMYI(data_txt[0],houra);
-            mypricedata[j].to    = date_from_stringDMYI(data_txt[0],get_next_hour(houra));
-            
-            mypricedata[j].DK1price = price_from_string(data_txt[8]);
-            mypricedata[j].DK2price = price_from_string(data_txt[9]);
+        mypricedata[j].DK1price = price_from_string(data_txt[8]);
+        mypricedata[j].DK2price = price_from_string(data_txt[9]);
 
-            // print_price_index(j);
-            j++;
-        
-       
-        
+        // print_price_index(j);
+        j++;   
     }
-    /* ;%2dÊ-Ê%2d;%*d,%*d;%*d;%*d;%*d;196;196;162,28;196;196;196;196;196;196;196;196;196;196
- */    
-
-
-
+   
+    printf("sucessful import af %d antal pris data!",j-FIRST_PRICEINDEX);
 
     fclose(f);
     return SUCCESS;
@@ -348,33 +342,31 @@ int copy_file_to_myconsumpdata(char *filename){
         myconsumpdata[j].to     = date_from_stringYMDH(data_txt[2]);
         myconsumpdata[j].value = consumption_from_string(data_txt[3]);
 
-        // if(j>1 &&( dist = calc_time(myconsumpdata[j-1].from,myconsumpdata[j].from))>1){
-        // // printf("hul i data dist = %d year %d", dist, myconsumpdata[j-1].from.year);
-        //     int k = 0;
+        if(j>1 &&( dist = hours_between(myconsumpdata[j-1].from,myconsumpdata[j].from))>1){
+            dist--;
+       
+        printf("hul i data dist = %d year %d\n", dist, myconsumpdata[j-1].from.year);
+            int k = 0;
             
-        //     for(k=0; k<dist; k++){
-        //         myconsumpdata[j+k] = empty_consumpstruct();
-        //     }
-        //     printf("%d tomme datafelter tilføjet fra index %d til index %d\n",dist,j,j+k);
-        //     printf("index %5d : på dato: %d-%d-%d kl%d dist %d\n ",j-1,myconsumpdata[j-1].from.year, myconsumpdata[j-1].from.month, myconsumpdata[j-1].from.day,myconsumpdata[j-1].from.time.hour, dist);
+            for(k=0; k<dist; k++){
+                myconsumpdata[j+k] = empty_consumpstruct();
+            }
+            printf("%d tomme datafelter tilføjet fra index %d til index %d\n",dist,j,j+k);
+            printf("index %5d : på dato: %d-%d-%d kl%d dist %d\n ",j-1,myconsumpdata[j-1].from.year, myconsumpdata[j-1].from.month, myconsumpdata[j-1].from.day,myconsumpdata[j-1].from.time.hour, dist);
          
-        //     j += dist;
-        //     strcpy(myconsumpdata[j].id,data_txt[0]);
-        //     myconsumpdata[j].from   = date_from_stringYMDH(data_txt[1]);
-        //     myconsumpdata[j].to     = date_from_stringYMDH(data_txt[2]);
-        //     myconsumpdata[j].value = consumption_from_string(data_txt[3]);
+            j += dist;
+            strcpy(myconsumpdata[j].id,data_txt[0]);
+            myconsumpdata[j].from   = date_from_stringYMDH(data_txt[1]);
+            myconsumpdata[j].to     = date_from_stringYMDH(data_txt[2]);
+            myconsumpdata[j].value = consumption_from_string(data_txt[3]);
 
-        //     printf("     %5d : på dato: %d-%d-%d kl%d dist %d\n\n ",j,myconsumpdata[j].from.year, myconsumpdata[j].from.month, myconsumpdata[j].from.day,myconsumpdata[j].from.time.hour, dist);
+            printf("     %5d : på dato: %d-%d-%d kl%d dist %d\n\n ",j,myconsumpdata[j].from.year, myconsumpdata[j].from.month, myconsumpdata[j].from.day,myconsumpdata[j].from.time.hour, dist);
 
-        // }
+        }
         j++;
     }
+    printf("sucessful import af %d antal meter data!\n\n",j-FIRST_CONSUMPINDEX);
         
-   
-
-
-
-
     fclose(f);
     return SUCCESS;
 }
@@ -389,7 +381,7 @@ FILE *check_file(char*filename){
     }
 
     if(f!=NULL){
-        printf("\n\n%s\n",filename);
+        printf("\n\nimporting file: %s\n",filename);
         return f;
     }
 
@@ -520,13 +512,13 @@ int get_next_hour(int hour){
 }
 
 int hours_since_index(dato first_index, dato to){
-    printf("calc_time returnerer: %d",calc_time(first_index,to));
-   return calc_time(first_index,to);    
+    // printf("calc_time returnerer: %d",calc_time(first_index,to));
+   return hours_between(first_index,to);    
 }
 
 
 
-int calc_time(dato from, dato to){
+/* int calc_time(dato from, dato to){
     int days = 0, hours = 0, test_number = 0;
     month from_month;
     month to_month;
@@ -546,9 +538,9 @@ int calc_time(dato from, dato to){
         return hours;
     } 
 
-}
+} */
 
-int calc_hours(dato test_year, month test){
+/* int calc_hours(dato test_year, month test){
     int days = 0, hours = 0;
     if(test_year.year % 4 == 0){
         for (days = 0; test >= 1; test--)
@@ -597,6 +589,6 @@ int calc_hours(dato test_year, month test){
     }
     return 0;
 
-}
+} */
 
 

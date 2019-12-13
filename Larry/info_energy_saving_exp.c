@@ -2,7 +2,6 @@
 #include <stdlib.h>
 #include <string.h>
 #include "global.h"
-#include "database_module.h"
 
 #define KWH_TO_MWH 0.001
 #define NMB_OF_ELEMENTS 24
