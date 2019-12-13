@@ -49,9 +49,6 @@ typedef struct{
    pricedata prize;
 }data;
 
-/*Enums for passive module*/
-typedef enum{Failure,Success,NoWarning,MakeWarning}passive_warnings;
-
 /*Tid omdannet til tekst prototypes: ugedag_txt[], month_txt[]*/
 const char *ugedag_txt;
 const char *month_txt;
@@ -76,6 +73,9 @@ typedef struct{
     choice choice;
     user_type type;
 }user;
+
+/*Enums for passive module*/
+typedef enum{Failure,Success}passive_warnings;
 
 /*Calc time prototypes*/
 int calc_time(dato from, dato to);
