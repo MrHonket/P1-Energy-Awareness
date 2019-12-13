@@ -109,17 +109,8 @@ void log_data_use(user User){
 }
 /*Funktionen som fungere som en brugers interface*/
 int prompt_user(user User, data *Data){
-    double info;
-    data cheapest_struct;
-    
-    l_prompt_user(User.settings.language,Presentation);
-    l_prompt_user(User.settings.language,Exit);
-    l_prompt_user(User.settings.language,UserHistory);
-    l_prompt_user(User.settings.language,InfoEnergySaving);
-    l_prompt_user(User.settings.language,UpdateSettings);
-    l_prompt_user(User.settings.language,SystemInformation);
-    l_prompt_user(User.settings.language,ConsumptionCheck);
-    l_prompt_user(User.settings.language,FutureData);
+   
+    l_prompt_user(User.settings.language);
 
     scanf(" %d", &User.choice.function);
     
@@ -127,26 +118,21 @@ int prompt_user(user User, data *Data){
         return EXIT_SUCCESS;
     }
     else if(User.choice.function == UserHistory){
-        info = user_history(User, Data);
-        printf("%s er %lf DKK\n",(User.choice.mean_or_median == Median ? "Medianen" : "Gennemsnittet"),info);
+        user_history(User, Data);
+        printf("%s er %lf DKK\n",(User.choice.mean_or_median == Median ? "Medianen" : "Gennemsnittet"));
     }
     else if(User.choice.function == UpdateSettings){
         update_settings();
         User.settings = load_settings();
     }
     else if(User.choice.function == InfoEnergySaving){
-        dialog_with_user(Data, User, info, cheapest_struct);
-        /*cheapest_struct = *cheapest(Data, User);
-        print_information(Data, cheapest_struct, User);
-        info = info_energy_saving(User, Data);
-        printf("Din besparelse bliver: %.5f DKK\n", info);
-        printf("--------------------------------------------------------\n\n");*/
+        l_info_energy_saving(User,Data);
     }
     else if(User.choice.function == ConsumptionCheck){
-        info = consumption_check(User, Data);
+        consumption_check(User, Data);
     }
     else if(User.choice.function == SystemInformation){
-        info = system_information(User, Data);
+        system_information(User, Data);
     }
     else if(User.choice.function == FutureData){
         future_data(User, Data);
