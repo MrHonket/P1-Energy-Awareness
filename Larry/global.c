@@ -23,7 +23,8 @@ typedef enum{
     ErrorPassiveModuleFuncChoice,
     ErrorInWarningConsumption,
     ErrorLogDataNotImplemented,
-    ErrorLanguageNotImplemented
+    ErrorLanguageNotImplemented,
+    ErrorSettingsNotCorrect
 }error_types;
 
 int error_message(int error){
@@ -60,6 +61,10 @@ int error_message(int error){
     }
     else if(error == ErrorLanguageNotImplemented){
         printf("Error, the chosen language is not implemented. Please update your settings.\n");
+    }
+    else if(error == ErrorSettingsNotCorrect){
+        printf("Error, some values wasn't inputted correctly, please try again\n");
+        printf("Please remember to use capital letters and whole numbers.\n");
     }
     else{
         printf("Error because the error_message nr. %d in error_types hasn't been implemented yet\n",error);
