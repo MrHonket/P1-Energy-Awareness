@@ -30,13 +30,3 @@ char* l_prompt_user(char language[],int location){
     }
     return 0;
 }
-/*
-printf("\n\nIndtast venligst et af de angivne heltal\n");
-printf("Tryk %d for at gaa ud af programmet\n",Exit);
-printf("Tryk %d for brugerhistorik\n",UserHistory);
-printf("Tryk %d for info om dine energibesparelser\n",InfoEnergySaving);
-printf("Tryk %d for brugerindstillinger\n",UpdateSettings);
-printf("Tryk %d for informationer om dette system\n",SystemInformation);
-printf("Tryk %d for at lave et elcheck\n",ConsumptionCheck);
-printf("Tryk %d for et gaet om fremtidige priser\n",FutureData);
-*/
