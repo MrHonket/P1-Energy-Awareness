@@ -120,7 +120,9 @@ data *cheapest(data data_array[], user User)
 
 /* En samlet print funktion der tager højde for om vi kigger på DK1 eller DK2 */
 void print_information(data return_array[], data cheapest_struct, user User, int hour_choice)
-{
+{   
+    printf("\n");
+    printf("--------------------------------------------------------\n");
     printf("Tidspunkt valgt af bruger: kl.%d\n\n", hour_choice);
     double user_price;
     if (strcmp(User.settings.residence, "DK1") == 0)
