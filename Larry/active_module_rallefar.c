@@ -119,11 +119,12 @@ int prompt_user(user User, data *Data){
         User.settings = load_settings();
     }
     else if(User.choice.function == InfoEnergySaving){
-        cheapest_struct = *cheapest(Data, User);
+        dialog_with_user(Data, User, info, cheapest_struct);
+        /*cheapest_struct = *cheapest(Data, User);
         print_information(Data, cheapest_struct, User);
         info = info_energy_saving(User, Data);
         printf("Din besparelse bliver: %.5f DKK\n", info);
-        printf("--------------------------------------------------------\n\n");
+        printf("--------------------------------------------------------\n\n");*/
     }
     else if(User.choice.function == ConsumptionCheck){
         info = consumption_check(User, Data);
