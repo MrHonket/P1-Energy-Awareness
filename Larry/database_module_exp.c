@@ -332,15 +332,15 @@ int copy_file_to_myconsumpdata(char *filename){
         i=0;
         while(token !=NULL){
             data_txt[i] = token;
-           /*  printf("%s\n",token); */
+            // printf("%s\n",token);
             token=strtok(NULL,s);
             i++;
         }
         
-          /* printf("linie:169 i=%d  j=%d\n",i,j); */
+        //   printf("linie:169 i=%d  j=%d\n",i,j);
                 
         strcpy(myconsumpdata[j].id,data_txt[0]);
-        /* printf("---%s---\n",data_txt[1]); */
+        // printf("---%s---\n",data_txt[1]);
         myconsumpdata[j].from   = date_from_stringYMDH(data_txt[1]);
         myconsumpdata[j].to     = date_from_stringYMDH(data_txt[2]);
         myconsumpdata[j].value = consumption_from_string(data_txt[3]);
@@ -348,17 +348,17 @@ int copy_file_to_myconsumpdata(char *filename){
         if(j>1 &&( dist = hours_between(myconsumpdata[j-1].from,myconsumpdata[j].from))>1){
             dist--;
        
-           /*  printf("lappet hul i data :");
-            prnt_date(myconsumpdata[j].from);
-            printf("      afstand mlm datoer = %d \n", dist); */
+            // printf("lappet hul i data :");
+            // prnt_date(myconsumpdata[j].from);
+            // printf("      afstand mlm datoer = %d \n", dist);
             int k = 0;
             
             for(k=0; k<dist; k++){
                 myconsumpdata[j+k] = empty_consumpstruct();
             }
-            /* printf("%d tomme datafelter tilføjet fra index %d til index %d\n",dist,j,j+k);
+            printf("%d tomme datafelter tilføjet fra index %d til index %d\n",dist,j,j+k);
             printf("index %5d : på dato: %d-%d-%d kl%d dist %d\n",j-1,myconsumpdata[j-1].from.year, myconsumpdata[j-1].from.month, myconsumpdata[j-1].from.day,myconsumpdata[j-1].from.time.hour, dist);
-          */
+         
             j += dist;
             strcpy(myconsumpdata[j].id,data_txt[0]);
             myconsumpdata[j].from   = date_from_stringYMDH(data_txt[1]);
@@ -381,9 +381,12 @@ int copy_file_to_myconsumpdata(char *filename){
 
 FILE *check_file(char*filename){
     FILE *f = fopen(filename,"r");
-    
     if(f!=NULL){
-        /* printf("\n\nimporting file: %s\n",filename); */
+        // sprintf(strOUT,"%s",filename);
+    }
+
+    if(f!=NULL){
+        printf("\n\nimporting file: %s\n",filename);
         return f;
     }
 
@@ -414,7 +417,7 @@ pricedata *init_datab(pricedata *mypricedata, meterdata *meter_data, production 
     for(i=0;i<HOURS_PR_YEAR;i++){
         mypricedata[i] = *init_price_array(mypricedata);
     }
-    /* printf("b%d\n",mypricedata[20].from.year); */
+   //  printf("b%d\n",mypricedata[20].from.year);
 
   return mypricedata;
 }
@@ -447,7 +450,7 @@ dato date_from_stringDMYI(char *date, int time){
     ret_date.time.minute =0;
     }
     else {
-         /*  printf("did not convert string  -\"%s\"- and int --%d-- to date\n",date , time);  */
+          printf("did not convert string  -\"%s\"- and int --%d-- to date\n",date , time); 
     }
     return ret_date;
     
@@ -456,9 +459,9 @@ dato date_from_stringDMYI(char *date, int time){
 
 dato date_from_stringYMDH(char *date){
     dato ret_date = {{0,0},0,0,0};
-    /* if(sscanf(date,"%4d-%2d-%2d %d.%d",&ret_date.year, &ret_date.month, &ret_date.day, &ret_date.time.hour, &ret_date.time.minute)<4){
+    if(sscanf(date,"%4d-%2d-%2d %d.%d",&ret_date.year, &ret_date.month, &ret_date.day, &ret_date.time.hour, &ret_date.time.minute)<4){
         printf("did not convert string  -\"%s\"-   to date\n",date); 
-    } */
+    }
     return ret_date;
 }
 
@@ -471,7 +474,7 @@ double price_from_string(char *price){
       return  value1 + value2/100;
    }
    
-   /* printf("did not convert string  -\"%s\"-   to doubles %lf %lf to number\n",price ,value1,value2); */
+   printf("did not convert string  -\"%s\"-   to doubles %lf %lf to number\n",price ,value1,value2);
    return -1000;
 }
 
@@ -484,7 +487,7 @@ double consumption_from_string(char *price){
         return  value1 + value2/1000;
     }
     
-   /* printf("did not convert string -\"%s\"-   to doubles %lf %lf to number\n",price ,value1,value2); */
+   printf("did not convert string -\"%s\"-   to doubles %lf %lf to number\n",price ,value1,value2);
     return -1000;
 }
 
@@ -514,7 +517,7 @@ int get_next_hour(int hour){
 }
 
 int hours_since_index(dato first_index, dato to){
-   /*  printf("calc_time returnerer: %d",calc_time(first_index,to)); */
+    // printf("calc_time returnerer: %d",calc_time(first_index,to));
    return hours_between(first_index,to);    
 }
 

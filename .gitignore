@@ -6,6 +6,7 @@
 *.ko
 *.obj
 *.elf
+*.settings.txt
 
 # Linker output
 *.ilk
