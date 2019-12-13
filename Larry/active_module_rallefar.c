@@ -27,7 +27,7 @@
 
 /*Dette er prototyper i programmet.*/
 void check_activation(user User);
-int prompt_user(user User, data *Data, data cheapest);
+int prompt_user(user User, data *Data);
 void log_data(user User);
 /*main vil modtage information om det er en måler eller sig selv (Automatisk) der aktivere eller en app (Human)*/
 int main(void){
@@ -35,7 +35,6 @@ int main(void){
     dato from = {{00, 00}, 20, Januar, 2017};
     dato to = {{00, 00}, 21, Januar, 2017};                      
     data *Data;
-    data cheapest_struct;
     int confirmation;
     double user_price;
     double info;
@@ -62,7 +61,7 @@ int main(void){
     printf("\n\nTidspunkt vi kigger efter: %d\n\n", User.choice.from.time.hour); 
 
     if (User.type == Human){
-        prompt_user(User, Data, cheapest_struct);
+        prompt_user(User, Data);
     }
     else if(User.type == Automated){
         confirmation = passive_module(User,Data);
@@ -94,9 +93,10 @@ void log_data(user User){
 
 }
 /*Funktionen som fungere som en brugers interface*/
-int prompt_user(user User, data *Data, data cheapest_struct){
+int prompt_user(user User, data *Data){
     char info_str[60] = {'T','E','S','T'};
     double info;
+    data cheapest_struct;
     int new_command = 0;
     
     /*Basil was here & coded user interaction*/
@@ -153,7 +153,7 @@ int prompt_user(user User, data *Data, data cheapest_struct){
     scanf("%d", &new_command);
 
     if(new_command){
-        return prompt_user(User,Data, cheapest_struct);
+        return prompt_user(User,Data);
     }
     else{
         return 0;
