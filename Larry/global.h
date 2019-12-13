@@ -21,7 +21,8 @@
 typedef enum{ErrorConfirmationPassiveModule,ErrorChoiceDoesntExist,
              ErrorInfoStrNotFound,ErrorUserType,ErrorNotImplemented,
              ErrorUserLookupHistory,ErrorUserMeanMedianHistory,
-             ErrorPassiveModuleFuncChoice,ErrorInWarningConsumption}error_types;
+             ErrorPassiveModuleFuncChoice,ErrorInWarningConsumption,
+             ErrorLogDataNotImplemented}error_types;
 int error_message(int error);
 
 /*VARIABLE TIL data*/

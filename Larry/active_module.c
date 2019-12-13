@@ -105,7 +105,7 @@ int check_for_run_module(user User){
 /*Funktion der logger brugen af programmet og måden de data der måtte komme derigennem.*/
 /*Disse data vil være relevante at vise i funktionen system_information.c når den implementeres*/
 void log_data_use(user User){
-
+    error_message(ErrorLogDataNotImplemented);
 }
 /*Funktionen som fungere som en brugers interface*/
 int prompt_user(user User, data *Data){

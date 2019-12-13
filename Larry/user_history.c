@@ -33,7 +33,7 @@ double user_history(user User, data *Data) {
     /*Lav en array ud fra Data-structen og baseret på, om dataen er fra meter eller pris. Det er denne, der skal regnes på.*/
     if (User.choice.lookup == Meter) {
         /*Initialiserer number_of_elements, samt den array, der skal bruges. Lav om til egen funktion.*/
-        number_of_elements = calc_time(Data->meter.from, Data->meter.to);/*Finder antal timer*/
+        number_of_elements = hours_between(Data->meter.from, Data->meter.to);/*Finder antal timer*/
         double *dataset = malloc(sizeof(double)*number_of_elements);
 
         /*Assigner arrayelementer fra Data og en for-løkke*/
@@ -48,7 +48,7 @@ double user_history(user User, data *Data) {
     } else
     if (User.choice.lookup == Price) {
         /*Initialiserer number_of_elements, samt den array, der skal bruges. Lav om til egen funktion.*/
-        number_of_elements = calc_time(Data->prize.from, Data->prize.to);/*Finder antal timer*/
+        number_of_elements = hours_between(Data->prize.from, Data->prize.to);/*Finder antal timer*/
         double *dataset = malloc(sizeof(double)*number_of_elements);
 
         /*Assigner arrayelementer vha Data og en for-løkke*/

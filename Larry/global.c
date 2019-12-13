@@ -21,7 +21,8 @@ typedef enum{
     ErrorUserLookupHistory,
     ErrorUserMeanMedianHistory,
     ErrorPassiveModuleFuncChoice,
-    ErrorInWarningConsumption
+    ErrorInWarningConsumption,
+    ErrorLogDataNotImplemented
 }error_types;
 
 int error_message(int error){
@@ -52,6 +53,9 @@ int error_message(int error){
     }
     else if(error == ErrorInWarningConsumption){
         printf("Error in warning_consumption function because of consumption and median_consumption isn't comparable.\n");
+    }
+    else if(error == ErrorLogDataNotImplemented){
+        printf("Error because the log_data hasn't been implemented yet");
     }
     else{
         printf("Error because the error_message nr. %d in error_types hasn't been implemented yet\n",error);
