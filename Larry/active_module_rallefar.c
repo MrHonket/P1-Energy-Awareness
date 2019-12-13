@@ -37,29 +37,13 @@ int main(void){
     
     User.settings = load_settings();
 
-    confirmation = check_for_run_module(User);
-
-    if(confirmation){
-        Data = get_price_for_timeinterval_in_area(dato_from, dato_to, Dk1);
-        if (User.type == Human){
-            prompt_user(User,Data);
-        }
-        else if(User.type == Automated){
-            printf("\n\nTest funktion for at se hvornaar det passive module start\n");
-            confirmation = passive_module(User,Data);
-            if(confirmation){
-                log_data_use(User);
-                if(confirmation == MakeWarning){
-                    printf("ADVARSEL TIL BRUGER! Du forbruger nu hvor prisen er hoej!\n");
-                }
-                else if(confirmation == NoWarning){
-                    printf("Test Print for at se om funktionen virker som den skal\n");
-                    printf("Aka funktionen koerte rigtigt og det blev vurderet til ingen advarsel var noedvendig\n");
-                }
-            }
-            else{
-                error_message(ErrorConfirmationPassiveModule);
-            }
+    if (User.type == Human){
+        prompt_user(User, Data);
+    }
+    else if(User.type == Automated){
+        confirmation = passive_module(User,Data);
+        if(confirmation){
+            log_data(User);
         }
         else{
             error_message(ErrorUserType);
@@ -135,11 +119,12 @@ int prompt_user(user User, data *Data){
         User.settings = load_settings();
     }
     else if(User.choice.function == InfoEnergySaving){
-        cheapest_struct = *cheapest(Data, User);
+        dialog_with_user(Data, User, info, cheapest_struct);
+        /*cheapest_struct = *cheapest(Data, User);
         print_information(Data, cheapest_struct, User);
         info = info_energy_saving(User, Data);
         printf("Din besparelse bliver: %.5f DKK\n", info);
-        printf("--------------------------------------------------------\n\n");
+        printf("--------------------------------------------------------\n\n");*/
     }
     else if(User.choice.function == ConsumptionCheck){
         info = consumption_check(User, Data);

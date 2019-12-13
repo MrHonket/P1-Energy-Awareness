@@ -3,16 +3,44 @@
 #include <string.h>
 #include "global.h"
 
+#define KWH_TO_MWH 0.001
 #define NMB_OF_ELEMENTS 24
 
-double info_energy_saving(user User, data data_array[]);
+double info_energy_saving(user User, data data_array[], int hour_choice);
 data *cheapest(data data_array[], user User);
-int sort_for_best_price(const void * a, const void * b);
-void print_information(data return_array[], data cheapest_struct, user User);
+int cmpfunc(const void * a, const void * b);
+void print_information(data return_array[], data cheapest_struct, user User, int hour_choice);
+void dialog_with_user(data data_array[], user User, double info, data cheapest_struct);
+void overview_for_interval(data data_array[], user User, int from_hour, int to_hour);
+
+/*
+int main(void)
+{
+    double savings;
+    //int tidspunkt = 19;
+    double user_price;
+    data cheapest_struct;
+    data *return_array;
+    dato from = {{00, 00}, 15, Januar, 2018};
+    dato to = {{00, 00}, 15, Januar, 2018};
+    user user_choice = { {1200, "DK1", "Dansk"}, {2, Mean, {{20, 0}, 15, Januar, 2017}, {{21, 0}, 15, Januar, 2017}}};
+    
+    return_array = get_price_for_timeinterval_in_area(from, to, Dk1);
+    cheapest_struct = *cheapest(return_array);
+    print_information(return_array, cheapest_struct, user_price, user_choice);
+
+    savings = info_energy_saving2(return_array, user_choice);
+    printf("Hvis du flytter dit forbrug til ovenstående tidspunkt, sparer du: %.5f DKK\n\n", savings);
+
+    printf("\n");
+    return 0;   
+}
+*/
+
 
 /* Funktionen returnerer besparelsen forbrugeren kan opnå hvis vedkommende flytter sit forbrug til det billigste tidspunkt 
  * Funktionen tager udgangspunkt i et 24 element-langt data-array samt et user_choice der afgører om det er DK1 eller DK2 vi kigger på */
-double info_energy_saving(user User, data data_array[])
+double info_energy_saving(user User, data data_array[], int hour_choice)
 {
     double current_consumption = 0.0;
     double current_price = 0.0;
@@ -22,8 +50,8 @@ double info_energy_saving(user User, data data_array[])
     
     if (strcmp(User.settings.residence, "DK1") == 0)
     {   
-        current_price = data_array[User.choice.from.time.hour].prize.DK1price;
-        current_consumption = data_array[User.choice.from.time.hour].meter.value;
+        current_price = data_array[hour_choice].prize.DK1price;
+        current_consumption = data_array[hour_choice].meter.value;
         
         if (current_price < 0)
             printf("Prisen er pt. negativ!\n");
@@ -32,17 +60,17 @@ double info_energy_saving(user User, data data_array[])
         user_price_current = current_consumption * KWH_TO_MWH * current_price;
 
         /* Sorterer pris-array så den billigste pris ligger først */
-        qsort(data_array, NMB_OF_ELEMENTS, sizeof(data), sort_for_best_price);
+        qsort(data_array, NMB_OF_ELEMENTS, sizeof(data), cmpfunc);
         cheapest_price = data_array[0].prize.DK1price;
 
         /* Dette giver brugerens strømpris baseret ud fra hvornår det er billigst at bruge strøm */
         user_price_after = current_consumption * KWH_TO_MWH * cheapest_price;
-        printf("Din pris, hvis du vaelger at flytte dit forbrug: %.2f DKK\n\n", user_price_after);
+        printf("Din pris, hvis du vælger at flytte dit forbrug: %.2f DKK\n\n", user_price_after);
     }
     else 
     {
-        current_price = data_array[User.choice.from.time.hour].prize.DK2price;
-        current_consumption = data_array[User.choice.from.time.hour].meter.value;
+        current_price = data_array[hour_choice].prize.DK2price;
+        current_consumption = data_array[hour_choice].meter.value;
 
         if (current_price < 0)
             printf("Prisen er pt. negativ!\n");
@@ -51,13 +79,13 @@ double info_energy_saving(user User, data data_array[])
         user_price_current = current_consumption * KWH_TO_MWH * current_price;
 
         /* Sorterer pris-array så den billigste pris ligger først */
-        qsort(data_array, NMB_OF_ELEMENTS, sizeof(data), sort_for_best_price);
+        qsort(data_array, NMB_OF_ELEMENTS, sizeof(data), cmpfunc);
         cheapest_price = data_array[0].prize.DK2price;
         printf("Den billigste pris er: %.2f\n", cheapest_price);
 
         /* Dette giver brugerens strømpris baseret ud fra hvornår det er billigst at bruge strøm */
         user_price_after = current_consumption * KWH_TO_MWH * cheapest_price;
-        printf("Din pris, hvis du vaelger at flytte dit forbrug: %.2f DKK\n\n", user_price_after);
+        printf("Din pris, hvis du vælger at flytte dit forbrug: %.2f DKK\n\n", user_price_after);
     }
 
     if (user_price_after > user_price_current)
@@ -72,47 +100,47 @@ data *cheapest(data data_array[], user User)
     data *cheapest;
     cheapest = (data*)malloc(1 * sizeof(data));
     
-    qsort(data_array, NMB_OF_ELEMENTS, sizeof(data), sort_for_best_price);
+    qsort(data_array, NMB_OF_ELEMENTS, sizeof(data), cmpfunc);
 
     cheapest->prize.from = data_array[0].prize.from;
     cheapest->prize.to = data_array[0].prize.to;
     cheapest->prize.DK1price = data_array[0].prize.DK1price;
     cheapest->prize.DK2price = data_array[0].prize.DK2price;
 
-    printf("Det billigste tidspunkt at forbruge din strom vil vaere: \n--------------------------------------------------------\n");
+    printf("Det billigste tidspunkt at forbruge din strøm vil være: \n--------------------------------------------------------\n");
 
     if (strcmp(User.settings.residence, "DK1") == 0)
-        printf("Dato: %d | Klokkeslaet: %d - %d | Pris DK1: %.2f DKK |\n\n", cheapest->prize.from.day,
+        printf("Dato: %d | Klokkeslæt: %d - %d | Pris DK1: %.2f DKK |\n\n", cheapest->prize.from.day,
                          cheapest->prize.from.time.hour, cheapest->prize.to.time.hour, cheapest->prize.DK1price);
     else       
-        printf("Dato: %d | Klokkeslaet: %d - %d | Pris DK2: %.2lf DKK |\n\n", cheapest->prize.from.day,
+        printf("Dato: %d | Klokkeslæt: %d - %d | Pris DK2: %.2lf DKK |\n\n", cheapest->prize.from.day,
                          cheapest->prize.from.time.hour, cheapest->prize.to.time.hour, cheapest->prize.DK2price);
     return cheapest;
 }
 
 /* En samlet print funktion der tager højde for om vi kigger på DK1 eller DK2 */
-void print_information(data return_array[], data cheapest_struct, user User)
+void print_information(data return_array[], data cheapest_struct, user User, int hour_choice)
 {
-    printf("Tidspunkt valgt af bruger: kl.%d\n\n", User.choice.from.time.hour);
+    printf("Tidspunkt valgt af bruger: kl.%d\n\n", hour_choice);
     double user_price;
     if (strcmp(User.settings.residence, "DK1") == 0)
     {
-        user_price = return_array[User.choice.from.time.hour].meter.value * KWH_TO_MWH * return_array[User.choice.from.time.hour].prize.DK1price;
-        printf("Nuvaerende pris: %.2f DKK\n\n", return_array[User.choice.from.time.hour].prize.DK1price); 
-        printf("Nuvaerende forbrug: %.2f KWH \n\n", return_array[User.choice.from.time.hour].meter.value); 
-        printf("Nuvaerende pris baseret på nuvaerende forbrug: %.2f DKK\n\n", user_price); 
+        user_price = return_array[hour_choice].meter.value * KWH_TO_MWH * return_array[hour_choice].prize.DK1price;
+        printf("Nuværende pris: %.2f DKK\n\n", return_array[hour_choice].prize.DK1price); 
+        printf("Nuværende forbrug: %.2f KWH \n\n", return_array[hour_choice].meter.value); 
+        printf("Nuværende pris baseret på nuværende forbrug: %.2f DKK\n\n", user_price); 
     }
     else
     {
-        user_price = return_array[User.choice.from.time.hour].meter.value * KWH_TO_MWH * return_array[User.choice.from.time.hour].prize.DK2price;
-        printf("Nuvaerende pris: %.2f\n\n", return_array[User.choice.from.time.hour].prize.DK2price); 
-        printf("Nuvaerende forbrug: %.2f\n\n", return_array[User.choice.from.time.hour].meter.value); 
-        printf("Nuvaerende pris baseret paa nuvaerende forbrug: %.2f DKK\n\n", user_price); 
+        user_price = return_array[hour_choice].meter.value * KWH_TO_MWH * return_array[hour_choice].prize.DK2price;
+        printf("Nuværende pris: %.2f\n\n", return_array[hour_choice].prize.DK2price); 
+        printf("Nuværende forbrug: %.2f\n\n", return_array[hour_choice].meter.value); 
+        printf("Nuværende pris baseret på nuværende forbrug: %.2f DKK\n\n", user_price); 
     }
 }
 
 /* Basic compare function */
-int sort_for_best_price(const void * a, const void * b)
+int cmpfunc(const void * a, const void * b)
 {
     const data *priserA = (data*)a;
     const data *priserB = (data*)b;
@@ -124,3 +152,45 @@ int sort_for_best_price(const void * a, const void * b)
     else
         return 0;
 }
+
+void dialog_with_user(data data_array[], user User, double info, data cheapest_struct)
+{
+    int choice;
+    int from_hour;
+    int to_hour;
+    int hour_choice;
+    printf("Velkommen til modulet energibesparelser - du har nu følgende to valgmuligheder:\n");
+    printf("Tryk 1 for information om strømpris for en given time og hvornår på døgnet strømmen er billigst\n");
+    printf("Tryk 2 for for strømpris i et givent tidsrum\n");
+
+    scanf(" %d", &choice);
+
+    switch(choice){
+        case 1: 
+            printf("Indtast hvilken time du ønsker data fra: ");
+            scanf(" %d", &hour_choice);
+            print_information(data_array, cheapest_struct, User, hour_choice);
+            info = info_energy_saving(User, data_array, hour_choice);
+            cheapest_struct = *cheapest(data_array, User);
+            printf("Din besparelse bliver: %.5f DKK\n", info);
+            printf("--------------------------------------------------------\n\n");
+            break;
+        case 2: 
+            printf("Indtast en start time og en slut time du ønsker at se priser for: \n");
+            scanf(" %d %d", &from_hour, &to_hour);
+            overview_for_interval(data_array, User, from_hour, to_hour);
+            break;
+    }
+}
+
+void overview_for_interval(data data_array[], user User, int from_hour, int to_hour)
+{
+    int i;
+    for (i = from_hour; i <= to_hour; i++)
+        printf("Time [%d] - Pris: %.2f\n", i, data_array[i].prize.DK1price);
+}
+
+
+
+
+
