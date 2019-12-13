@@ -49,10 +49,10 @@ int main(void){
             confirmation = passive_module(User,Data);
             if(confirmation){
                 log_data_use(User);
-                if(confirmation == MakeWarning){
+                if(confirmation){
                     printf("ADVARSEL TIL BRUGER! Du forbruger nu hvor prisen er hoej!\n");
                 }
-                else if(confirmation == NoWarning){
+                else if(confirmation == FALSE){
                     printf("Test Print for at se om funktionen virker som den skal\n");
                     printf("Aka funktionen koerte rigtigt og det blev vurderet til ingen advarsel var noedvendig\n");
                 }
