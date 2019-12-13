@@ -45,6 +45,7 @@ void l_prompt_user(user User){
     }
     else{
         error_message(ErrorLanguageNotImplemented);
+        update_settings();
     }
 }
 
