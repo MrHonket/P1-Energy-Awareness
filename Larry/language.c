@@ -79,7 +79,6 @@ void l_user_history(user User, data *Data){
 void l_info_energy_saving(user User,data *Data)
 {
     double info;
-    data cheapest_struct;
     int choice;
     int from_hour;
     int to_hour;
@@ -97,9 +96,9 @@ void l_info_energy_saving(user User,data *Data)
             case 1: 
                 printf("Indtast hvilken time du ønsker data fra: ");
                 scanf(" %d", &hour_choice);
-                print_information(Data, cheapest_struct, User, hour_choice);
+                print_information(Data, User, hour_choice);
                 info = info_energy_saving(User, Data, hour_choice);
-                cheapest_struct = *cheapest(Data, User);
+                cheapest(Data, User);
                 printf("Din besparelse bliver: %.5f DKK\n", info);
                 printf("--------------------------------------------------------\n\n");
                 break;

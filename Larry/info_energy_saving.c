@@ -7,10 +7,10 @@
 #define NMB_OF_ELEMENTS 24
 
 double info_energy_saving(user User, data data_array[], int hour_choice);
-data *cheapest(data data_array[], user User);
+void cheapest(data data_array[], user User);
 int cmpfunc(const void * a, const void * b);
-void print_information(data return_array[], data cheapest_struct, user User, int hour_choice);
-void dialog_with_user(data data_array[], user User, double info, data cheapest_struct);
+void print_information(data return_array[], user User, int hour_choice);
+void dialog_with_user(data data_array[], user User, double info);
 void overview_for_interval(data data_array[], user User, int from_hour, int to_hour);
 
 /*
@@ -95,7 +95,7 @@ double info_energy_saving(user User, data data_array[], int hour_choice)
 } 
 
 /* Funktionen returnerer en data-struct således vi kan se, hvornår på dagen det er billigst at forbruge strøm */
-data *cheapest(data data_array[], user User)
+void cheapest(data data_array[], user User)
 {
     data *cheapest;
     cheapest = (data*)malloc(1 * sizeof(data));
@@ -115,11 +115,10 @@ data *cheapest(data data_array[], user User)
     else       
         printf("Dato: %d | Klokkeslæt: %d - %d | Pris DK2: %.2lf DKK |\n\n", cheapest->prize.from.day,
                          cheapest->prize.from.time.hour, cheapest->prize.to.time.hour, cheapest->prize.DK2price);
-    return cheapest;
 }
 
 /* En samlet print funktion der tager højde for om vi kigger på DK1 eller DK2 */
-void print_information(data return_array[], data cheapest_struct, user User, int hour_choice)
+void print_information(data return_array[], user User, int hour_choice)
 {   
     printf("\n");
     printf("--------------------------------------------------------\n");
@@ -155,7 +154,7 @@ int cmpfunc(const void * a, const void * b)
         return 0;
 }
 
-void dialog_with_user(data data_array[], user User, double info, data cheapest_struct)
+void dialog_with_user(data data_array[], user User, double info)
 {
     int choice;
     int from_hour;
@@ -171,9 +170,9 @@ void dialog_with_user(data data_array[], user User, double info, data cheapest_s
         case 1: 
             printf("Indtast hvilken time du ønsker data fra: ");
             scanf(" %d", &hour_choice);
-            print_information(data_array, cheapest_struct, User, hour_choice);
+            print_information(data_array, User, hour_choice);
             info = info_energy_saving(User, data_array, hour_choice);
-            cheapest_struct = *cheapest(data_array, User);
+            cheapest(data_array, User);
             printf("Din besparelse bliver: %.5f DKK\n", info);
             printf("--------------------------------------------------------\n\n");
             break;

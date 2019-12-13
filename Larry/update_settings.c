@@ -31,7 +31,7 @@ settings load_settings(void){
     int user_id; 
     //herunder bruges unistd biblioteket til at se om der er access (File_Ok) til settings.txt. Hvis den ikke eksistere, skab settings fil.
     if(access("settings.txt",F_OK) == -1){
-        l_update_settings();
+        update_settings();
     }
 
     f = fopen("settings.txt","r");
