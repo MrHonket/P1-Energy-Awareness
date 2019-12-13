@@ -6,7 +6,7 @@
 #define FALSE         0
 #define TRUE          1
 #define SUCCESS       2
-#define HOURS_PR_YEAR 8765
+#define HOURS_PR_YEAR (365*24)
 #define KWH_TO_MWH    0.001
 #define FILENAME_METER "Meterdata.csv"
 #define FILENAME_PRICE "elspot-prices_2017_hourly_dkk.csv"
@@ -22,7 +22,8 @@ typedef enum{
     ErrorUserMeanMedianHistory,
     ErrorPassiveModuleFuncChoice,
     ErrorInWarningConsumption,
-    ErrorLogDataNotImplemented
+    ErrorLogDataNotImplemented,
+    ErrorLanguageNotImplemented
 }error_types;
 
 int error_message(int error){
@@ -56,6 +57,9 @@ int error_message(int error){
     }
     else if(error == ErrorLogDataNotImplemented){
         printf("Error because the log_data hasn't been implemented yet");
+    }
+    else if(error == ErrorLanguageNotImplemented){
+        printf("Error, the chosen language is not implemented. Please update your settings.\n");
     }
     else{
         printf("Error because the error_message nr. %d in error_types hasn't been implemented yet\n",error);
@@ -273,7 +277,7 @@ int days_in_month(dato d);
 dato next_hour(dato d);
 dato next_day(dato d);
 int leapYear(int);
-void prnt_date(dato);
+void print_date(dato);
 /*Funktionerne er listet herunder*/
 int calc_time(dato from, dato to){
     int days = 0, hours = 0, test_number = 0;
@@ -505,6 +509,6 @@ dato next_day(dato d){
 }
 
 /* Print dato d */
-void prnt_date(dato d){
+void print_date(dato d){
   printf("%2i-%2i-%4i kl %2d\n",  d.day, d.month, d.year, d.time.hour);
 }
