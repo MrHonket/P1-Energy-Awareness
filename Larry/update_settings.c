@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <ctype.h>
 #include "global.h"
 #include "language.h"
 
@@ -47,7 +48,7 @@ int test_update_scan(char userdata[]){
     if(strcmp(test_lang,"%[A-Z]") < 0){
         return Failure;
     }
-    if(test_id <= 0){
+    if(test_id <= 0 && isdigit(test_id)){
         return Failure;
     }
 
