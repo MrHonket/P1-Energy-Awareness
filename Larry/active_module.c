@@ -121,7 +121,7 @@ int prompt_user(user User, data *Data){
         l_user_history(User,Data);
     }
     else if(User.choice.function == UpdateSettings){
-        update_settings();
+        l_update_settings(User,Data);
         User.settings = load_settings();
     }
     else if(User.choice.function == InfoEnergySaving){

@@ -1,12 +1,14 @@
 # Prerequisites
 *.d
 
+#Unique files between users
+*.txt
+
 # Object files
 *.o
 *.ko
 *.obj
 *.elf
-*.settings.txt
 
 # Linker output
 *.ilk

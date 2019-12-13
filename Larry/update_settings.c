@@ -16,10 +16,6 @@ void update_settings(void)
     FILE *f;
     char userdata[40];
 
-    printf("Please enter 'residence' - 'language' - 'user id'\n");
-    printf("What's your place of residence? Enter DK1 for Jutland and Fyn or DK2 for Sealand\n");
-    printf("What language would you like? Enter DK for danish or ENG for english.\n");
-    printf("What is your userid? Please enter a unique number\n");
     scanf(" %[a-zA-Z0-9 -]", userdata);
 
     f = fopen("settings.txt", "w");

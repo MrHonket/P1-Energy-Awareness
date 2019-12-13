@@ -119,15 +119,21 @@ void l_info_energy_saving(user User,data *Data)
 }
 
 void l_update_settings(user User, data *Data){
-    //skriv variable
+    //skriv variable hvis nogen
     
     if(strcmp(User.settings.language,"DK") == 0){
-        //skriv dansk
-        error_message(ErrorLanguageNotImplemented);
+        printf("Skriv venligst paa formen: 'bosted' - 'sprog' - 'bruger id'\n");
+        printf("Hvor bor du? Skriv DK1 for Jylland og Fyn eller DK2 for Sjælland\n");
+        printf("Hvilket sprog oensker du? Skriv DK for dansk eller ENG for engelsk.\n");
+        printf("Hvad er dit brugerid? Skriv venligst et unikt nummer\n");
+        update_settings();
     }
     else if(strcmp(User.settings.language,"ENG") == 0){
-        //skriv engelsk
-        error_message(ErrorLanguageNotImplemented);
+        printf("Please enter 'residence' - 'language' - 'user id'\n");
+        printf("What's your place of residence? Enter DK1 for Jutland and Fyn or DK2 for Sealand\n");
+        printf("What language would you like? Enter DK for danish or ENG for english.\n");
+        printf("What is your userid? Please enter a unique number\n");
+        update_settings();
     }
     else{
         error_message(ErrorLanguageNotImplemented);
