@@ -256,7 +256,7 @@ typedef struct{
 }user;
 
 /*Enums for passive module*/
-typedef enum{Failure, Success,NoWarning,MakeWarning}passive_warnings;
+typedef enum{Failure, Success}passive_warnings;
 
 /*Calc time funktionen!*/
 /*Prototypes*/
