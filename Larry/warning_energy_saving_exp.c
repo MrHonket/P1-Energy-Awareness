@@ -43,7 +43,6 @@ double warning_consumption(double price,double consumption,double median_consump
     }
     else if(consumption<=median_consumption)
     {
-       price_difference=((price*median_consumption)/(price*consumption)-1);
        printf("your consumption is not higher than normal\n");
        return FALSE;
     }
