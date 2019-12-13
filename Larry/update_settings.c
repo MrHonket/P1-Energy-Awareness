@@ -1,8 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <unistd.h>
 #include "global.h"
+#include "language.h"
 
 /* opdatere settings.txt fil*/
 /* Daniel */
@@ -30,9 +30,6 @@ settings load_settings(void){
     char scan_data[40], language[5], location[5];
     int user_id; 
     //herunder bruges unistd biblioteket til at se om der er access (File_Ok) til settings.txt. Hvis den ikke eksistere, skab settings fil.
-    if(access("settings.txt",F_OK) == -1){
-        l_update_settings();
-    }
 
     f = fopen("settings.txt","r");
     

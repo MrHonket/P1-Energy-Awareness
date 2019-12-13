@@ -34,8 +34,14 @@ int main(void){
     dato dato_to = {{23, 00}, 31, December, 2017};                       
     data *Data;
     int confirmation;
-    
-    User.settings = load_settings();
+
+    if(access("settings.txt",F_OK) != -1){
+        User.settings = load_settings();
+    }
+    else{
+        strcpy(User.settings.language,"ENG");
+        l_update_settings(User);
+    }
 
     confirmation = check_for_run_module(User);
 
@@ -121,7 +127,7 @@ int prompt_user(user User, data *Data){
         l_user_history(User,Data);
     }
     else if(User.choice.function == UpdateSettings){
-        l_update_settings(User,Data);
+        l_update_settings(User);
         User.settings = load_settings();
     }
     else if(User.choice.function == InfoEnergySaving){
