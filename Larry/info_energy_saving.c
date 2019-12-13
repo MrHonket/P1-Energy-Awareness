@@ -128,7 +128,7 @@ void print_information(data return_array[], data cheapest_struct, user User, int
     if (strcmp(User.settings.residence, "DK1") == 0)
     {
         user_price = return_array[hour_choice].meter.value * KWH_TO_MWH * return_array[hour_choice].prize.DK1price;
-        printf("Nuværende pris: %.2f DKK\n\n", return_array[hour_choice].prize.DK1price); 
+        printf("Nuværende pris: %.2f DKK / MWH\n\n", return_array[hour_choice].prize.DK1price); 
         printf("Nuværende forbrug: %.2f KWH \n\n", return_array[hour_choice].meter.value); 
         printf("Nuværende pris baseret på nuværende forbrug: %.2f DKK\n\n", user_price); 
     }
@@ -189,7 +189,7 @@ void overview_for_interval(data data_array[], user User, int from_hour, int to_h
 {
     int i;
     for (i = from_hour; i <= to_hour; i++)
-        printf("Time [%d] - Pris: %.2f\n", i, data_array[i].prize.DK1price);
+        printf("Time [%d] - Pris: %.2f DKK / MWH\n", i, data_array[i].prize.DK1price);
 }
 
 
