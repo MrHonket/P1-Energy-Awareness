@@ -11,8 +11,7 @@ double warning_energy_saving(user User, data *Data);
 double warning_consumption(double price, double consumption,double median_consumption);
 
 double warning_energy_saving(user User, data *Data){
-    int Time_now=1;
-    dato to= {{24, 00}, 15, Januar, 2018};
+    int Time_now=User.choice.from.time.hour;
     double value,
            one_price,          
            one_consumption,    
@@ -36,12 +35,12 @@ double warning_consumption(double price,double consumption,double median_consump
     if(consumption>median_consumption)
     {
        price_difference=((price*consumption)/(price*median_consumption)-1);
-       return MakeWarning;
+       return price_difference;
     }
     else if(consumption<=median_consumption)
     {
        price_difference=((price*median_consumption)/(price*consumption)-1);
-       return NoWarning;
+       return FALSE;
     }
     else
     {
