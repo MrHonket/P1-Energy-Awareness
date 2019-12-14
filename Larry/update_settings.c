@@ -11,7 +11,6 @@
 void update_settings(void);
   int test_update_scan(char userdata[]);
 settings load_settings(void);
-void update_next_activation(void);
 
 void update_settings(void)
 {
@@ -24,7 +23,6 @@ void update_settings(void)
 
         f = fopen("settings.txt", "w");
         fwrite(userdata, 1, sizeof(userdata),f);
-
         fclose(f);
     }
     else{
@@ -34,22 +32,39 @@ void update_settings(void)
 }
 
 int test_update_scan(char userdata[]){
+    char test_str[60];
     char test_res[10];
     char test_lang[10];
-    int test_id;
+    char test_id[10];
+    int length;
+    int i;
 
-    sscanf(userdata,"%s - %s - %d ",test_res,test_lang,&test_id);
+    strcpy(test_str,userdata);
 
-    printf("%s %s %d\n",test_res,test_lang,test_id);
+    sscanf(test_str,"%s - %s - %s ",test_res,test_lang,test_id);
 
-    if(strcmp(test_res,"%[A-Z0-9]") < 0){
+    length = strlen(test_res);
+    for(i = 0; i < length; i++){
+        if(islower(test_res[i])){
+            return Failure;
+        }
+    }
+    if(!isdigit(test_res[i-1])){
         return Failure;
     }
-    if(strcmp(test_lang,"%[A-Z]") < 0){
-        return Failure;
+
+    length = strlen(test_lang);
+    for(i = 0; i < length; i++){
+        if(islower(test_lang[i])){
+            return Failure;
+        }
     }
-    if(test_id <= 0 && isdigit(test_id)){
-        return Failure;
+
+    length = strlen(test_id);
+    for(i = 0; i < length; i++){
+        if(isalpha(test_id[i])){
+            return Failure;
+        }
     }
 
     return 1;
@@ -74,9 +89,4 @@ settings load_settings(void){
     strcpy(Settings.residence, location);
 
     return Settings;
-}
-/*Skal sætte den næste dato for automatisk aktivering ind i settings.txt filen*/
-/*Husk at sørg for next_activation også bliver kørt i update_setings!*/
-void update_next_activation(void){
-    data *Data;
 }
