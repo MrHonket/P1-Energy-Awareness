@@ -15,6 +15,8 @@
 void l_prompt_user(user User);
 void l_user_history(user User, data *Data);
 void l_info_energy_saving(user User,data *Data);
+  void cheapest(data data_array[], user User);
+  void print_information(data return_array[], user User);
 void l_update_settings(user User);
 void l_system_information(user User,data *Data);
 void l_consumption_check(user User,data *Data);
@@ -58,7 +60,7 @@ void l_user_history(user User, data *Data){
         print_date(Data[0].prize.from);
         printf("Til ");
         print_date(Data[HOURS_PR_YEAR - test].prize.to);
-        printf("Skriv venligst %d hvis du vil have det som gennemsnit eller %d hvis du vil have medianen",Mean,Median);
+        printf("Skriv venligst \n%d for gennemsnit \n%d for medianen",Mean,Median);
 
         scanf(" %d",&User.choice.mean_or_median);
 
@@ -81,32 +83,29 @@ void l_info_energy_saving(user User,data *Data)
 {
     double info;
     int choice;
-    int from_hour;
-    int to_hour;
-    int hour_choice;
 
     if(strcmp(User.settings.language,"DK") == 0){
     
-        printf("Velkommen til modulet energibesparelser - du har nu følgende to valgmuligheder:\n");
-        printf("Tryk 1 for information om strømpris for en given time og hvornår på døgnet strømmen er billigst\n");
-        printf("Tryk 2 for for strømpris i et givent tidsrum\n");
+        printf("Velkommen til modulet energibesparelser - du har nu folgende to valgmuligheder:\n");
+        printf("Tryk 1 for information om strompris for en given time og hvornår på dognet strømmen er billigst\n");
+        printf("Tryk 2 for for strompris i et givent tidsrum\n");
 
         scanf(" %d", &choice);
 
         switch(choice){
             case 1: 
-                printf("Indtast hvilken time du ønsker data fra: ");
-                scanf(" %d", &hour_choice);
-                print_information(Data, User, hour_choice);
-                info = info_energy_saving(User, Data, hour_choice);
+                printf("Indtast hvilken time du onsker data fra: ");
+                scanf(" %d", &User.choice.hour);
+                print_information(Data, User);
+                info = info_energy_saving(User, Data);
                 cheapest(Data, User);
                 printf("Din besparelse bliver: %.5f DKK\n", info);
                 printf("--------------------------------------------------------\n\n");
                 break;
             case 2: 
-                printf("Indtast en start time og en slut time du ønsker at se priser for: \n");
-                scanf(" %d %d", &from_hour, &to_hour);
-                overview_for_interval(Data, User, from_hour, to_hour);
+                printf("Indtast en start time og en slut time du onsker at se priser for: \n");
+                scanf(" %d %d", &User.choice.from.time.hour, &User.choice.to.time.hour);
+                overview_for_interval(User,Data);
                 break;
         }
     }
@@ -115,6 +114,52 @@ void l_info_energy_saving(user User,data *Data)
     }
     else{
         error_message(ErrorLanguageNotImplemented);
+    }
+}
+
+/* Funktionen ser på hvornår på dagen det er billigst at forbruge strømog printer det ud */
+void cheapest(data data_array[], user User)
+{
+    data *cheapest;
+    cheapest = (data*)malloc(1 * sizeof(data));
+    
+    qsort(data_array, NMB_OF_ELEMENTS, sizeof(data), cmpfunc);
+
+    cheapest->prize.from = data_array[0].prize.from;
+    cheapest->prize.to = data_array[0].prize.to;
+    cheapest->prize.DK1price = data_array[0].prize.DK1price;
+    cheapest->prize.DK2price = data_array[0].prize.DK2price;
+
+    printf("Det billigste tidspunkt at forbruge din strøm vil være: \n--------------------------------------------------------\n");
+
+    if (strcmp(User.settings.residence, "DK1") == 0)
+        printf("Dato: %d | Klokkeslaet: %d - %d | Pris DK1: %.2f DKK |\n\n", cheapest->prize.from.day,
+                         cheapest->prize.from.time.hour, cheapest->prize.to.time.hour, cheapest->prize.DK1price);
+    else       
+        printf("Dato: %d | Klokkeslaet: %d - %d | Pris DK2: %.2lf DKK |\n\n", cheapest->prize.from.day,
+                         cheapest->prize.from.time.hour, cheapest->prize.to.time.hour, cheapest->prize.DK2price);
+}
+
+/* En samlet print funktion der tager højde for om vi kigger på DK1 eller DK2 */
+void print_information(data return_array[], user User)
+{   
+    printf("\n");
+    printf("--------------------------------------------------------\n");
+    printf("Tidspunkt valgt af bruger: kl.%d\n\n", User.choice.hour);
+    double user_price;
+    if (strcmp(User.settings.residence, "DK1") == 0)
+    {
+        user_price = return_array[User.choice.hour].meter.value * KWH_TO_MWH * return_array[User.choice.hour].prize.DK1price;
+        printf("Nuvaerende pris: %.2f DKK / MWH\n\n", return_array[User.choice.hour].prize.DK1price); 
+        printf("Nuvaerende forbrug: %.2f KWH \n\n", return_array[User.choice.hour].meter.value); 
+        printf("Nuvaerende pris baseret paa nuvaerende forbrug: %.2f DKK\n\n", user_price); 
+    }
+    else
+    {
+        user_price = return_array[User.choice.hour].meter.value * KWH_TO_MWH * return_array[User.choice.hour].prize.DK2price;
+        printf("Nuvaerende pris: %.2f\n\n", return_array[User.choice.hour].prize.DK2price); 
+        printf("Nuvaerende forbrug: %.2f\n\n", return_array[User.choice.hour].meter.value); 
+        printf("Nuvaerende pris baseret paa nuvaerende forbrug: %.2f DKK\n\n", user_price); 
     }
 }
 
