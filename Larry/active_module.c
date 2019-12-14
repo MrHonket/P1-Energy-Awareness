@@ -24,23 +24,26 @@
 /*Dette er prototyper i programmet.*/
 int check_for_run_module(user User);
 int prompt_user(user User,data *Data);
-void log_data_use(user User);
+void log_data_use(data Output);
+void update_next_activation(user User);
 /*main vil modtage information om det er en måler eller sig selv (Automatisk) der aktivere eller en app (Human)*/
 int main(void){
-/*Raller*/ //user User = { {200, "DK1", "DK"}, InfoEnergySaving, Mean, {{19, 0}, 0, Januar, 2017}, {{21, 0}, 0, Januar, 2017}, Price, Human};
-/*Basil*/  user User = { {200, "DK1", "DK"}, UserHistory, Median, {{15, 0}, 0, Januar, 2017}, {{21, 0}, 0, Januar, 2017}, Price, Human};    
-/*Niller*/ //user User = { {200, "DK1", "DK"}, WarningEnergySaving, Median, {{15, 0}, 0, Januar, 2017}, {{21, 0}, 0, Januar, 2017}, Meter, Automated};    
+/*Raller*/ //user User = { {200, "DK1", "DK"}, InfoEnergySaving, 0, Mean, {{19, 0}, 0, Januar, 2017}, {{21, 0}, 0, Januar, 2017}, Price, Human};
+/*Basil*/  user User = { {200, "DK1", "DK"}, UserHistory, 0, Median, {{15, 0}, 0, Januar, 2017}, {{21, 0}, 0, Januar, 2017}, Price, Human};    
+/*Niller*/ //user User = { {200, "DK1", "DK"}, WarningEnergySaving, 0, Median, {{15, 0}, 0, Januar, 2017}, {{21, 0}, 0, Januar, 2017}, Meter, Automated};    
     dato dato_from = {{00, 00}, 1, Januar, 2017};
     dato dato_to = {{23, 00}, 31, December, 2017};                       
     data *Data;
+    data Output; //Dette vil være et struct som evt. kunne returneres i passiv_modulet til brug i log_data.
     int confirmation;
 
-    if(access("settings.txt",F_OK) == 1){
+    if(access("settings.txt",F_OK) == 0){
         User.settings = load_settings();
     }
     else{
         strcpy(User.settings.language,"ENG");
         l_update_settings(User);
+        User.settings = load_settings();
     }
 
     confirmation = check_for_run_module(User);
@@ -51,11 +54,12 @@ int main(void){
             prompt_user(User,Data);
         }
         else if(User.type == Automated){
-            printf("\n\nTest funktion for at se hvornaar det passive module start\n");
-            confirmation = passive_module(User,Data);
-            if(confirmation){
-                log_data_use(User);
-                if(confirmation){
+            printf("\n\nTest funktion for at se hvornaar det passive module starter i active_module\n");
+            confirmation = passive_module(User,Data); //Der kunne istedet være Output = passive_module
+            if(confirmation){                         //her ville der så skulle checkes for om der er en valid output fil.
+                log_data_use(Output);                 //log data vil logge dataene i output filen
+                update_next_activation(User);         //update next activation vil tage settings og planlægge næste aktivering.
+                if(confirmation){                     //Dette skal rykkes over i language.c filen for at holde det clean.
                     printf("ADVARSEL TIL BRUGER! Du forbruger nu hvor prisen er hoej!\n");
                 }
                 else if(confirmation == FALSE){
@@ -75,6 +79,7 @@ int main(void){
         //don't run, evt. log_data_use(User); alt efter hvordan den implementeres.
     }
 
+    User.settings = load_settings();
     debug_user(User);
         
     return EXIT_SUCCESS;
@@ -92,7 +97,7 @@ int check_for_run_module(user User){
             return TRUE;
         }
         else if(User.settings.next_activation.day < time_now.day){
-            update_next_activation();
+            update_next_activation(User);
             check_for_run_module(User);
         }
         else{
@@ -110,7 +115,7 @@ int check_for_run_module(user User){
 }
 /*Funktion der logger brugen af programmet og måden de data der måtte komme derigennem.*/
 /*Disse data vil være relevante at vise i funktionen system_information.c når den implementeres*/
-void log_data_use(user User){
+void log_data_use(data Output){
     error_message(ErrorLogDataNotImplemented);
 }
 /*Funktionen som fungere som en brugers interface*/
@@ -129,6 +134,7 @@ int prompt_user(user User, data *Data){
     else if(User.choice.function == UpdateSettings){
         l_update_settings(User);
         User.settings = load_settings();
+        update_next_activation(User);
     }
     else if(User.choice.function == InfoEnergySaving){
         l_info_energy_saving(User,Data);
@@ -147,4 +153,9 @@ int prompt_user(user User, data *Data){
     }
 
     return prompt_user(User,Data);
+}
+/*Skal sætte den næste dato for automatisk aktivering ind i settings.txt filen*/
+/*Husk at sørg for next_activation også bliver kørt i update_setings!*/
+void update_next_activation(user User){
+    data *Data;
 }

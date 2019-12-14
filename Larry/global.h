@@ -9,6 +9,7 @@
 #define FALSE         0
 #define TRUE          1
 #define SUCCESS       2
+#define NMB_OF_ELEMENTS 24
 #define HOURS_PR_YEAR (365 * 24)
 #define KWH_TO_MWH    0.001
 #define FILENAME_METER "Meterdata.csv"
@@ -23,7 +24,7 @@ typedef enum{ErrorConfirmationPassiveModule,ErrorChoiceDoesntExist,
              ErrorUserLookupHistory,ErrorUserMeanMedianHistory,
              ErrorPassiveModuleFuncChoice,ErrorInWarningConsumption,
              ErrorLogDataNotImplemented,ErrorLanguageNotImplemented,
-             ErrorSettingsNotCorrect}error_types;
+             ErrorSettingsNotCorrect,ErrorResidenceNotImplemented}error_types;
 int error_message(int error);
 
 /*VARIABLE TIL data*/
@@ -66,7 +67,7 @@ const char *month_txt;
     /*settings valg: settings*/
     typedef struct{int id;char residence[5];char language[5];dato next_activation;}settings;
     /*aktive valg: choice*/
-    typedef struct{int function; mean_or_median mean_or_median;
+    typedef struct{int function; int hour; mean_or_median mean_or_median;
                    dato from;dato to;lookup_type lookup;}choice;
     
 /*user structet*/

@@ -26,5 +26,4 @@ int passive_module(user User, data *Data)
         error_message(ErrorPassiveModuleFuncChoice);
         return Failure;
     }
-    update_next_activation();
 }

@@ -6,6 +6,7 @@
 #define FALSE         0
 #define TRUE          1
 #define SUCCESS       2
+#define NMB_OF_ELEMENTS 24
 #define HOURS_PR_YEAR (365*24)
 #define KWH_TO_MWH    0.001
 #define FILENAME_METER "Meterdata.csv"
@@ -24,7 +25,8 @@ typedef enum{
     ErrorInWarningConsumption,
     ErrorLogDataNotImplemented,
     ErrorLanguageNotImplemented,
-    ErrorSettingsNotCorrect
+    ErrorSettingsNotCorrect,
+    ErrorResidenceNotImplemented
 }error_types;
 
 int error_message(int error){
@@ -65,6 +67,10 @@ int error_message(int error){
     else if(error == ErrorSettingsNotCorrect){
         printf("Error, some values wasn't inputted correctly, please try again\n");
         printf("Please remember to use capital letters and whole numbers.\n");
+    }
+    else if(error == ErrorResidenceNotImplemented){
+        printf("Error because the given residence from User.settings hasn't been implemented or doesn't exist\n");
+        printf("This error occured in the info_energy_saving module in the info_energy_saving function.\n");
     }
     else{
         printf("Error because the error_message nr. %d in error_types hasn't been implemented yet\n",error);
@@ -255,6 +261,7 @@ typedef struct{
 /*aktive valg: choice*/
 typedef struct{
     int function;
+    int hour;
     mean_or_median mean_or_median;
     dato from;
     dato to;
