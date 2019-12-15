@@ -22,7 +22,7 @@ void l_system_information(user User,data *Data);
 void l_consumption_check(user User,data *Data);
 void l_future_data(user User,data *Data);
 void l_warning_energy_saving(user User, data *Data);
-void print_warning(int response);
+void print_warning(user User);
 void l_machine_activation(user User, data *Data);
 
 void l_prompt_user(user User){
@@ -261,13 +261,23 @@ void l_warning_energy_saving(user User, data *Data){
     }
 }
 
-void print_warning(int response){
-    if(response){
+void print_warning(user User){
+    
+    if(strcmp(User.settings.language,"DK") == 0){
+        if(User.choice.warning){
         printf("ADVARSEL TIL BRUGER! Du forbruger nu hvor prisen er hoej!\n");
     }
-    else if(response == FALSE){
+    else if(User.choice.warning == FALSE){
         printf("Test Print for at se om funktionen virker som den skal\n");
         printf("Aka funktionen koerte rigtigt og det blev vurderet til ingen advarsel var noedvendig\n");
+    }
+    }
+    else if(strcmp(User.settings.language,"ENG") == 0){
+        //skriv engelsk
+        error_message(ErrorLanguageNotImplemented);
+    }
+    else{
+        l_update_settings(User);
     }
 }
 

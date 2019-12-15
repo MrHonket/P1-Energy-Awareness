@@ -27,9 +27,9 @@ int prompt_user(user User,data *Data);
 void log_data_use(data Output);
 /*main vil modtage information om det er en måler eller sig selv (Automatisk) der aktivere eller en app (Human)*/
 int main(void){
-/*Raller*/ //user User = { {200, "DK1", "DK"}, InfoEnergySaving, 0, Mean, {{19, 0}, 0, Januar, 2017}, {{21, 0}, 0, Januar, 2017}, Price, Human};
-/*Basil*/  user User = { {200, "DK1", "DK"}, UserHistory, 0, Median, {{15, 0}, 0, Januar, 2017}, {{21, 0}, 0, Januar, 2017}, Price, Human};    
-/*Niller*/ //user User = { {200, "DK1", "DK"}, WarningEnergySaving, 0, Median, {{15, 0}, 0, Januar, 2017}, {{21, 0}, 0, Januar, 2017}, Meter, Automated};    
+/*Raller*/ //user User = { {200, "DK1", "DK"}, InfoEnergySaving, 0,0, Mean, {{19, 0}, 0, Januar, 2017}, {{21, 0}, 0, Januar, 2017}, Price, Human};
+/*Basil*/  user User = { {200, "DK1", "DK"}, UserHistory, 0,0, Median, {{15, 0}, 0, Januar, 2017}, {{21, 0}, 0, Januar, 2017}, Price, Human};    
+/*Niller*/ //user User = { {200, "DK1", "DK"}, WarningEnergySaving, 0,0, Median, {{15, 0}, 0, Januar, 2017}, {{21, 0}, 0, Januar, 2017}, Meter, Automated};    
     dato dato_from = {{00, 00}, 1, Januar, 2017};
     dato dato_to = {{23, 00}, 31, December, 2017};                       
     data *Data;
@@ -42,6 +42,7 @@ int main(void){
     else{
         l_update_settings(User);
         User.settings = load_settings();
+        update_next_activation(User);
     }
     confirmation = check_for_run_module(User);
 
@@ -49,14 +50,12 @@ int main(void){
         Data = get_price_for_timeinterval_in_area(dato_from, dato_to, Dk1);
         if (User.type == Human){
             prompt_user(User,Data);
-            update_next_activation(User);
         }
         else if(User.type == Automated){
             printf("\n\nTest funktion for at se hvornaar det passive module starter i active_module\n");
             confirmation = passive_module(User,Data); //Der kunne istedet være Output = passive_module
             if(confirmation){                         //her ville der så skulle checkes for om der er en valid output fil.
                 log_data_use(Output);                 //log data vil logge dataene fra output i en logfil.txt
-                update_next_activation(User);         //update next activation vil tage settings og planlægge næste aktivering.
             }
             else{
                 error_message(ErrorConfirmationPassiveModule);
@@ -69,6 +68,8 @@ int main(void){
     else{
         //don't run, evt. log_data_use(User); alt efter hvordan den implementeres.
     }
+
+    update_next_activation(User);         //update next activation vil tage settings og planlægge næste aktivering.
 
     User.settings = load_settings();
     debug_user(User);
@@ -109,7 +110,8 @@ int check_for_run_module(user User){
 void log_data_use(data Output){
     error_message(ErrorLogDataNotImplemented);
 }
-/*Funktionen som fungere som en brugers interface*/
+/*Funktionen som fungere som en brugers interface
+ Kunne overvejes at lægges ind i language.c istedet for.*/
 int prompt_user(user User, data *Data){
    
     l_prompt_user(User);

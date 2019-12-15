@@ -262,6 +262,7 @@ typedef struct{
 typedef struct{
     int function;
     int hour;
+    int warning;
     mean_or_median mean_or_median;
     dato from;
     dato to;

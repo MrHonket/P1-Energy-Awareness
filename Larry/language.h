@@ -11,7 +11,7 @@ void l_system_information(user User,data *Data);
 void l_consumption_check(user User,data *Data);
 void l_future_data(user User,data *Data);
 void l_warning_energy_saving(user User, data *Data);
-void print_warning(int response);
+void print_warning(user User);
 void l_machine_activation(user User, data *Data);
 
 #endif

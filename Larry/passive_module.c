@@ -16,8 +16,8 @@ int passive_module(user User, data *Data)
 
     if(User.choice.function == WarningEnergySaving)
         {
-        response = warning_energy_saving(User, Data);
-        print_warning(response);
+        User.choice.warning = warning_energy_saving(User, Data);
+        print_warning(User);
         return Success;
         }
     else if(User.choice.function == MachineActivation)
