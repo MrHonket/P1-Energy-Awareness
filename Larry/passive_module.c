@@ -2,12 +2,14 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "global.h"
-#include "warning_energy_saving.h"
-#include "machine_activation.h"  
+#include "language.h"
 #include "update_settings.h"
+#include "warning_energy_saving.h"
+#include "machine_activation.h"
+
 int passive_module(user User, data *Data);
 
-/*Returnere enten Failure, Success eller en response for om der skal laves en warning som defineret i passive_warnings*/
+/*Returnere enten Failure eller Success nu men kan udvides til at returnere et Output struct*/
 int passive_module(user User, data *Data)
 {
     int response;
@@ -15,11 +17,12 @@ int passive_module(user User, data *Data)
     if(User.choice.function == WarningEnergySaving)
         {
         response = warning_energy_saving(User, Data);
-        return response;
+        print_warning(response);
+        return Success;
         }
     else if(User.choice.function == MachineActivation)
         {
-        machine_activation(User, Data);
+        l_machine_activation(User, Data);
         return Success;  
         }
     else{

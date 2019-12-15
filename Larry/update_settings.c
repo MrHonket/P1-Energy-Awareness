@@ -10,7 +10,10 @@
 
 void update_settings(void);
   int test_update_scan(char userdata[]);
+void update_next_activation(user User);
 settings load_settings(void);
+void update_warning_energy_saving(void);
+void update_machine_activation(void);
 
 void update_settings(void)
 {
@@ -70,6 +73,22 @@ int test_update_scan(char userdata[]){
     return 1;
 }
 
+/*Skal sætte den næste dato for automatisk aktivering ind i settings.txt filen*/
+/*Husk at sørg for next_activation også bliver kørt i update_setings!*/
+void update_next_activation(user User){
+    FILE *f;
+
+    //udregn hvornår næste aktivering skal ske.
+
+    f = fopen("settings.txt", "r");
+    //Læs de data ind som er i settings.txt og lav en streng med de data + næste aktivering
+    fclose(f);
+
+    //f = fopen("settings.txt", "w");
+    //Skriv datastrengen ind i settings.txt filen.
+    //fclose(f);
+}
+
 settings load_settings(void){
     settings Settings;
     FILE *f;
@@ -89,4 +108,34 @@ settings load_settings(void){
     strcpy(Settings.residence, location);
 
     return Settings;
+}
+
+void update_warning_energy_saving(void){
+    FILE *f;
+
+    error_message(ErrorNotImplemented);
+    //Lav en scanf som tager de input der er nødvendige for at sætte programmet op
+
+    f = fopen("settings.txt", "r");
+    //Læs de data ind som er i settings.txt og lav en streng med de data + de førnævnte input
+    fclose(f);
+
+    //f = fopen("settings.txt", "w");
+    //Skriv datastrengen ind i settings.txt filen.
+    //fclose(f);
+}
+
+void update_machine_activation(void){
+    FILE *f;
+
+    error_message(ErrorNotImplemented);
+    //Lav en scanf som tager de input der er nødvendige for at sætte programmet op
+
+    f = fopen("settings.txt", "r");
+    //Læs de data ind som er i settings.txt og lav en streng med de data + de førnævnte input
+    fclose(f);
+
+    //f = fopen("settings.txt", "w");
+    //Skriv datastrengen ind i settings.txt filen.
+    //fclose(f);
 }

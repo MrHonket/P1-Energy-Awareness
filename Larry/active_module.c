@@ -25,7 +25,6 @@
 int check_for_run_module(user User);
 int prompt_user(user User,data *Data);
 void log_data_use(data Output);
-void update_next_activation(user User);
 /*main vil modtage information om det er en måler eller sig selv (Automatisk) der aktivere eller en app (Human)*/
 int main(void){
 /*Raller*/ //user User = { {200, "DK1", "DK"}, InfoEnergySaving, 0, Mean, {{19, 0}, 0, Januar, 2017}, {{21, 0}, 0, Januar, 2017}, Price, Human};
@@ -41,23 +40,22 @@ int main(void){
         User.settings = load_settings();
     }
     else{
-        strcpy(User.settings.language,"ENG");
         l_update_settings(User);
         User.settings = load_settings();
     }
-
     confirmation = check_for_run_module(User);
 
     if(confirmation){
         Data = get_price_for_timeinterval_in_area(dato_from, dato_to, Dk1);
         if (User.type == Human){
             prompt_user(User,Data);
+            update_next_activation(User);
         }
         else if(User.type == Automated){
             printf("\n\nTest funktion for at se hvornaar det passive module starter i active_module\n");
             confirmation = passive_module(User,Data); //Der kunne istedet være Output = passive_module
             if(confirmation){                         //her ville der så skulle checkes for om der er en valid output fil.
-                log_data_use(Output);                 //log data vil logge dataene i output filen
+                log_data_use(Output);                 //log data vil logge dataene fra output i en logfil.txt
                 update_next_activation(User);         //update next activation vil tage settings og planlægge næste aktivering.
                 if(confirmation){                     //Dette skal rykkes over i language.c filen for at holde det clean.
                     printf("ADVARSEL TIL BRUGER! Du forbruger nu hvor prisen er hoej!\n");
@@ -134,28 +132,28 @@ int prompt_user(user User, data *Data){
     else if(User.choice.function == UpdateSettings){
         l_update_settings(User);
         User.settings = load_settings();
-        update_next_activation(User);
     }
     else if(User.choice.function == InfoEnergySaving){
         l_info_energy_saving(User,Data);
     }
     else if(User.choice.function == ConsumptionCheck){
-        consumption_check(User, Data);
+        l_consumption_check(User, Data);
     }
     else if(User.choice.function == SystemInformation){
-        system_information(User, Data);
+        l_system_information(User, Data);
     }
     else if(User.choice.function == FutureData){
-        future_data(User, Data);
+        l_future_data(User, Data);
     }    
+    else if(User.choice.function == WarningEnergySaving){
+        l_warning_energy_saving(User,Data);
+    }
+    else if(User.choice.function == WarningEnergySaving){
+        l_machine_activation(User,Data);
+    }
     else{
         error_message(ErrorChoiceDoesntExist);
     }
 
     return prompt_user(User,Data);
-}
-/*Skal sætte den næste dato for automatisk aktivering ind i settings.txt filen*/
-/*Husk at sørg for next_activation også bliver kørt i update_setings!*/
-void update_next_activation(user User){
-    data *Data;
 }

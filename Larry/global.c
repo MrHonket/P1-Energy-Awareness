@@ -44,7 +44,7 @@ int error_message(int error){
     }
     else if(error == ErrorNotImplemented){
         printf("Error because a function in choice_function hasn't been implemented yet\n");
-        printf("Please lookup this error_message in one of the .c files.\n");
+        printf("Please lookup this error_message in the chosen file.\n");
     }
     else if(error == ErrorUserLookupHistory){
         printf("Error because the chosen lookup choice in user_history.c isn't implemented yet\n");
@@ -66,7 +66,7 @@ int error_message(int error){
     }
     else if(error == ErrorSettingsNotCorrect){
         printf("Error, some values wasn't inputted correctly, please try again\n");
-        printf("Please remember to use capital letters and whole numbers.\n");
+        printf("Please remember to use capital letters, the - seperator and whole numbers.\n");
     }
     else if(error == ErrorResidenceNotImplemented){
         printf("Error because the given residence from User.settings hasn't been implemented or doesn't exist\n");

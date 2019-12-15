@@ -21,8 +21,9 @@ void l_update_settings(user User);
 void l_system_information(user User,data *Data);
 void l_consumption_check(user User,data *Data);
 void l_future_data(user User,data *Data);
-void l_warning_energy_saving(user User,data *Data);
-void l_machine_activation(user User,data *Data);
+void l_warning_energy_saving(user User, data *Data);
+void print_warning(int response);
+void l_machine_activation(user User, data *Data);
 
 void l_prompt_user(user User){
     if(strcmp(User.settings.language,"DK") == 0){
@@ -34,6 +35,8 @@ void l_prompt_user(user User){
         printf("Tryk %d for informationer om dette system\n",SystemInformation);  
         printf("Tryk %d for at lave et elcheck\n",ConsumptionCheck);              
         printf("Tryk %d for et gaet om fremtidige priser\n",FutureData);       
+        printf("Tryk %d for at saette det op saadan at du bliver advaret hvis prisen er hoej\n",WarningEnergySaving);
+        printf("Tryk %d for at saette nogle maskiner op saa de bliver aktiveret naar strommen er billig\n",MachineActivation);
     }
     else if(strcmp(User.settings.language,"ENG") == 0){
         printf("\n\nPlease enter one of the available numbers\n");                
@@ -43,10 +46,11 @@ void l_prompt_user(user User){
         printf("Enter %d for user settings\n",UpdateSettings);                    
         printf("Enter %d for information of the system\n",SystemInformation);     
         printf("Enter %d to check your power consumption\n",ConsumptionCheck);    
-        printf("Enter %d to get the prices of the future\n",FutureData);          
+        printf("Enter %d to get the prices of the future\n",FutureData);    
+        printf("Enter %d to create settings for when you should receive warnings due to high prices.\n",WarningEnergySaving);
+        printf("Enter %d to implement machines into your system, so they can activate when the price is low\n",MachineActivation);      
     }
     else{
-        error_message(ErrorLanguageNotImplemented);
         l_update_settings(User);
     }
 }
@@ -69,10 +73,10 @@ void l_user_history(user User, data *Data){
     }
     else if(strcmp(User.settings.language,"ENG") == 0){
         //skriv engelsk
-        error_message(ErrorLanguageNotImplemented);
+        l_update_settings(User);
     }
     else{
-        error_message(ErrorLanguageNotImplemented);
+        l_update_settings(User);
     }
     if(test){
         printf("\nBemaerk at der traekkes to fra Hours Pr Year for ikke at komme udenfor indeks OG at gennemsnit == median!\n");
@@ -110,10 +114,10 @@ void l_info_energy_saving(user User,data *Data)
         }
     }
     else if(strcmp(User.settings.language,"ENG") == 0){
-        printf("Sorry, English not implemented for module, use danish (DK).\n");
+        l_update_settings(User);
     }
     else{
-        error_message(ErrorLanguageNotImplemented);
+        l_update_settings(User);
     }
 }
 
@@ -165,7 +169,6 @@ void print_information(data return_array[], user User)
 
 void l_update_settings(user User){
     //skriv variable hvis nogen
-    
     if(strcmp(User.settings.language,"DK") == 0){
         printf("Skriv venligst paa formen: 'bosted' - 'sprog' - 'bruger id'\n");
         printf("Hvor bor du? Skriv DK1 for Jylland og Fyn eller DK2 for Sjælland\n");
@@ -182,6 +185,7 @@ void l_update_settings(user User){
     }
     else{
         error_message(ErrorLanguageNotImplemented);
+        strcpy(User.settings.language,"ENG");
         l_update_settings(User);
     }
 }
@@ -192,13 +196,15 @@ void l_system_information(user User, data *Data){
     if(strcmp(User.settings.language,"DK") == 0){
         //skriv dansk
         error_message(ErrorLanguageNotImplemented);
+        system_information(User,Data);
     }
     else if(strcmp(User.settings.language,"ENG") == 0){
         //skriv engelsk
         error_message(ErrorLanguageNotImplemented);
+        system_information(User,Data);
     }
     else{
-        error_message(ErrorLanguageNotImplemented);
+        l_update_settings(User);
     }
 }
 
@@ -208,13 +214,15 @@ void l_consumption_check(user User, data *Data){
     if(strcmp(User.settings.language,"DK") == 0){
         //skriv dansk
         error_message(ErrorLanguageNotImplemented);
+        consumption_check(User,Data);
     }
     else if(strcmp(User.settings.language,"ENG") == 0){
         //skriv engelsk
         error_message(ErrorLanguageNotImplemented);
+        consumption_check(User,Data);
     }
     else{
-        error_message(ErrorLanguageNotImplemented);
+        l_update_settings(User);
     }
 }
 
@@ -224,44 +232,58 @@ void l_future_data(user User, data *Data){
     if(strcmp(User.settings.language,"DK") == 0){
         //skriv dansk
         error_message(ErrorLanguageNotImplemented);
+        future_data(User,Data);
     }
     else if(strcmp(User.settings.language,"ENG") == 0){
         //skriv engelsk
         error_message(ErrorLanguageNotImplemented);
+        future_data(User,Data);
     }
     else{
-        error_message(ErrorLanguageNotImplemented);
+        l_update_settings(User);
     }
 }
 
-void l_warning_energy_saving(user User,data *Data){
+void l_warning_energy_saving(user User, data *Data){
     //skriv variable
     
     if(strcmp(User.settings.language,"DK") == 0){
-        //skriv dansk
         error_message(ErrorLanguageNotImplemented);
+        update_warning_energy_saving();
     }
     else if(strcmp(User.settings.language,"ENG") == 0){
         //skriv engelsk
         error_message(ErrorLanguageNotImplemented);
+        update_warning_energy_saving();
     }
     else{
-        error_message(ErrorLanguageNotImplemented);
+        l_update_settings(User);
     }
 }
 
-void l_machine_activation(user User,data *Data){
+void print_warning(int response){
+    if(response){
+        printf("ADVARSEL TIL BRUGER! Du forbruger nu hvor prisen er hoej!\n");
+    }
+    else if(response == FALSE){
+        printf("Test Print for at se om funktionen virker som den skal\n");
+        printf("Aka funktionen koerte rigtigt og det blev vurderet til ingen advarsel var noedvendig\n");
+    }
+}
+
+void l_machine_activation(user User, data *Data){
     //skriv variable
     
     if(strcmp(User.settings.language,"DK") == 0){
-        //skriv dansk
         error_message(ErrorLanguageNotImplemented);
+        update_machine_activation();
     }
     else if(strcmp(User.settings.language,"ENG") == 0){
         //skriv engelsk
         error_message(ErrorLanguageNotImplemented);
+        update_machine_activation();
     }
     else{
-        error_message(ErrorLanguageNotImplemented);
+        l_update_settings(User);
     }
 }
