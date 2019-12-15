@@ -57,13 +57,6 @@ int main(void){
             if(confirmation){                         //her ville der så skulle checkes for om der er en valid output fil.
                 log_data_use(Output);                 //log data vil logge dataene fra output i en logfil.txt
                 update_next_activation(User);         //update next activation vil tage settings og planlægge næste aktivering.
-                if(confirmation){                     //Dette skal rykkes over i language.c filen for at holde det clean.
-                    printf("ADVARSEL TIL BRUGER! Du forbruger nu hvor prisen er hoej!\n");
-                }
-                else if(confirmation == FALSE){
-                    printf("Test Print for at se om funktionen virker som den skal\n");
-                    printf("Aka funktionen koerte rigtigt og det blev vurderet til ingen advarsel var noedvendig\n");
-                }
             }
             else{
                 error_message(ErrorConfirmationPassiveModule);
