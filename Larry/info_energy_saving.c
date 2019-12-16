@@ -87,8 +87,18 @@ int cmpfunc(const void * a, const void * b)
 void overview_for_interval(user User, data data_array[])
 {
     int i;
-    for (i = User.choice.from.time.hour; i <= User.choice.to.time.hour; i++)
-        printf("Time [%d] - Pris: %.2f DKK / MWH\n", i, data_array[i].prize.DK1price);
+    if (strcmp(User.settings.residence, "DK1") == 0)
+    {
+        for (i = User.choice.from.time.hour; i <= User.choice.to.time.hour; i++)
+            printf("Time [%d] - Pris: %.2f DKK / MWH\n", i, data_array[i].prize.DK1price);
+    }
+    else
+    {
+        for (i = User.choice.from.time.hour; i <= User.choice.to.time.hour; i++)
+            printf("Time [%d] - Pris: %.2f DKK / MWH\n", i, data_array[i].prize.DK2price);
+    }
+    
+    
 }
 
 
