@@ -18,22 +18,11 @@ double info_energy_saving(user User, data data_array[])
     double user_price_current = 0.0;
     double user_price_after = 0.0;
     double cheapest_price = 0.0;
-
-    data *tmp_data = malloc(sizeof(data) * 24);
     
     if (strcmp(User.settings.residence, "DK1") == 0)
     {   
-        for (int i = 0; i < 24; i++)
-        {
-            tmp_data[i].prize.DK1price = data_array[i].prize.DK1price;
-            tmp_data[i].meter.value = data_array[i].meter.value;
-        }
-
-        for (int i = 0; i < 24; i++)
-            printf("Priser: %.2lf og forbrug: %.2lf\n", tmp_data[i].prize.DK1price, tmp_data[i].meter.value);
-
-        current_price = tmp_data[User.choice.hour].prize.DK1price;
-        current_consumption = tmp_data[User.choice.hour].meter.value;
+        current_price = data_array[User.choice.hour].prize.DK1price;
+        current_consumption = data_array[User.choice.hour].meter.value;
         
         if (current_price < 0)
             printf("Prisen er pt. negativ!\n");
@@ -42,8 +31,8 @@ double info_energy_saving(user User, data data_array[])
         user_price_current = current_consumption * KWH_TO_MWH * current_price;
 
         /* Sorterer pris-array så den billigste pris ligger først */
-        qsort(tmp_data, NMB_OF_ELEMENTS, sizeof(data), cmpfunc);
-        cheapest_price = tmp_data[0].prize.DK1price;
+        qsort(data_array, NMB_OF_ELEMENTS, sizeof(data), cmpfunc);
+        cheapest_price = data_array[0].prize.DK1price;
 
         /* Dette giver brugerens strømpris baseret ud fra hvornår det er billigst at bruge strøm */
         user_price_after = current_consumption * KWH_TO_MWH * cheapest_price;
@@ -51,8 +40,8 @@ double info_energy_saving(user User, data data_array[])
     }
     else if (strcmp(User.settings.residence, "DK2") == 0)
     {
-        current_price = tmp_data[User.choice.hour].prize.DK2price;
-        current_consumption = tmp_data[User.choice.hour].meter.value;
+        current_price = data_array[User.choice.hour].prize.DK2price;
+        current_consumption = data_array[User.choice.hour].meter.value;
 
         if (current_price < 0)
             printf("Prisen er pt. negativ!\n");
@@ -61,8 +50,8 @@ double info_energy_saving(user User, data data_array[])
         user_price_current = current_consumption * KWH_TO_MWH * current_price;
 
         /* Sorterer pris-array så den billigste pris ligger først */
-        qsort(tmp_data, NMB_OF_ELEMENTS, sizeof(data), cmpfunc);
-        cheapest_price = tmp_data[0].prize.DK2price;
+        qsort(data_array, NMB_OF_ELEMENTS, sizeof(data), cmpfunc);
+        cheapest_price = data_array[0].prize.DK2price;
         printf("Den billigste pris er: %.2f / KwH\n", cheapest_price);
 
         /* Dette giver brugerens strømpris baseret ud fra hvornår det er billigst at bruge strøm */
