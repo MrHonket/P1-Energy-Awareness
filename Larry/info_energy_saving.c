@@ -36,7 +36,7 @@ double info_energy_saving(user User, data data_array[])
 
         /* Dette giver brugerens strømpris baseret ud fra hvornår det er billigst at bruge strøm */
         user_price_after = current_consumption * KWH_TO_MWH * cheapest_price;
-        printf("Din pris, hvis du vælger at flytte dit forbrug: %.2f DKK\n\n", user_price_after);
+        printf("Din pris, hvis du vælger at flytte dit forbrug: %.2f DKK / KwH\n\n", user_price_after);
     }
     else if (strcmp(User.settings.residence, "DK2") == 0)
     {
@@ -52,11 +52,11 @@ double info_energy_saving(user User, data data_array[])
         /* Sorterer pris-array så den billigste pris ligger først */
         qsort(data_array, NMB_OF_ELEMENTS, sizeof(data), cmpfunc);
         cheapest_price = data_array[0].prize.DK2price;
-        printf("Den billigste pris er: %.2f\n", cheapest_price);
+        printf("Den billigste pris er: %.2f / KwH\n", cheapest_price);
 
         /* Dette giver brugerens strømpris baseret ud fra hvornår det er billigst at bruge strøm */
         user_price_after = current_consumption * KWH_TO_MWH * cheapest_price;
-        printf("Din pris, hvis du vaelger at flytte dit forbrug: %.2f DKK\n\n", user_price_after);
+        printf("Din pris, hvis du vaelger at flytte dit forbrug: %.2f DKK / KwH\n\n", user_price_after);
     }
     else
     {
@@ -86,8 +86,18 @@ int cmpfunc(const void * a, const void * b)
 void overview_for_interval(user User, data data_array[])
 {
     int i;
-    for (i = User.choice.from.time.hour; i <= User.choice.to.time.hour; i++)
-        printf("Time [%d] - Pris: %.2f DKK / MWH\n", i, data_array[i].prize.DK1price);
+    if (strcmp(User.settings.residence, "DK1") == 0)
+    {
+        for (i = User.choice.from.time.hour; i <= User.choice.to.time.hour; i++)
+            printf("Time [%d] - Pris: %.2f DKK / MWH\n", i, data_array[i].prize.DK1price);
+    }
+    else
+    {
+        for (i = User.choice.from.time.hour; i <= User.choice.to.time.hour; i++)
+            printf("Time [%d] - Pris: %.2f DKK / MWH\n", i, data_array[i].prize.DK2price);
+    }
+    
+    
 }
 
 

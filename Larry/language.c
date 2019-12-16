@@ -135,10 +135,10 @@ void cheapest(data data_array[], user User)
     printf("Det billigste tidspunkt at forbruge din strøm vil være: \n--------------------------------------------------------\n");
 
     if (strcmp(User.settings.residence, "DK1") == 0)
-        printf("Dato: %d | Klokkeslaet: %d - %d | Pris DK1: %.2f DKK |\n\n", cheapest->prize.from.day,
+        printf("Dato: %d | Klokkeslaet: %d - %d | Pris DK1: %.2f DKK / MwH |\n\n", cheapest->prize.from.day,
                          cheapest->prize.from.time.hour, cheapest->prize.to.time.hour, cheapest->prize.DK1price);
     else       
-        printf("Dato: %d | Klokkeslaet: %d - %d | Pris DK2: %.2lf DKK |\n\n", cheapest->prize.from.day,
+        printf("Dato: %d | Klokkeslaet: %d - %d | Pris DK2: %.2lf DKK / MwH |\n\n", cheapest->prize.from.day,
                          cheapest->prize.from.time.hour, cheapest->prize.to.time.hour, cheapest->prize.DK2price);
 }
 
@@ -154,14 +154,14 @@ void print_information(data return_array[], user User)
         user_price = return_array[User.choice.hour].meter.value * KWH_TO_MWH * return_array[User.choice.hour].prize.DK1price;
         printf("Nuvaerende pris: %.2f DKK / MWH\n\n", return_array[User.choice.hour].prize.DK1price); 
         printf("Nuvaerende forbrug: %.2f KWH \n\n", return_array[User.choice.hour].meter.value); 
-        printf("Nuvaerende pris baseret paa nuvaerende forbrug: %.2f DKK\n\n", user_price); 
+        printf("Nuvaerende pris baseret paa nuvaerende forbrug: %.2f DKK / KwH\n\n", user_price); 
     }
     else
     {
         user_price = return_array[User.choice.hour].meter.value * KWH_TO_MWH * return_array[User.choice.hour].prize.DK2price;
         printf("Nuvaerende pris: %.2f\n\n", return_array[User.choice.hour].prize.DK2price); 
         printf("Nuvaerende forbrug: %.2f\n\n", return_array[User.choice.hour].meter.value); 
-        printf("Nuvaerende pris baseret paa nuvaerende forbrug: %.2f DKK\n\n", user_price); 
+        printf("Nuvaerende pris baseret paa nuvaerende forbrug: %.2f DKK / KwH\n\n", user_price); 
     }
 }
 
