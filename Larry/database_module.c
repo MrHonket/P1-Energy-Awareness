@@ -46,13 +46,10 @@
 #include <stdio.h>
 #include <string.h>
 #include <ctype.h>
-// #include "calendar.h"
 #include "global.h"
 
 
 #define MAX_LINE_WIDTH 400
-// #define HOURS_PR_YEAR 8765
-// #define FILENAME_PRICE "/Users/saxjax/Documents/GitHub/P1-Energy-Awareness/Larry/database_module/elspot-prices_2018_hourly_dkk.csv"
 #define DATE_DMY "%2d-%2d-%4d %2dÊ-Ê%2d"
 #define DATE_YMD "%4d %2d %2d %2d.%2d"
 #define FIRST_PRICEINDEX 3
@@ -249,9 +246,8 @@ Data was last updated 31-12-2018;;;;;;;;;;;;;;;;;;
 01-01-2017;01 - 02;190,38;178,64;178,64;178,64;178,64;178,64;155,37;155,37;209,42;209,42;209,42;178,64;178,64;178,64;178,64;178,64;178,64
 */
 int copy_file_to_mypricedata(char *filename){
-    int i=0,j=0,dist=0;
+    int i=0,j=0;
     char str[MAX_LINE_WIDTH];
-    double value1=0,value2=0;
     const char s[2] = ";";
     char *token;
     char *data_txt[30];
@@ -266,30 +262,30 @@ int copy_file_to_mypricedata(char *filename){
 
     while (fgets(str,MAX_LINE_WIDTH,f)!=NULL){
         /* char  hourb[7]; */
-        int   houra,hourb_int;
+        int   houra;
         token = strtok(str,s);
         i=0;
         while(token !=NULL){
             data_txt[i] = token;
-            // printf("%s\n",token);
+            /* printf("%s\n",token); */
             token=strtok(NULL,s);
             i++;
         }
         
             
         sscanf(data_txt[1],"%dÊ-Ê",&houra);
-    // if(j>0 && hours_between(mypricedata[j].from, mypricedata[j-1].to)>1){
-    //     printf("stort spring i data fra index %d til index %d   afstanden er: %d\n",j-1,j,dist);
-    // }
+    /*  if(j>0 && hours_between(mypricedata[j].from, mypricedata[j-1].to)>1){
+         printf("stort spring i data fra index %d til index %d   afstanden er: %d\n",j-1,j,dist);
+         } */
 
-    //   printf("hra:%d,hrb:%d\n",houra, hourb_int);
+      /* printf("hra:%d,hrb:%d\n",houra, hourb_int); */
         mypricedata[j].from  = date_from_stringDMYI(data_txt[0],houra);
         mypricedata[j].to    = next_hour(mypricedata[j].from);
         
         mypricedata[j].DK1price = price_from_string(data_txt[8]);
         mypricedata[j].DK2price = price_from_string(data_txt[9]);
 
-        // print_price_index(j);
+        /* print_price_index(j); */
         j++;   
     }
    
@@ -305,10 +301,9 @@ int copy_file_to_mypricedata(char *filename){
 571313104402686056;2017-01-01 01.00;2017-01-01 02.00;0,450;KWH;Målt;Tidsserier; 
 */
 int copy_file_to_myconsumpdata(char *filename){
-    int i=0,j=0;
+    int i=0,j=0, k=0;
     int dist = 0;
     char str[MAX_LINE_WIDTH];
-    double value1=0,value2=0;
     const char s[2] = ";";
     char *token;
     char *data_txt[30];
@@ -322,8 +317,7 @@ int copy_file_to_myconsumpdata(char *filename){
     j=0;
 
     while (fgets(str,MAX_LINE_WIDTH,f)!=NULL){
-        char  hourb[7];
-        int   houra,hourb_int;
+        
         token = strtok(str,s);
 
         i=0;
@@ -348,7 +342,7 @@ int copy_file_to_myconsumpdata(char *filename){
            /*  printf("lappet hul i data :");
             print_date(myconsumpdata[j].from);
             printf("      afstand mlm datoer = %d \n", dist); */
-            int k = 0;
+            k = 0;
             
             for(k=0; k<dist; k++){
                 myconsumpdata[j+k] = empty_consumpstruct();
@@ -375,33 +369,17 @@ int copy_file_to_myconsumpdata(char *filename){
 
 
 
-
 FILE *check_file(char*filename){
     FILE *f = fopen(filename,"r");
-    
-    if(f!=NULL){
-        /* printf("\n\nimporting file: %s\n",filename); */
-        return f;
+    while (f==NULL){
+        char newfilename[MAX_LINE_WIDTH];
+        printf("filnavnet %s findes ikke!\nindtast sti til ny fil\n",filename);
+        prompt_for_filename(newfilename);
+        f=fopen(newfilename,"r");
     }
+    return f;
 
-    else{ 
-        char newfile[MAX_LINE_WIDTH];
-        printf("filnavnet findes ikke!\nindtast sti til fil med priser: ");
-        prompt_for_filename(newfile);
-        check_file(newfile);
-    }
-    return 0;
 }
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -417,7 +395,6 @@ pricedata *init_datab(pricedata *mypricedata, meterdata *meter_data, production 
 }
 
 pricedata *init_price_array(pricedata mypricedata[]){
-    int i = 0;
     pricedata *temp;
     temp = malloc(sizeof(pricedata));
     
@@ -453,9 +430,9 @@ dato date_from_stringDMYI(char *date, int time){
 
 dato date_from_stringYMDH(char *date){
     dato ret_date = {{0,0},0,0,0};
-    /* if(sscanf(date,"%4d-%2d-%2d %d.%d",&ret_date.year, &ret_date.month, &ret_date.day, &ret_date.time.hour, &ret_date.time.minute)<4){
+    if(sscanf(date,"%4d-%2d-%2d %d.%d",&ret_date.year, &ret_date.month, &ret_date.day, &ret_date.time.hour, &ret_date.time.minute)<4){
         printf("did not convert string  -\"%s\"-   to date\n",date); 
-    } */
+    }
     return ret_date;
 }
 
