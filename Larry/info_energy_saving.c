@@ -67,8 +67,6 @@ double info_energy_saving(user User, data data_array[])
         return user_price_after - user_price_current;
     else
         return user_price_current - user_price_after;
-
-    free(tmp_data);
 } 
 
 /* Basic compare function */
