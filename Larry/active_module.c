@@ -1,6 +1,6 @@
 /*MartinBM*/
 //"Rigtige" gcc compilation
-//gcc -Wall -pedantic -ansi -Wextra active_module.c global.c language.c database_module.c passive_module.c update_settings.c info_energy_saving.c user_history.c warning_energy_saving.c system_information.c machine_activation.c future_data.c consumption_check.c debug.c -o larry
+//gcc active_module.c global.c language.c database_module.c passive_module.c update_settings.c info_energy_saving.c user_history.c warning_energy_saving.c system_information.c machine_activation.c future_data.c consumption_check.c debug.c -o larry
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -29,10 +29,10 @@ void log_data_use(data Output);
 int main(int user_type){
     user User;
     User.type = Human;
-    User.choice.lookup = Price;
-    dato dato_from = {{00, 00}, 3, Januar, 2017};
+    User.choice.lookup = Meter;
+    dato dato_from = {{00, 00}, 1, Januar, 2017};
     User.choice.from = dato_from;
-    dato dato_to = {{01, 00}, 4, Januar, 2017};    
+    dato dato_to = {{23, 00}, 31, December, 2017};    
     User.choice.to = dato_to;                
     data *Data;
     data Output; //Dette vil være et struct som evt. kunne returneres i passiv_modulet til brug i log_data.
