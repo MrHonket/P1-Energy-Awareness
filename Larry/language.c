@@ -136,7 +136,7 @@ void cheapest(data data_array[], user User)
     printf("Det billigste tidspunkt at forbruge din strøm vil være: \n--------------------------------------------------------\n");
 
     if (strcmp(User.settings.residence, "DK1") == 0)
-        printf("Dato: %d %s | Klokkeslaet: %d - %d | Pris DK1: %.2f DKK / MwH |\n\n", cheapest->prize.from.day, cheapest->prize.from.month,
+        printf("Dato: %d | Klokkeslaet: %d - %d | Pris DK1: %.2f DKK / MwH |\n\n", cheapest->prize.from.day,
                          cheapest->prize.from.time.hour, cheapest->prize.to.time.hour, cheapest->prize.DK1price);
     else       
         printf("Dato: %d | Klokkeslaet: %d - %d | Pris DK2: %.2lf DKK / MwH |\n\n", cheapest->prize.from.day,
