@@ -223,8 +223,8 @@ data *get_price_for_timeinterval_in_area(dato from, dato to,  area area){
 
 
     for (i=0 ; i < nr_of_elements ; i++) { 
-        tempdata[i].prize.from    = mypricedata[db_cur_index+FIRST_PRICEINDEX].from;      
-        tempdata[i].prize.to      = mypricedata[db_cur_index+FIRST_PRICEINDEX].to;      
+        tempdata[i].prize.from    = mypricedata[db_cur_index+FIRST_PRICEINDEX].from;    
+        tempdata[i].prize.to      = mypricedata[db_cur_index+FIRST_PRICEINDEX].to;   
         tempdata[i].prize.DK1price= mypricedata[db_cur_index+FIRST_PRICEINDEX].DK1price;
         tempdata[i].prize.DK2price= mypricedata[db_cur_index+FIRST_PRICEINDEX].DK2price;
 

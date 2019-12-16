@@ -65,9 +65,12 @@ double user_history(user User, data *Data) {
 
     if (User.choice.mean_or_median == Mean) {
         return(calc_mean(pointer_to_dataset, number_of_elements));
+        printf("Test!\n");
     } else
     if (User.choice.mean_or_median == Median) {
-        return pointer_to_dataset[number_of_elements/2];
+        int n = number_of_elements/2;
+        return pointer_to_dataset[n];
+        printf("Test2!\n");
     } else {
         error_message(ErrorUserMeanMedianHistory);
         return 0;

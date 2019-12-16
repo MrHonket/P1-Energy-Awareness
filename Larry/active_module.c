@@ -28,10 +28,10 @@ void log_data_use(data Output);
 /*main vil modtage information om det er en måler eller sig selv (Automatisk) der aktivere eller en app (Human)*/
 int main(void){
 /*Raller*/ //user User = { {200, "DK1", "DK"}, InfoEnergySaving, 0,0, Mean, {{19, 0}, 0, Januar, 2017}, {{21, 0}, 0, Januar, 2017}, Price, Human};
-/*Basil*/  user User = { {200, "DK1", "DK"}, UserHistory, 0,0, Median, {{15, 0}, 0, Januar, 2017}, {{21, 0}, 0, Januar, 2017}, Price, Human};    
+/*Basil*/  user User = { {200, "DK1", "DK"}, UserHistory, 0,0, Median, {{00, 00}, 1, Januar, 2017}, {{23, 00}, 1, Januar, 2017}, Price, Human};    
 /*Niller*/ //user User = { {200, "DK1", "DK"}, WarningEnergySaving, 0,0, Median, {{15, 0}, 0, Januar, 2017}, {{21, 0}, 0, Januar, 2017}, Meter, Automated};    
-    dato dato_from = {{00, 00}, 1, Januar, 2017};
-    dato dato_to = {{23, 00}, 31, December, 2017};                       
+    dato dato_from = {{00, 00}, 3, Januar, 2017};
+    dato dato_to = {{23, 00}, 3, Januar, 2017};                    
     data *Data;
     data Output; //Dette vil være et struct som evt. kunne returneres i passiv_modulet til brug i log_data.
     int confirmation;
@@ -41,7 +41,6 @@ int main(void){
     }
     else{
         l_update_settings(User);
-        User.settings = load_settings();
         update_next_activation(User);
     }
     confirmation = check_for_run_module(User);
@@ -126,7 +125,6 @@ int prompt_user(user User, data *Data){
     }
     else if(User.choice.function == UpdateSettings){
         l_update_settings(User);
-        User.settings = load_settings();
     }
     else if(User.choice.function == InfoEnergySaving){
         l_info_energy_saving(User,Data);

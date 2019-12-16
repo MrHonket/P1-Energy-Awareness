@@ -32,7 +32,7 @@ double user_history(user User, data *Data) {
     /*Lav en array ud fra Data-structen og baseret på, om dataen er fra meter eller pris. Det er denne, der skal regnes på.*/
     if (User.choice.lookup == Meter) {
         /*Initialiserer number_of_elements, samt den array, der skal bruges. Lav om til egen funktion.*/
-        number_of_elements = hours_between(Data->meter.from, Data->meter.to);/*Finder antal timer*/
+        number_of_elements = hours_between(User.choice.from, User.choice.to);/*Finder antal timer*/
         double *dataset = malloc(sizeof(double)*number_of_elements);
 
         /*Assigner arrayelementer fra Data og en for-løkke*/
@@ -47,7 +47,7 @@ double user_history(user User, data *Data) {
     } else
     if (User.choice.lookup == Price) {
         /*Initialiserer number_of_elements, samt den array, der skal bruges. Lav om til egen funktion.*/
-        number_of_elements = hours_between(Data->prize.from, Data->prize.to);/*Finder antal timer*/
+        number_of_elements = hours_between(User.choice.from, User.choice.to);/*Finder antal timer*/
         double *dataset = malloc(sizeof(double)*number_of_elements);
 
         /*Assigner arrayelementer vha Data og en for-løkke*/
@@ -67,7 +67,8 @@ double user_history(user User, data *Data) {
         return(calc_mean(pointer_to_dataset, number_of_elements));
     } else
     if (User.choice.mean_or_median == Median) {
-        return pointer_to_dataset[number_of_elements/2];
+        int n = number_of_elements/2;
+        return pointer_to_dataset[n];
     } else {
         error_message(ErrorUserMeanMedianHistory);
         return 0;
@@ -78,11 +79,14 @@ double user_history(user User, data *Data) {
 
 double calc_mean(double dataset[], int number_of_elements) {
     int i = 0;
+    double d_i;
     double mean = 0;
     /*Addere alle værdier i datasættet*/
     for (i = 0; i < number_of_elements; i++) {
         mean += dataset[i];
     }
+    d_i = i;
+    double result = mean / d_i ;
     /*Returnerer gennemsnittet*/
     return (mean/i);
 }

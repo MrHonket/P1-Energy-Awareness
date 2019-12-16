@@ -57,13 +57,14 @@ void l_prompt_user(user User){
 
 void l_user_history(user User, data *Data){
     double result;
-    int test = 2;
+    int hours_to;
     
     if(strcmp(User.settings.language,"DK") == 0){
         printf("Her kan du se dit gennemsnitlige forbrug i aaret\nFra ");
         print_date(Data[0].prize.from);
         printf("Til ");
-        print_date(Data[HOURS_PR_YEAR - test].prize.to);
+        hours_to = hours_between(User.choice.from,User.choice.to);
+        print_date(Data[hours_to].prize.to);
         printf("Skriv venligst \n%d for gennemsnit \n%d for medianen",Mean,Median);
 
         scanf(" %d",&User.choice.mean_or_median);
@@ -77,9 +78,6 @@ void l_user_history(user User, data *Data){
     }
     else{
         l_update_settings(User);
-    }
-    if(test){
-        printf("\nBemaerk at der traekkes to fra Hours Pr Year for ikke at komme udenfor indeks OG at gennemsnit == median!\n");
     }
 }
 /*De forskellige choice, from hour, info, etc. skal indlægges i User structet for at holde en clean struktur*/
@@ -175,6 +173,7 @@ void l_update_settings(user User){
         printf("Hvilket sprog oensker du? Skriv DK for dansk eller ENG for engelsk.\n");
         printf("Hvad er dit brugerid? Skriv venligst et unikt nummer\n");
         update_settings();
+        User.settings = load_settings();
     }
     else if(strcmp(User.settings.language,"ENG") == 0){
         printf("Please enter 'residence' - 'language' - 'user id'\n");
@@ -182,6 +181,7 @@ void l_update_settings(user User){
         printf("What language would you like? Enter DK for danish or ENG for english.\n");
         printf("What is your userid? Please enter a unique number\n");
         update_settings();
+        User.settings = load_settings();
     }
     else{
         error_message(ErrorLanguageNotImplemented);
