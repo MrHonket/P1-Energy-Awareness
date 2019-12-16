@@ -525,3 +525,4 @@ dato next_day(dato d){
 void print_date(dato d){
   printf("%2i-%2i-%4i kl %2d\n",  d.day, d.month, d.year, d.time.hour);
 }
+
