@@ -63,7 +63,6 @@ double info_energy_saving(user User, data data_array[])
         error_message(ErrorResidenceNotImplemented);
     }
     
-
     if (user_price_after > user_price_current)
         return user_price_after - user_price_current;
     else
