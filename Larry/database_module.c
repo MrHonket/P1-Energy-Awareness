@@ -111,10 +111,12 @@ void init_database(void){
    date2.time.hour =23;
    date1.time.minute=date2.time.minute=0;
 
-   
+   if(price_initialised == 0){
    init_pricestruct(mypricedata);
 
     price_initialised =  copy_file_to_mypricedata(FILENAME_PRICE);
+   
+   }
 
     init_meterstruct(myconsumpdata);
 
@@ -210,7 +212,7 @@ data *get_price_for_timeinterval_in_area(dato from, dato to,  area area){
     int db_cur_index = 0;
     
 
-    if (price_initialised == 0 && consumption_initialised == 0){
+    if (price_initialised == 0 || consumption_initialised == 0){
         init_database();
     }
     /* init VARIABLES and return structure*/
@@ -307,13 +309,19 @@ int copy_file_to_mypricedata(char *filename){
     fclose(f);
 
     if (data_recognised == 0){
-        printf("\nIngen prisdata blev indlæst , det tyder på at filen: %s har en forkert formatering!\n\n",filename);
-         return EXIT_FAILURE;   
+        price_initialised = 1;
+        printf("sucessful import af %d antal pris data!\n",j-FIRST_PRICEINDEX);
+        return SUCCESS;
+          
     } 
 
-    printf("sucessful import af %d antal pris data!\n",j-FIRST_PRICEINDEX);
-    return SUCCESS;
+    printf("\nIngen prisdata blev indlæst , det tyder på at filen: %s har en forkert formatering!\n\n",filename);
+    return EXIT_FAILURE; 
+
+
+   
 }
+
 
 
 /* Målepunkt id;Fra dato;Til dato;Mængde;Måleenhed;Kvalitet;Type;
@@ -360,50 +368,53 @@ int copy_file_to_myconsumpdata(char *filename){
             /* printf("linie:169 i=%d  j=%d\n",i,j); */
             tempfrom = date_from_stringYMDH(data_txt[1]);
             tempto   = date_from_stringYMDH(data_txt[2]);
-            if(hours_between(tempfrom,tempto)==DATARESOLUTION ){      
-            strcpy(myconsumpdata[j].id,data_txt[0]);
-            /* printf("---%s---\n",data_txt[1]); */
-            myconsumpdata[j].from   = date_from_stringYMDH(data_txt[1]);
-            myconsumpdata[j].to     = date_from_stringYMDH(data_txt[2]);
-            myconsumpdata[j].value = consumption_from_string(data_txt[3]);
 
-            if(j>1 &&( dist = hours_between(myconsumpdata[j-1].from,myconsumpdata[j].from))>1){
-                dist--;
-        
-            /*  printf("lappet hul i data :");
-                print_date(myconsumpdata[j].from);
-                printf("      afstand mlm datoer = %d \n", dist); */
-                k = 0;
-                
-                for(k=0; k<dist; k++){
-                    myconsumpdata[j+k] = empty_consumpstruct();
-                }
-                /* printf("%d tomme datafelter tilføjet fra index %d til index %d\n",dist,j,j+k);
-                printf("index %5d : på dato: %d-%d-%d kl%d dist %d\n",j-1,myconsumpdata[j-1].from.year, myconsumpdata[j-1].from.month, myconsumpdata[j-1].from.day,myconsumpdata[j-1].from.time.hour, dist);
-            */
-                j += dist;
+            if(hours_between(tempfrom,tempto)==DATARESOLUTION ){      
                 strcpy(myconsumpdata[j].id,data_txt[0]);
+                /* printf("---%s---\n",data_txt[1]); */
                 myconsumpdata[j].from   = date_from_stringYMDH(data_txt[1]);
                 myconsumpdata[j].to     = date_from_stringYMDH(data_txt[2]);
                 myconsumpdata[j].value = consumption_from_string(data_txt[3]);
 
-                printf("      %5d : på dato: %d-%d-%d kl%d dist %d\n\n",j,myconsumpdata[j].from.year, myconsumpdata[j].from.month, myconsumpdata[j].from.day,myconsumpdata[j].from.time.hour, dist);
+                if(j>1 &&( dist = hours_between(myconsumpdata[j-1].from,myconsumpdata[j].from))>1){
+                    dist--;
+            
+                /*  printf("lappet hul i data :");
+                    print_date(myconsumpdata[j].from);
+                    printf("      afstand mlm datoer = %d \n", dist); */
+                    k = 0;
+                    
+                    for(k=0; k<dist; k++){
+                        myconsumpdata[j+k] = empty_consumpstruct();
+                    }
+                    /* printf("%d tomme datafelter tilføjet fra index %d til index %d\n",dist,j,j+k);
+                    printf("index %5d : på dato: %d-%d-%d kl%d dist %d\n",j-1,myconsumpdata[j-1].from.year, myconsumpdata[j-1].from.month, myconsumpdata[j-1].from.day,myconsumpdata[j-1].from.time.hour, dist);
+                */
+                    j += dist;
+                    strcpy(myconsumpdata[j].id,data_txt[0]);
+                    myconsumpdata[j].from   = date_from_stringYMDH(data_txt[1]);
+                    myconsumpdata[j].to     = date_from_stringYMDH(data_txt[2]);
+                    myconsumpdata[j].value = consumption_from_string(data_txt[3]);
 
-            }
-            j++;
+                    printf("      %5d : på dato: %d-%d-%d kl%d dist %d\n\n",j,myconsumpdata[j].from.year, myconsumpdata[j].from.month, myconsumpdata[j].from.day,myconsumpdata[j].from.time.hour, dist);
+
+                }
+                j++;
             }
         }
     }
 
-     
     fclose(f);
-     if (data_recognised == 0){
-        printf("\nIngen prisdata blev indlæst , det tyder på at filen har en forkert formatering!\n\n");
-         return EXIT_FAILURE;   
-    } 
 
-    printf("sucessful import af %d antal pris data!\n",j-FIRST_PRICEINDEX);
-    return SUCCESS;
+    if (data_recognised == 1){
+         consumption_initialised = 1;
+         printf("sucessful import af %d antal pris data!\n",j-FIRST_PRICEINDEX);
+        return SUCCESS;      
+    }
+
+    printf("\nIngen prisdata blev indlæst , det tyder på at filen har en forkert formatering!\n\n");
+    return EXIT_FAILURE;
+    
 }
 
 
@@ -421,29 +432,6 @@ FILE *check_file(char*filename){
 }
 
 
-
-pricedata *init_datab(pricedata *mypricedata, meterdata *meter_data, production *production_data){
-    int i = 0;
-    mypricedata = malloc((HOURS_PR_YEAR+50)*sizeof(pricedata));    
-    for(i=0;i<HOURS_PR_YEAR;i++){
-        mypricedata[i] = *init_price_array(mypricedata);
-    }
-    /* printf("b%d\n",mypricedata[20].from.year); */
-
-  return mypricedata;
-}
-
-pricedata *init_price_array(pricedata mypricedata[]){
-    pricedata *temp;
-    temp = malloc(sizeof(pricedata));
-    
-    temp->DK1price  = 00;
-    temp->DK2price =00;
-    temp->from      = date_from_stringDMYI("0000-00-00", 0);
-    temp->to        = date_from_stringDMYI("0000-00-00",0); 
-    temp->from.year =  00;
-   return temp; 
-}
 
 /* Helper functions */
 
@@ -500,7 +488,6 @@ double consumption_from_string(char *price){
    /* printf("did not convert string -\"%s\"-   to doubles %lf %lf to number\n",price ,value1,value2); */
     return -1000;
 }
-
 
 
 
