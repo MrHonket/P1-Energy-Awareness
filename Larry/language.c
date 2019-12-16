@@ -70,7 +70,8 @@ void l_user_history(user User, data *Data){
         scanf(" %d",&User.choice.mean_or_median);
 
         result = user_history(User, Data);
-        printf("%s er %lf DKK for perioden\n",(User.choice.mean_or_median == Median ? "Medianen" : "Gennemsnittet"), result);
+        printf("%s er %lf %s for perioden\n",(User.choice.mean_or_median == Median ? "Medianen" : "Gennemsnittet"), result,
+                                              (User.choice.lookup==Meter ? "KWH" : "DKK"));
     }
     else if(strcmp(User.settings.language,"ENG") == 0){
         //skriv engelsk
@@ -135,7 +136,7 @@ void cheapest(data data_array[], user User)
     printf("Det billigste tidspunkt at forbruge din strøm vil være: \n--------------------------------------------------------\n");
 
     if (strcmp(User.settings.residence, "DK1") == 0)
-        printf("Dato: %d | Klokkeslaet: %d - %d | Pris DK1: %.2f DKK / MwH |\n\n", cheapest->prize.from.day,
+        printf("Dato: %d %s| Klokkeslaet: %d - %d | Pris DK1: %.2f DKK / MwH |\n\n", cheapest->prize.from.day, cheapest->prize.from.month,
                          cheapest->prize.from.time.hour, cheapest->prize.to.time.hour, cheapest->prize.DK1price);
     else       
         printf("Dato: %d | Klokkeslaet: %d - %d | Pris DK2: %.2lf DKK / MwH |\n\n", cheapest->prize.from.day,
