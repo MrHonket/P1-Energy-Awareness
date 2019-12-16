@@ -13,6 +13,7 @@
 #include "consumption_check.h"      
 
 void l_prompt_user(user User);
+void l_prompt_date(user User);
 void l_user_history(user User, data *Data);
 void l_info_energy_saving(user User,data *Data);
   void cheapest(data data_array[], user User);

@@ -115,7 +115,6 @@ void log_data_use(data Output){
 int prompt_user(user User, data *Data){
    
     l_prompt_user(User);
-
     scanf(" %d", &User.choice.function);
     
     if(User.choice.function == Exit){
@@ -142,7 +141,7 @@ int prompt_user(user User, data *Data){
     else if(User.choice.function == WarningEnergySaving){
         l_warning_energy_saving(User,Data);
     }
-    else if(User.choice.function == WarningEnergySaving){
+    else if(User.choice.function == MachineActivation){
         l_machine_activation(User,Data);
     }
     else{
