@@ -53,7 +53,10 @@
 #define DATE_DMY "%2d-%2d-%4d %2dÊ-Ê%2d"
 #define DATE_YMD "%4d %2d %2d %2d.%2d"
 #define FIRST_PRICEINDEX 3
-#define FIRST_CONSUMPINDEX 1
+#define FIRST_CONSUMPINDEX 0
+#define ELSPOT_FILE_ID "Elspot Prices in DKK/MWh"
+#define CONSUMP_FILE_ID "571313104402686056"
+#define DATARESOLUTION 1
 
 static pricedata mypricedata[HOURS_PR_YEAR*3];
 static meterdata myconsumpdata[HOURS_PR_YEAR*3];
@@ -246,6 +249,7 @@ Data was last updated 31-12-2018;;;;;;;;;;;;;;;;;;
 01-01-2017;01 - 02;190,38;178,64;178,64;178,64;178,64;178,64;155,37;155,37;209,42;209,42;209,42;178,64;178,64;178,64;178,64;178,64;178,64
 */
 int copy_file_to_mypricedata(char *filename){
+    int data_recognised = 0;
     int i=0,j=0;
     char str[MAX_LINE_WIDTH];
     const char s[2] = ";";
@@ -265,13 +269,19 @@ int copy_file_to_mypricedata(char *filename){
         int   houra;
         token = strtok(str,s);
         i=0;
+
+        if(data_recognised == 0 && strstr(token,ELSPOT_FILE_ID)!=0){
+            data_recognised = 1;
+        }
+
+        if(data_recognised == 1){
+
         while(token !=NULL){
             data_txt[i] = token;
-            /* printf("%s\n",token); */
+            printf("%s\n",token);
             token=strtok(NULL,s);
             i++;
         }
-        
             
         sscanf(data_txt[1],"%dÊ-Ê",&houra);
     /*  if(j>0 && hours_between(mypricedata[j].from, mypricedata[j-1].to)>1){
@@ -284,14 +294,24 @@ int copy_file_to_mypricedata(char *filename){
         
         mypricedata[j].DK1price = price_from_string(data_txt[8]);
         mypricedata[j].DK2price = price_from_string(data_txt[9]);
+        print_price_index(j-1);
 
         /* print_price_index(j); */
-        j++;   
+        j++;
+        } 
+         
     }
    
-    printf("sucessful import af %d antal pris data!",j-FIRST_PRICEINDEX);
+    
 
     fclose(f);
+
+    if (data_recognised == 0){
+        printf("\nIngen prisdata blev indlæst , det tyder på at filen: %s har en forkert formatering!\n\n",filename);
+         return EXIT_FAILURE;   
+    } 
+
+    printf("sucessful import af %d antal pris data!\n",j-FIRST_PRICEINDEX);
     return SUCCESS;
 }
 
@@ -301,7 +321,9 @@ int copy_file_to_mypricedata(char *filename){
 571313104402686056;2017-01-01 01.00;2017-01-01 02.00;0,450;KWH;Målt;Tidsserier; 
 */
 int copy_file_to_myconsumpdata(char *filename){
+    int data_recognised = 0;
     int i=0,j=0, k=0;
+    dato tempfrom, tempto;
     int dist = 0;
     char str[MAX_LINE_WIDTH];
     const char s[2] = ";";
@@ -321,49 +343,66 @@ int copy_file_to_myconsumpdata(char *filename){
         token = strtok(str,s);
 
         i=0;
-        while(token !=NULL){
-            data_txt[i] = token;
-           /*  printf("%s\n",token); */
-            token=strtok(NULL,s);
-            i++;
-        }
-        
-          /* printf("linie:169 i=%d  j=%d\n",i,j); */
-                
-        strcpy(myconsumpdata[j].id,data_txt[0]);
-        /* printf("---%s---\n",data_txt[1]); */
-        myconsumpdata[j].from   = date_from_stringYMDH(data_txt[1]);
-        myconsumpdata[j].to     = date_from_stringYMDH(data_txt[2]);
-        myconsumpdata[j].value = consumption_from_string(data_txt[3]);
 
-        if(j>1 &&( dist = hours_between(myconsumpdata[j-1].from,myconsumpdata[j].from))>1){
-            dist--;
-       
-           /*  printf("lappet hul i data :");
-            print_date(myconsumpdata[j].from);
-            printf("      afstand mlm datoer = %d \n", dist); */
-            k = 0;
-            
-            for(k=0; k<dist; k++){
-                myconsumpdata[j+k] = empty_consumpstruct();
+        if(data_recognised == 0 && strcmp(token,CONSUMP_FILE_ID)==0){
+            data_recognised = 1;
+        }
+
+        if(data_recognised == 1){
+
+            while(token !=NULL){
+                data_txt[i] = token;
+            /*  printf("%s\n",token); */
+                token=strtok(NULL,s);
+                i++;
             }
-            /* printf("%d tomme datafelter tilføjet fra index %d til index %d\n",dist,j,j+k);
-            printf("index %5d : på dato: %d-%d-%d kl%d dist %d\n",j-1,myconsumpdata[j-1].from.year, myconsumpdata[j-1].from.month, myconsumpdata[j-1].from.day,myconsumpdata[j-1].from.time.hour, dist);
-          */
-            j += dist;
+            
+            /* printf("linie:169 i=%d  j=%d\n",i,j); */
+            tempfrom = date_from_stringYMDH(data_txt[1]);
+            tempto   = date_from_stringYMDH(data_txt[2]);
+            if(hours_between(tempfrom,tempto)==DATARESOLUTION ){      
             strcpy(myconsumpdata[j].id,data_txt[0]);
+            /* printf("---%s---\n",data_txt[1]); */
             myconsumpdata[j].from   = date_from_stringYMDH(data_txt[1]);
             myconsumpdata[j].to     = date_from_stringYMDH(data_txt[2]);
             myconsumpdata[j].value = consumption_from_string(data_txt[3]);
 
-            printf("      %5d : på dato: %d-%d-%d kl%d dist %d\n\n",j,myconsumpdata[j].from.year, myconsumpdata[j].from.month, myconsumpdata[j].from.day,myconsumpdata[j].from.time.hour, dist);
-
-        }
-        j++;
-    }
-    printf("sucessful import af %d antal meter data!\n\n",j-FIRST_CONSUMPINDEX);
+            if(j>1 &&( dist = hours_between(myconsumpdata[j-1].from,myconsumpdata[j].from))>1){
+                dist--;
         
+            /*  printf("lappet hul i data :");
+                print_date(myconsumpdata[j].from);
+                printf("      afstand mlm datoer = %d \n", dist); */
+                k = 0;
+                
+                for(k=0; k<dist; k++){
+                    myconsumpdata[j+k] = empty_consumpstruct();
+                }
+                /* printf("%d tomme datafelter tilføjet fra index %d til index %d\n",dist,j,j+k);
+                printf("index %5d : på dato: %d-%d-%d kl%d dist %d\n",j-1,myconsumpdata[j-1].from.year, myconsumpdata[j-1].from.month, myconsumpdata[j-1].from.day,myconsumpdata[j-1].from.time.hour, dist);
+            */
+                j += dist;
+                strcpy(myconsumpdata[j].id,data_txt[0]);
+                myconsumpdata[j].from   = date_from_stringYMDH(data_txt[1]);
+                myconsumpdata[j].to     = date_from_stringYMDH(data_txt[2]);
+                myconsumpdata[j].value = consumption_from_string(data_txt[3]);
+
+                printf("      %5d : på dato: %d-%d-%d kl%d dist %d\n\n",j,myconsumpdata[j].from.year, myconsumpdata[j].from.month, myconsumpdata[j].from.day,myconsumpdata[j].from.time.hour, dist);
+
+            }
+            j++;
+            }
+        }
+    }
+
+     
     fclose(f);
+     if (data_recognised == 0){
+        printf("\nIngen prisdata blev indlæst , det tyder på at filen har en forkert formatering!\n\n");
+         return EXIT_FAILURE;   
+    } 
+
+    printf("sucessful import af %d antal pris data!\n",j-FIRST_PRICEINDEX);
     return SUCCESS;
 }
 

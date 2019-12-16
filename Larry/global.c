@@ -423,6 +423,7 @@ int days_between(dato from, dato to){
 
 /* Return whole months between two dates */
 int months_between(dato d1, dato d2){
+    
     int delta_years = d2.year-d1.year;
     int result = 0;
 
