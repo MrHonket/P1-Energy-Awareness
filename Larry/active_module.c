@@ -26,7 +26,7 @@ int check_for_run_module(user User);
 int prompt_user(user User,data *Data);
 void log_data_use(data Output);
 /*main vil modtage information om det er en måler eller sig selv (Automatisk) der aktivere eller en app (Human)*/
-int main(void){
+int main(int user_type){
     user User;
     User.type = Human;
     User.choice.lookup = Price;
@@ -53,10 +53,9 @@ int main(void){
             prompt_user(User,Data);
         }
         else if(User.type == Automated){
-            printf("\n\nTest funktion for at se hvornaar det passive module starter i active_module\n");
-            confirmation = passive_module(User,Data); //Der kunne istedet være Output = passive_module
-            if(confirmation){                         //her ville der så skulle checkes for om der er en valid output fil.
-                log_data_use(Output);                 //log data vil logge dataene fra output i en logfil.txt
+            confirmation = passive_module(User,Data);
+            if(confirmation){                         
+                log_data_use(Output);                 
             }
             else{
                 error_message(ErrorConfirmationPassiveModule);
