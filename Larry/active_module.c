@@ -28,7 +28,7 @@ void log_data_use(data Output);
 /*main vil modtage information om det er en måler eller sig selv (Automatisk) der aktivere eller en app (Human)*/
 int main(void){
 /*Raller*/ //user User = { {200, "DK1", "DK"}, InfoEnergySaving, 0,0, Mean, {{19, 0}, 0, Januar, 2017}, {{21, 0}, 0, Januar, 2017}, Price, Human};
-/*Basil*/  user User = { {200, "DK1", "DK"}, UserHistory, 0,0, Median, {{00, 00}, 1, Januar, 2017}, {{23, 00}, 1, Januar, 2017}, Price, Human};    
+/*Basil*/  user User = { {200, "DK1", "DK"}, UserHistory, 0,0, Median {{00, 00}, 1, Januar, 2017}, {{23, 00}, 1, Januar, 2017}, Price, Human};    
 /*Niller*/ //user User = { {200, "DK1", "DK"}, WarningEnergySaving, 0,0, Median, {{15, 0}, 0, Januar, 2017}, {{21, 0}, 0, Januar, 2017}, Meter, Automated};    
     dato dato_from = {{00, 00}, 3, Januar, 2017};
     dato dato_to = {{23, 00}, 3, Januar, 2017};                    
