@@ -95,22 +95,26 @@ void l_info_energy_saving(user User,data *Data)
         printf("Tryk 2 for for strompris i et givent tidsrum\n");
 
         scanf(" %d", &choice);
-
-        switch(choice){
-            case 1: 
-                printf("Indtast hvilken time du onsker data fra: ");
-                scanf(" %d", &User.choice.hour);
-                print_information(Data, User);
-                info = info_energy_saving(User, Data);
-                cheapest(Data, User);
-                printf("Din besparelse bliver: %.5f DKK\n", info);
-                printf("--------------------------------------------------------\n\n");
-                break;
-            case 2: 
-                printf("Indtast en start time og en slut time du onsker at se priser for: \n");
-                scanf(" %d %d", &User.choice.from.time.hour, &User.choice.to.time.hour);
-                overview_for_interval(User,Data);
-                break;
+        if (choice == 1 || choice == 2){
+            switch(choice){
+                case 1: 
+                    printf("Indtast hvilken time du onsker data fra: ");
+                    scanf(" %d", &User.choice.hour);
+                    print_information(Data, User);
+                    info = info_energy_saving(User, Data);
+                    cheapest(Data, User);
+                    printf("Din besparelse bliver: %.5f DKK\n", info);
+                    printf("--------------------------------------------------------\n\n");
+                    break;
+                case 2: 
+                    printf("Indtast en start time og en slut time du onsker at se priser for: \n");
+                    scanf(" %d %d", &User.choice.from.time.hour, &User.choice.to.time.hour);
+                    overview_for_interval(User,Data);
+                    break;
+            }
+        }
+        else{
+            printf("Du tastede ikke et gyldigt tal, prøv igen\n");
         }
     }
     else if(strcmp(User.settings.language,"ENG") == 0){
