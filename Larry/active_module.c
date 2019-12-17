@@ -24,7 +24,7 @@
 /*Dette er prototyper i programmet.*/
 int check_for_run_module(user User);
 int prompt_user(user User,data *Data);
-    data* copy_data(data *Data);
+    data* copy_data(user User,data *Data);
 void log_data_use(data Output);
 /*main vil modtage information om det er en måler eller sig selv (Automatisk) der aktivere eller en app (Human)*/
 int main(int user_type){
@@ -118,7 +118,7 @@ void log_data_use(data Output){
 int prompt_user(user User, data *Data){
    
     data *data_copy;
-    data_copy = copy_data(Data);
+    data_copy = copy_data(User,Data);
 
     User.settings = load_settings();
     l_prompt_user(User);
