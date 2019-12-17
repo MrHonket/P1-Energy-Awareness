@@ -88,13 +88,15 @@ void overview_for_interval(user User, data data_array[])
     int i;
     if (strcmp(User.settings.residence, "DK1") == 0)
     {
+        printf("Dato: %d / %d / %d\n\n", data_array->prize.from.day, data_array->prize.from.month, data_array->prize.from.year);
         for (i = User.choice.from.time.hour; i <= User.choice.to.time.hour; i++)
-            printf("Time [%d] - Pris: %.2f DKK / MWH\n", i, data_array[i].prize.DK1price);
+            printf("Kl. %d - %d\t|\tPris: %.2f DKK / MWH \n", i, i+1, data_array[i].prize.DK1price);
     }
     else
     {
+        printf("Dato: %d / %d / %d\n\n", data_array->prize.from.day, data_array->prize.from.month, data_array->prize.from.year);
         for (i = User.choice.from.time.hour; i <= User.choice.to.time.hour; i++)
-            printf("Time [%d] - Pris: %.2f DKK / MWH\n", i, data_array[i].prize.DK2price);
+            printf("Kl. %d - %d\t|\tPris: %.2f DKK / MWH \n", i, i+1, data_array[i].prize.DK2price);
     }
     
     
