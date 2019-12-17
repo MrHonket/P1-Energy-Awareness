@@ -111,16 +111,19 @@ void init_database(void){
    date2.time.hour =23;
    date1.time.minute=date2.time.minute=0;
 
-   if(price_initialised == 0){
-   init_pricestruct(mypricedata);
+   if(!price_initialised){
+        init_pricestruct(mypricedata);
 
-    price_initialised =  copy_file_to_mypricedata(FILENAME_PRICE);
+        price_initialised =  copy_file_to_mypricedata(FILENAME_PRICE);
    
    }
 
-    init_meterstruct(myconsumpdata);
+   if(!consumption_initialised){
 
-   consumption_initialised = copy_file_to_myconsumpdata(FILENAME_METER);
+        init_meterstruct(myconsumpdata);
+
+        consumption_initialised = copy_file_to_myconsumpdata(FILENAME_METER);
+   }
 
 }
 
@@ -267,10 +270,9 @@ int copy_file_to_mypricedata(char *filename){
     j=0;
 
     while (fgets(str,MAX_LINE_WIDTH,f)!=NULL){
-        /* char  hourb[7]; */
         int   houra;
         token = strtok(str,s);
-        i=0;
+        
 
         if(data_recognised == 0 && strstr(token,ELSPOT_FILE_ID)!=0){
             data_recognised = 1;
@@ -278,28 +280,23 @@ int copy_file_to_mypricedata(char *filename){
 
         if(data_recognised == 1){
 
-        while(token !=NULL){
-            data_txt[i] = token;
-            printf("%s\n",token);
-            token=strtok(NULL,s);
-            i++;
-        }
-            
-        sscanf(data_txt[1],"%dÊ-Ê",&houra);
-    /*  if(j>0 && hours_between(mypricedata[j].from, mypricedata[j-1].to)>1){
-         printf("stort spring i data fra index %d til index %d   afstanden er: %d\n",j-1,j,dist);
-         } */
-
-      /* printf("hra:%d,hrb:%d\n",houra, hourb_int); */
-        mypricedata[j].from  = date_from_stringDMYI(data_txt[0],houra);
-        mypricedata[j].to    = next_hour(mypricedata[j].from);
+            i=0;
+            while(token !=NULL){
+                data_txt[i] = token;
+                /* printf("%s\n",token); */
+                token=strtok(NULL,s);
+                i++;
+            }
+                
+            sscanf(data_txt[1],"%dÊ-Ê",&houra);
         
-        mypricedata[j].DK1price = price_from_string(data_txt[8]);
-        mypricedata[j].DK2price = price_from_string(data_txt[9]);
-        print_price_index(j-1);
+            mypricedata[j].from  = date_from_stringDMYI(data_txt[0],houra);
+            mypricedata[j].to    = next_hour(mypricedata[j].from);
+            
+            mypricedata[j].DK1price = price_from_string(data_txt[8]);
+            mypricedata[j].DK2price = price_from_string(data_txt[9]);
 
-        /* print_price_index(j); */
-        j++;
+            j++;
         } 
          
     }
@@ -308,17 +305,15 @@ int copy_file_to_mypricedata(char *filename){
 
     fclose(f);
 
-    if (data_recognised == 0){
+    if (data_recognised == 1){
         price_initialised = 1;
-        printf("sucessful import af %d antal pris data!\n",j-FIRST_PRICEINDEX);
+        printf("sucessful import af %d antal pris data!\n\n",j-FIRST_PRICEINDEX);
         return SUCCESS;
           
     } 
 
     printf("\nIngen prisdata blev indlæst , det tyder på at filen: %s har en forkert formatering!\n\n",filename);
     return EXIT_FAILURE; 
-
-
    
 }
 
@@ -376,7 +371,7 @@ int copy_file_to_myconsumpdata(char *filename){
                 myconsumpdata[j].to     = date_from_stringYMDH(data_txt[2]);
                 myconsumpdata[j].value = consumption_from_string(data_txt[3]);
 
-                if(j>1 &&( dist = hours_between(myconsumpdata[j-1].from,myconsumpdata[j].from))>1){
+                if(j>1 &&( dist = hours_between(myconsumpdata[j-1].from,myconsumpdata[j].from))>DATARESOLUTION){
                     dist--;
             
                 /*  printf("lappet hul i data :");
@@ -408,7 +403,7 @@ int copy_file_to_myconsumpdata(char *filename){
 
     if (data_recognised == 1){
          consumption_initialised = 1;
-         printf("sucessful import af %d antal pris data!\n",j-FIRST_PRICEINDEX);
+         printf("sucessful import af %d antal forbrugs data!\n\n",j-FIRST_PRICEINDEX);
         return SUCCESS;      
     }
 
