@@ -23,7 +23,7 @@
 
 /*Dette er prototyper i programmet.*/
 int check_for_run_module(user User);
-int prompt_user(user User,data *Data);
+int prompt_user(user User,data *data_copy);
 void log_data_use(data Output);
 /*main vil modtage information om det er en måler eller sig selv (Automatisk) der aktivere eller en app (Human)*/
 int main(int user_type){
@@ -112,8 +112,9 @@ void log_data_use(data Output){
 }
 /*Funktionen som fungere som en brugers interface
  Kunne overvejes at lægges ind i language.c istedet for.*/
-int prompt_user(user User, data *Data){
+int prompt_user(user User, data *data_copy){
    
+    data *Data = data_copy;
     User.settings = load_settings();
     l_prompt_user(User);
     scanf(" %d", &User.choice.function);
@@ -149,5 +150,5 @@ int prompt_user(user User, data *Data){
         error_message(ErrorChoiceDoesntExist);
     }
 
-    return prompt_user(User,Data);
+    return prompt_user(User,data_copy);
 }

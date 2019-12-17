@@ -15,8 +15,8 @@
 void l_prompt_user(user User);
 void l_prompt_date(user User);
 void l_user_history(user User, data *Data);
-void l_info_energy_saving(user User,data *Data);
-  void cheapest(data *Data, user User);
+void l_info_energy_saving(user User,data *data_array);
+  void cheapest(data data_array[], user User);
   void print_information(data return_array[], user User);
 void l_update_settings(user User);
 void l_system_information(user User,data *Data);
@@ -126,12 +126,10 @@ void l_info_energy_saving(user User,data *Data)
 }
 
 /* Funktionen ser på hvornår på dagen det er billigst at forbruge strømog printer det ud */
-void cheapest(data *Data, user User)
+void cheapest(data data_array[], user User)
 {
     data *cheapest;
     cheapest = (data*)malloc(1 * sizeof(data));
-
-    data *data_array = Data;
     
     if (strcmp(User.settings.residence, "DK1") == 0){
         qsort(data_array, NMB_OF_ELEMENTS, sizeof(data), cmpfunc_DK1);
