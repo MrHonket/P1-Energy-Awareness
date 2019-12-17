@@ -145,7 +145,7 @@ void cheapest(data data_array[], user User)
         cheapest->prize.from.month, cheapest->prize.from.year, cheapest->prize.from.time.hour, cheapest->prize.to.time.hour, cheapest->prize.DK1price);
     }
     else if (strcmp(User.settings.residence, "DK2") == 0){
-        printf("Dato: %d - %d | Klokkeslaet: %d - %d | Pris DK2: %.2lf DKK / MwH |\n\n", cheapest->prize.from.day, 
+        printf("Dato: %d / %d / %d | Klokkeslaet: %d - %d | Pris DK2: %.2lf DKK / MwH |\n\n", cheapest->prize.from.day, 
         cheapest->prize.from.month, cheapest->prize.from.year, cheapest->prize.from.time.hour, cheapest->prize.to.time.hour, cheapest->prize.DK2price);
     }
 }
