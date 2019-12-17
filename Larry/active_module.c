@@ -23,16 +23,17 @@
 
 /*Dette er prototyper i programmet.*/
 int check_for_run_module(user User);
-int prompt_user(user User,data *data_copy);
+int prompt_user(user User,data *Data);
+    data* copy_data(data *Data);
 void log_data_use(data Output);
 /*main vil modtage information om det er en måler eller sig selv (Automatisk) der aktivere eller en app (Human)*/
 int main(int user_type){
     user User;
     User.type = Human;
     User.choice.lookup = Meter;
-    dato dato_from = {{00, 00}, 15, Januar, 2017};
+    dato dato_from = {{00, 00}, 20, Januar, 2017};
     User.choice.from = dato_from;
-    dato dato_to = {{00, 00}, 16, Januar, 2017};    
+    dato dato_to = {{00, 00}, 21, Januar, 2017};    
     User.choice.to = dato_to;                
     data *Data;
     data Output; //Dette vil være et struct som evt. kunne returneres i passiv_modulet til brug i log_data.
@@ -49,6 +50,7 @@ int main(int user_type){
 
     if(confirmation){
         Data = get_price_for_timeinterval_in_area(dato_from, dato_to, Dk1);
+        printf("Pris DK1:  %.2lf  og Pris DK2:    %.2lf\n", Data[1].prize.DK1price, Data[1].prize.DK2price); 
         if (User.type == Human){
             prompt_user(User,Data);
         }
@@ -73,7 +75,8 @@ int main(int user_type){
 
     User.settings = load_settings();
     debug_user(User);
-        
+    
+    free(Data);
     return EXIT_SUCCESS;
     
 }
@@ -112,9 +115,11 @@ void log_data_use(data Output){
 }
 /*Funktionen som fungere som en brugers interface
  Kunne overvejes at lægges ind i language.c istedet for.*/
-int prompt_user(user User, data *data_copy){
+int prompt_user(user User, data *Data){
    
-    data *Data = data_copy;
+    data *data_copy;
+    data_copy = copy_data(Data);
+
     User.settings = load_settings();
     l_prompt_user(User);
     scanf(" %d", &User.choice.function);
@@ -123,32 +128,62 @@ int prompt_user(user User, data *data_copy){
         return EXIT_SUCCESS;
     }
     else if(User.choice.function == UserHistory){
-        l_user_history(User,Data);
+        l_user_history(User,data_copy);
     }
     else if(User.choice.function == UpdateSettings){
         l_update_settings(User);
     }
     else if(User.choice.function == InfoEnergySaving){
-        l_info_energy_saving(User,Data);
+        l_info_energy_saving(User,data_copy);
     }
     else if(User.choice.function == ConsumptionCheck){
-        l_consumption_check(User, Data);
+        l_consumption_check(User, data_copy);
     }
     else if(User.choice.function == SystemInformation){
-        l_system_information(User, Data);
+        l_system_information(User, data_copy);
     }
     else if(User.choice.function == FutureData){
-        l_future_data(User, Data);
+        l_future_data(User, data_copy);
     }    
     else if(User.choice.function == WarningEnergySaving){
-        l_warning_energy_saving(User,Data);
+        l_warning_energy_saving(User,data_copy);
     }
     else if(User.choice.function == MachineActivation){
-        l_machine_activation(User,Data);
+        l_machine_activation(User,data_copy);
     }
     else{
         error_message(ErrorChoiceDoesntExist);
     }
 
-    return prompt_user(User,data_copy);
+    free(data_copy);
+    return prompt_user(User,Data);
+}
+
+
+data* copy_data(user User,data *Data)
+{
+    int interval = hours_between(User.choice.from,User.choice.to);
+    data *data_copy= malloc(sizeof(data) * HOURS_PR_YEAR);
+    int i;
+
+    for (i = 0; i < interval; i++){
+        data_copy[i].meter.from.time = Data[i].meter.from.time;
+        data_copy[i].meter.from.day = Data[i].meter.from.day;
+        data_copy[i].meter.from.month = Data[i].meter.from.month;
+        data_copy[i].meter.from.year = Data[i].meter.from.year;
+        data_copy[i].meter.to.time = Data[i].meter.to.time;
+        data_copy[i].meter.to.day = Data[i].meter.to.day;
+        data_copy[i].meter.to.month = Data[i].meter.to.month;
+        data_copy[i].meter.value = Data[i].meter.value;
+        data_copy[i].prize.from.time = Data[i].prize.from.time;
+        data_copy[i].prize.from.day = Data[i].prize.from.day;
+        data_copy[i].prize.from.month = Data[i].prize.from.month;
+        data_copy[i].prize.from.year = Data[i].prize.from.year;
+        data_copy[i].prize.to.time = Data[i].prize.to.time;
+        data_copy[i].prize.to.day = Data[i].prize.to.day;
+        data_copy[i].prize.to.month = Data[i].prize.to.month;
+        data_copy[i].prize.DK1price = Data[i].prize.DK1price;
+        data_copy[i].prize.DK2price = Data[i].prize.DK2price;
+    }
+    return data_copy;
 }

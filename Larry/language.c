@@ -153,6 +153,7 @@ void cheapest(data data_array[], user User)
         printf("Dato: %d / %d / %d | Klokkeslaet: %d - %d | Pris DK2: %.2lf DKK / MwH |\n\n", cheapest->prize.from.day, 
         cheapest->prize.from.month, cheapest->prize.from.year, cheapest->prize.from.time.hour, cheapest->prize.to.time.hour, cheapest->prize.DK2price);
     }
+    free(cheapest);
 }
 
 /* En samlet print funktion der tager højde for om vi kigger på DK1 eller DK2 */
