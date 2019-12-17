@@ -50,7 +50,6 @@ int main(int user_type){
 
     if(confirmation){
         Data = get_price_for_timeinterval_in_area(dato_from, dato_to, Dk1);
-        printf("Pris DK1:  %.2lf  og Pris DK2:    %.2lf\n", Data[1].prize.DK1price, Data[1].prize.DK2price); 
         if (User.type == Human){
             prompt_user(User,Data);
         }

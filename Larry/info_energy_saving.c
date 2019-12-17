@@ -20,25 +20,25 @@ double info_energy_saving(user User, data data_array[])
     double user_price_after = 0.0;
     double cheapest_price = 0.0;
     
-    if (strcmp(User.settings.residence, "DK1") == 0)
-    {   
-        current_price = data_array[User.choice.hour].prize.DK1price;
-        current_consumption = data_array[User.choice.hour].meter.value;
-        
-        if (current_price < 0)
-            printf("Prisen er pt. negativ!\n");
+if (strcmp(User.settings.residence, "DK1") == 0)
+{   
+    current_price = data_array[User.choice.hour].prize.DK1price;
+    current_consumption = data_array[User.choice.hour].meter.value;
+    
+    if (current_price < 0)
+        printf("Prisen er pt. negativ!\n");
 
-        /* Dette giver brugerens nuværende strømpris baseret ud fra forbruget */
-        user_price_current = current_consumption * KWH_TO_MWH * current_price;
+    /* Dette giver brugerens nuværende strømpris baseret ud fra forbruget */
+    user_price_current = current_consumption * KWH_TO_MWH * current_price;
 
-        /* Sorterer pris-array så den billigste pris ligger først */
-        qsort(data_array, NMB_OF_ELEMENTS, sizeof(data), cmpfunc_DK1);
-        cheapest_price = data_array[0].prize.DK1price;
+    /* Sorterer pris-array så den billigste pris ligger først */
+    qsort(data_array, NMB_OF_ELEMENTS, sizeof(data), cmpfunc_DK1);
+    cheapest_price = data_array[0].prize.DK1price;
 
-        /* Dette giver brugerens strømpris baseret ud fra hvornår det er billigst at bruge strøm */
-        user_price_after = current_consumption * KWH_TO_MWH * cheapest_price;
-        printf("Din pris, hvis du vælger at flytte dit forbrug: %.2f DKK / KwH\n\n", user_price_after);
-    }
+    /* Dette giver brugerens strømpris baseret ud fra hvornår det er billigst at bruge strøm */
+    user_price_after = current_consumption * KWH_TO_MWH * cheapest_price;
+    printf("Din pris, hvis du vælger at flytte dit forbrug: %.2f DKK / KwH\n\n", user_price_after);
+}
     else if (strcmp(User.settings.residence, "DK2") == 0)
     {
         current_price = data_array[User.choice.hour].prize.DK2price;
