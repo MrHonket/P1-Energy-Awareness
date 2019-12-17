@@ -5,20 +5,22 @@
 
 #define KWH_TO_MWH 0.001
 
-double info_energy_saving(user User, data data_array[]);
+double info_energy_saving(user User, data *Data);
 int cmpfunc_DK1(const void * a, const void * b);
 int cmpfunc_DK2(const void * a, const void * b);
 void overview_for_interval( user User, data data_array[]);
 
 /* Funktionen returnerer besparelsen forbrugeren kan opnå hvis vedkommende flytter sit forbrug til det billigste tidspunkt 
  * Funktionen tager udgangspunkt i et 24 element-langt data-array samt et user_choice der afgører om det er DK1 eller DK2 vi kigger på */
-double info_energy_saving(user User, data data_array[])
+double info_energy_saving(user User, data *Data)
 {
     double current_consumption = 0.0;
     double current_price = 0.0;
     double user_price_current = 0.0;
     double user_price_after = 0.0;
     double cheapest_price = 0.0;
+
+    data *data_array = Data;
     
     if (strcmp(User.settings.residence, "DK1") == 0)
     {   
