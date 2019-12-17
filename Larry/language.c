@@ -141,7 +141,7 @@ void cheapest(data data_array[], user User)
         qsort(data_array, NMB_OF_ELEMENTS, sizeof(data), cmpfunc_DK2);
         cheapest->prize.from = data_array[0].prize.from;
         cheapest->prize.to = data_array[0].prize.to;
-        cheapest->prize.DK1price = data_array[0].prize.DK2price;
+        cheapest->prize.DK2price = data_array[0].prize.DK2price;
     }
     printf("Det billigste tidspunkt at forbruge din strøm vil være: \n--------------------------------------------------------\n");
 
