@@ -114,6 +114,7 @@ void log_data_use(data Output){
  Kunne overvejes at lægges ind i language.c istedet for.*/
 int prompt_user(user User, data *Data){
    
+    User.settings = load_settings();
     l_prompt_user(User);
     scanf(" %d", &User.choice.function);
     
