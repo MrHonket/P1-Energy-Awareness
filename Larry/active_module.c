@@ -159,7 +159,8 @@ int prompt_user(user User, data *Data){
     return prompt_user(User,Data);
 }
 
-
+/* Funktionen lægger en kopi af dataene fra database modulet over i et tmp array, således at den sorterede data fra funktionerne 
+ * i eksempelvis l_info_energy_saving ikke overlever fra kørsel til kørsel */
 data* copy_data(user User,data *Data)
 {
     int interval = hours_between(User.choice.from,User.choice.to);
