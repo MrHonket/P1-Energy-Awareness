@@ -8,7 +8,8 @@
 
 double info_energy_saving(user User, data data_array[], int hour_choice);
 data *cheapest(data data_array[], user User);
-int cmpfunc(const void * a, const void * b);
+int cmpfunc_DK1(const void * a, const void * b);
+int cmpfunc_DK2(const void * a, const void * b);
 void print_information(data return_array[], data cheapest_struct, user User, int hour_choice);
 void dialog_with_user(data data_array[], user User, double info, data cheapest_struct);
 void overview_for_interval(data data_array[], user User, int from_hour, int to_hour);
@@ -60,7 +61,7 @@ double info_energy_saving(user User, data data_array[], int hour_choice)
         user_price_current = current_consumption * KWH_TO_MWH * current_price;
 
         /* Sorterer pris-array så den billigste pris ligger først */
-        qsort(data_array, NMB_OF_ELEMENTS, sizeof(data), cmpfunc);
+        qsort(data_array, NMB_OF_ELEMENTS, sizeof(data), cmpfunc_DK1);
         cheapest_price = data_array[0].prize.DK1price;
 
         /* Dette giver brugerens strømpris baseret ud fra hvornår det er billigst at bruge strøm */
@@ -79,7 +80,7 @@ double info_energy_saving(user User, data data_array[], int hour_choice)
         user_price_current = current_consumption * KWH_TO_MWH * current_price;
 
         /* Sorterer pris-array så den billigste pris ligger først */
-        qsort(data_array, NMB_OF_ELEMENTS, sizeof(data), cmpfunc);
+        qsort(data_array, NMB_OF_ELEMENTS, sizeof(data), cmpfunc_DK2);
         cheapest_price = data_array[0].prize.DK2price;
         printf("Den billigste pris er: %.2f\n", cheapest_price);
 
@@ -100,12 +101,18 @@ data *cheapest(data data_array[], user User)
     data *cheapest;
     cheapest = (data*)malloc(1 * sizeof(data));
     
-    qsort(data_array, NMB_OF_ELEMENTS, sizeof(data), cmpfunc);
-
-    cheapest->prize.from = data_array[0].prize.from;
-    cheapest->prize.to = data_array[0].prize.to;
-    cheapest->prize.DK1price = data_array[0].prize.DK1price;
-    cheapest->prize.DK2price = data_array[0].prize.DK2price;
+    if (strcmp(User.settings.residence, "DK1") == 0){
+        qsort(data_array, NMB_OF_ELEMENTS, sizeof(data), cmpfunc_DK1);
+        cheapest->prize.from = data_array[0].prize.from;
+        cheapest->prize.to = data_array[0].prize.to;
+        cheapest->prize.DK1price = data_array[0].prize.DK1price;
+    }
+    else if (strcmp(User.settings.residence, "DK2") == 0){
+        qsort(data_array, NMB_OF_ELEMENTS, sizeof(data), cmpfunc_DK2);
+        cheapest->prize.from = data_array[0].prize.from;
+        cheapest->prize.to = data_array[0].prize.to;
+        cheapest->prize.DK1price = data_array[0].prize.DK2price;
+    }
 
     printf("Det billigste tidspunkt at forbruge din strøm vil være: \n--------------------------------------------------------\n");
 
@@ -140,7 +147,7 @@ void print_information(data return_array[], data cheapest_struct, user User, int
 }
 
 /* Basic compare function */
-int cmpfunc(const void * a, const void * b)
+int cmpfunc_DK1(const void * a, const void * b)
 {
     const data *priserA = (data*)a;
     const data *priserB = (data*)b;
@@ -152,6 +159,21 @@ int cmpfunc(const void * a, const void * b)
     else
         return 0;
 }
+
+int cmpfunc_DK2(const void * a, const void * b)
+{
+    const data *priserA = (data*)a;
+    const data *priserB = (data*)b;
+
+    if (priserA->prize.DK2price < priserB->prize.DK2price)
+        return -1;
+    else if (priserA->prize.DK2price > priserB->prize.DK2price)
+        return +1;
+    else
+        return 0;
+}
+
+
 
 void dialog_with_user(data data_array[], user User, double info, data cheapest_struct)
 {

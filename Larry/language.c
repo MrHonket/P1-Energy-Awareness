@@ -131,13 +131,18 @@ void cheapest(data data_array[], user User)
     data *cheapest;
     cheapest = (data*)malloc(1 * sizeof(data));
     
-    qsort(data_array, NMB_OF_ELEMENTS, sizeof(data), cmpfunc);
-
-    cheapest->prize.from = data_array[0].prize.from;
-    cheapest->prize.to = data_array[0].prize.to;
-    cheapest->prize.DK1price = data_array[0].prize.DK1price;
-    cheapest->prize.DK2price = data_array[0].prize.DK2price;
-
+    if (strcmp(User.settings.residence, "DK1") == 0){
+        qsort(data_array, NMB_OF_ELEMENTS, sizeof(data), cmpfunc_DK1);
+        cheapest->prize.from = data_array[0].prize.from;
+        cheapest->prize.to = data_array[0].prize.to;
+        cheapest->prize.DK1price = data_array[0].prize.DK1price;
+    }
+    else if (strcmp(User.settings.residence, "DK2") == 0){
+        qsort(data_array, NMB_OF_ELEMENTS, sizeof(data), cmpfunc_DK2);
+        cheapest->prize.from = data_array[0].prize.from;
+        cheapest->prize.to = data_array[0].prize.to;
+        cheapest->prize.DK1price = data_array[0].prize.DK2price;
+    }
     printf("Det billigste tidspunkt at forbruge din strøm vil være: \n--------------------------------------------------------\n");
 
     if (strcmp(User.settings.residence, "DK1") == 0){    
@@ -165,7 +170,7 @@ void print_information(data return_array[], user User)
     }
     else if (strcmp(User.settings.residence, "DK2") == 0){
         user_price = return_array[User.choice.hour].meter.value * KWH_TO_MWH * return_array[User.choice.hour].prize.DK2price;
-        printf("Nuvaerende pris: %.2f\n\n / MwH", return_array[User.choice.hour].prize.DK2price); 
+        printf("Nuvaerende pris: %.2f DKK\n", return_array[User.choice.hour].prize.DK2price); 
         printf("Nuvaerende forbrug: %.2f / KwH\n\n", return_array[User.choice.hour].meter.value); 
         printf("Nuvaerende pris baseret paa nuvaerende forbrug: %.2f DKK / KwH\n\n", user_price); 
     }

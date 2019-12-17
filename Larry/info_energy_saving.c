@@ -6,7 +6,8 @@
 #define KWH_TO_MWH 0.001
 
 double info_energy_saving(user User, data data_array[]);
-int cmpfunc(const void * a, const void * b);
+int cmpfunc_DK1(const void * a, const void * b);
+int cmpfunc_DK2(const void * a, const void * b);
 void overview_for_interval( user User, data data_array[]);
 
 /* Funktionen returnerer besparelsen forbrugeren kan opnå hvis vedkommende flytter sit forbrug til det billigste tidspunkt 
@@ -31,7 +32,7 @@ double info_energy_saving(user User, data data_array[])
         user_price_current = current_consumption * KWH_TO_MWH * current_price;
 
         /* Sorterer pris-array så den billigste pris ligger først */
-        qsort(data_array, NMB_OF_ELEMENTS, sizeof(data), cmpfunc);
+        qsort(data_array, NMB_OF_ELEMENTS, sizeof(data), cmpfunc_DK1);
         cheapest_price = data_array[0].prize.DK1price;
 
         /* Dette giver brugerens strømpris baseret ud fra hvornår det er billigst at bruge strøm */
@@ -50,7 +51,7 @@ double info_energy_saving(user User, data data_array[])
         user_price_current = current_consumption * KWH_TO_MWH * current_price;
 
         /* Sorterer pris-array så den billigste pris ligger først */
-        qsort(data_array, NMB_OF_ELEMENTS, sizeof(data), cmpfunc);
+        qsort(data_array, NMB_OF_ELEMENTS, sizeof(data), cmpfunc_DK2);
         cheapest_price = data_array[0].prize.DK2price;
         
         /* Dette giver brugerens strømpris baseret ud fra hvornår det er billigst at bruge strøm */
@@ -69,7 +70,7 @@ double info_energy_saving(user User, data data_array[])
 } 
 
 /* Basic compare function */
-int cmpfunc(const void * a, const void * b)
+int cmpfunc_DK1(const void * a, const void * b)
 {
     const data *priserA = (data*)a;
     const data *priserB = (data*)b;
@@ -77,6 +78,19 @@ int cmpfunc(const void * a, const void * b)
     if (priserA->prize.DK1price < priserB->prize.DK1price)
         return -1;
     else if (priserA->prize.DK1price > priserB->prize.DK1price)
+        return +1;
+    else
+        return 0;
+}
+
+int cmpfunc_DK2(const void * a, const void * b)
+{
+    const data *priserA = (data*)a;
+    const data *priserB = (data*)b;
+
+    if (priserA->prize.DK2price < priserB->prize.DK2price)
+        return -1;
+    else if (priserA->prize.DK2price > priserB->prize.DK2price)
         return +1;
     else
         return 0;
