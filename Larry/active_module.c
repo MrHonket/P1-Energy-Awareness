@@ -30,9 +30,9 @@ int main(int user_type){
     user User;
     User.type = Human;
     User.choice.lookup = Meter;
-    dato dato_from = {{00, 00}, 4, Marts, 2017};
+    dato dato_from = {{00, 00}, 15, Januar, 2017};
     User.choice.from = dato_from;
-    dato dato_to = {{00, 00}, 5, Marts, 2017};    
+    dato dato_to = {{00, 00}, 16, Januar, 2017};    
     User.choice.to = dato_to;                
     data *Data;
     data Output; //Dette vil være et struct som evt. kunne returneres i passiv_modulet til brug i log_data.
