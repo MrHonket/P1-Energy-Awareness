@@ -60,7 +60,7 @@ const char *month_txt;
     /*symbolske konstanter for brugertypen og valg af funktion*/
     typedef enum {Human,Automated}user_type;
     typedef enum {Presentation,Exit,UserHistory,InfoEnergySaving,UpdateSettings,
-              SystemInformation,ConsumptionCheck,FutureData,WarningEnergySaving,
+              SavingAdvice,ConsumptionCheck,WarningEnergySaving,
               MachineActivation}choice_function;
     typedef enum {Mean = 1,Median}mean_or_median;
     typedef enum {Meter,Price,Green}lookup_type;
@@ -81,8 +81,6 @@ typedef struct{
 typedef enum{Failure,Success}passive_warnings;
 
 /*Calc time prototypes*/
-int calc_time(dato from, dato to);
-
 int hours_between (dato d1, dato d2);
 int days_between(dato from, dato to);
 int months_between(dato d1, dato d2);

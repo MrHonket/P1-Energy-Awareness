@@ -231,9 +231,8 @@ typedef enum {
     UserHistory,
     InfoEnergySaving,
     UpdateSettings,
-    SystemInformation,
+    SavingAdvice,
     ConsumptionCheck,
-    FutureData,
     WarningEnergySaving,
     MachineActivation
 }choice_function;

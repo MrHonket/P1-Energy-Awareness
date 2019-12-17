@@ -7,9 +7,8 @@
 #include "info_energy_saving.h"     
 #include "passive_module.h"         
 #include "warning_energy_saving.h"  
-#include "system_information.h"     
-#include "machine_activation.h"     
-#include "future_data.h"            
+#include "saving_advice.h"     
+#include "machine_activation.h"               
 #include "consumption_check.h"      
 
 void l_prompt_user(user User);
@@ -19,9 +18,8 @@ void l_info_energy_saving(user User,data *data_array);
   void cheapest(data data_array[], user User);
   void print_information(data return_array[], user User);
 void l_update_settings(user User);
-void l_system_information(user User,data *Data);
+void l_saving_advice(user User,data *Data);
 void l_consumption_check(user User,data *Data);
-void l_future_data(user User,data *Data);
 void l_warning_energy_saving(user User, data *Data);
 void print_warning(user User);
 void l_machine_activation(user User, data *Data);
@@ -33,9 +31,8 @@ void l_prompt_user(user User){
         printf("Tryk %d for brugerhistorik\n",UserHistory);                       
         printf("Tryk %d for info om dine energibesparelser\n",InfoEnergySaving);  
         printf("Tryk %d for brugerindstillinger\n",UpdateSettings);               
-        printf("Tryk %d for informationer om dette system\n",SystemInformation);  
-        printf("Tryk %d for at lave et elcheck\n",ConsumptionCheck);              
-        printf("Tryk %d for et gaet om fremtidige priser\n",FutureData);       
+        printf("Tryk %d for at faa nogle relevante spareraad til din situation\n",SavingAdvice);  
+        printf("Tryk %d for at lave et elcheck\n",ConsumptionCheck);                   
         printf("Tryk %d for at saette det op saadan at du bliver advaret hvis prisen er hoej\n",WarningEnergySaving);
         printf("Tryk %d for at saette nogle maskiner op saa de bliver aktiveret naar strommen er billig\n",MachineActivation);
     }
@@ -45,9 +42,8 @@ void l_prompt_user(user User){
         printf("Enter %d for your user history\n",UserHistory);                   
         printf("Enter %d for proposals to energy savings\n",InfoEnergySaving);    
         printf("Enter %d for user settings\n",UpdateSettings);                    
-        printf("Enter %d for information of the system\n",SystemInformation);     
-        printf("Enter %d to check your power consumption\n",ConsumptionCheck);    
-        printf("Enter %d to get the prices of the future\n",FutureData);    
+        printf("Enter %d for relevant advice\n",SavingAdvice);     
+        printf("Enter %d to check your power consumption\n",ConsumptionCheck);       
         printf("Enter %d to create settings for when you should receive warnings due to high prices.\n",WarningEnergySaving);
         printf("Enter %d to implement machines into your system, so they can activate when the price is low\n",MachineActivation);      
     }
@@ -202,18 +198,18 @@ void l_update_settings(user User){
     }
 }
 
-void l_system_information(user User, data *Data){
+void l_saving_advice(user User, data *Data){
     //skriv variable
     
     if(strcmp(User.settings.language,"DK") == 0){
         //skriv dansk
         error_message(ErrorLanguageNotImplemented);
-        system_information(User,Data);
+        saving_advice(User,Data);
     }
     else if(strcmp(User.settings.language,"ENG") == 0){
         //skriv engelsk
         error_message(ErrorLanguageNotImplemented);
-        system_information(User,Data);
+        saving_advice(User,Data);
     }
     else{
         l_update_settings(User);
@@ -232,24 +228,6 @@ void l_consumption_check(user User, data *Data){
         //skriv engelsk
         error_message(ErrorLanguageNotImplemented);
         consumption_check(User,Data);
-    }
-    else{
-        l_update_settings(User);
-    }
-}
-
-void l_future_data(user User, data *Data){
-    //skriv variable
-    
-    if(strcmp(User.settings.language,"DK") == 0){
-        //skriv dansk
-        error_message(ErrorLanguageNotImplemented);
-        future_data(User,Data);
-    }
-    else if(strcmp(User.settings.language,"ENG") == 0){
-        //skriv engelsk
-        error_message(ErrorLanguageNotImplemented);
-        future_data(User,Data);
     }
     else{
         l_update_settings(User);

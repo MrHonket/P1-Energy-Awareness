@@ -15,9 +15,8 @@
 #include "info_energy_saving.h"     //Implementeret og brugbart!
 #include "passive_module.h"         //Implementeret og brugbart!
 #include "warning_energy_saving.h"  //Implementeret og brugbart!
-#include "system_information.h"     //Implemented som error_message!
+#include "saving_advice.h"     //Implemented som error_message!
 #include "machine_activation.h"     //Implemented som error_message!
-#include "future_data.h"            //Implemented som error_message!
 #include "consumption_check.h"      //Implemented som error_message!
 #include "debug.h"                  //implementeret og brugbart!
 
@@ -138,12 +137,9 @@ int prompt_user(user User, data *Data){
     else if(User.choice.function == ConsumptionCheck){
         l_consumption_check(User, data_copy);
     }
-    else if(User.choice.function == SystemInformation){
-        l_system_information(User, data_copy);
+    else if(User.choice.function == SavingAdvice){
+        l_saving_advice(User, data_copy);
     }
-    else if(User.choice.function == FutureData){
-        l_future_data(User, data_copy);
-    }    
     else if(User.choice.function == WarningEnergySaving){
         l_warning_energy_saving(User,data_copy);
     }

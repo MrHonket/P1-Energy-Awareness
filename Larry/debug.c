@@ -19,11 +19,10 @@ char* translate(int choice_of_function){
         case UserHistory         : return "user_history";
         case InfoEnergySaving    : return "info_energy_saving";
         case UpdateSettings      : return "update_settings";
-        case SystemInformation   : return "system_information";
+        case SavingAdvice        : return "saving_advice";
         case WarningEnergySaving : return "warning_energy_savings";
         case MachineActivation   : return "machine_activation";
         case ConsumptionCheck    : return "consumption_check";
-        case FutureData          : return "future_data";
     }
     return "Error_Translate";
 }
