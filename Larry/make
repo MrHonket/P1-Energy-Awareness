@@ -1,0 +1,31 @@
+edit : active_module.o consumption_check.o database_module.o debug.o \
+       global.o info_energy_saving.o language.o update_settings.o user_history.o \
+       warning_energy_saving.o
+        cc -o edit active_module.o consumption_check.o database_module.o debug.o \
+        global.o info_energy_saving.o language.o update_settings.o user_history.o \
+        warning_energy_saving.o
+
+active_module.o : active_module.c active_module.h
+        cc -c active_module.c
+consumption_check.o : consumption_check.c consumption_check.h 
+        cc -c consumption_check.c
+database_module.o : database_module.c database_module.h
+        cc -c database_module.c
+debug.o : debug.c debug.h
+        cc -c debug.c
+global.o : global.c global.h
+        cc -c global.c
+info_energy_saving.o : info_energy_saving.c info_energy_saving.h
+        cc -c info_energy_saving.c
+language.o : language.c language.h
+        cc -c language.c
+update_settings.o : update_settings.c update_settings.h
+        cc -c update_settings.c
+user_history.o : user_history.c user_history.h
+        cc -c user_history.c
+warning_energy_saving.o : warning_energy_saving.c warning_energy_saving.h
+        cc -c warning_energy_saving.c
+clean :
+        rm edit active_module.o consumption_check.o database_module.o debug.o \
+           global.o info_energy_saving.o language.o update_settings.o user_history.o \
+           warning_energy_saving.o
