@@ -37,7 +37,7 @@ if (strcmp(User.settings.residence, "DK1") == 0)
 
     /* Dette giver brugerens strømpris baseret ud fra hvornår det er billigst at bruge strøm */
     user_price_after = current_consumption * KWH_TO_MWH * cheapest_price;
-    printf("Din pris, hvis du vælger at flytte dit forbrug: %.2f DKK / KwH\n\n", user_price_after);
+    printf("Din pris, hvis du vælger at flytte dit forbrug til billigste tidspunkt: %.2f DKK / KwH\n\n", user_price_after);
 }
     else if (strcmp(User.settings.residence, "DK2") == 0)
     {
@@ -56,7 +56,7 @@ if (strcmp(User.settings.residence, "DK1") == 0)
         
         /* Dette giver brugerens strømpris baseret ud fra hvornår det er billigst at bruge strøm */
         user_price_after = current_consumption * KWH_TO_MWH * cheapest_price;
-        printf("Din pris, hvis du vaelger at flytte dit forbrug: %.2f DKK / KwH\n\n", user_price_after);
+        printf("Din pris, hvis du vaelger at flytte dit forbrug til billigste tidspunkt: %.2f DKK / KwH\n\n", user_price_after);
     }
     else
     {
@@ -101,13 +101,15 @@ void overview_for_interval(user User, data data_array[])
     int i;
     if (strcmp(User.settings.residence, "DK1") == 0)
     {
-        printf("Dato: %d / %d / %d\n\n", data_array->prize.from.day, data_array->prize.from.month, data_array->prize.from.year);
+        printf("Dato: %d / %d / %d\t   Område: %s\n\n", data_array->prize.from.day, data_array->prize.from.month, 
+        data_array->prize.from.year, User.settings.residence);
         for (i = User.choice.from.time.hour; i <= User.choice.to.time.hour; i++)
             printf("Kl. %d\t|\tPris: %.2f DKK / MWH \n", i, data_array[i].prize.DK1price);
     }
     else if (strcmp(User.settings.residence, "DK2") == 0)
     {
-        printf("Dato: %d / %d / %d\n\n", data_array->prize.from.day, data_array->prize.from.month, data_array->prize.from.year);
+        printf("Dato: %d / %d / %d\t   Område: %s\n\n", data_array->prize.from.day, data_array->prize.from.month, 
+        data_array->prize.from.year, User.settings.residence);
         for (i = User.choice.from.time.hour; i <= User.choice.to.time.hour; i++)
             printf("Kl. %d\t|\tPris: %.2f DKK / MWH \n", i, data_array[i].prize.DK2price);
     }

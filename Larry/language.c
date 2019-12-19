@@ -161,15 +161,15 @@ void print_information(data return_array[], user User)
     double user_price;
     if (strcmp(User.settings.residence, "DK1") == 0){
         user_price = return_array[User.choice.hour].meter.value * KWH_TO_MWH * return_array[User.choice.hour].prize.DK1price;
-        printf("Nuvaerende pris: %.2f DKK / MWH\n\n", return_array[User.choice.hour].prize.DK1price); 
+        printf("Timens pris: %.2f DKK / MWH\n\n", return_array[User.choice.hour].prize.DK1price); 
         printf("Nuvaerende forbrug: %.2f KWH \n\n", return_array[User.choice.hour].meter.value); 
-        printf("Nuvaerende pris baseret paa nuvaerende forbrug: %.2f DKK / KwH\n\n", user_price); 
+        printf("Pris baseret paa nuvaerende forbrug: %.2f DKK / KwH\n\n", user_price); 
     }
     else if (strcmp(User.settings.residence, "DK2") == 0){
         user_price = return_array[User.choice.hour].meter.value * KWH_TO_MWH * return_array[User.choice.hour].prize.DK2price;
-        printf("Nuvaerende pris: %.2f DKK\n", return_array[User.choice.hour].prize.DK2price); 
+        printf("Timens pris: %.2f DKK\n\n", return_array[User.choice.hour].prize.DK2price); 
         printf("Nuvaerende forbrug: %.2f / KwH\n\n", return_array[User.choice.hour].meter.value); 
-        printf("Nuvaerende pris baseret paa nuvaerende forbrug: %.2f DKK / KwH\n\n", user_price); 
+        printf("Pris baseret paa nuvaerende forbrug: %.2f DKK / KwH\n\n", user_price); 
     }
 }
 
