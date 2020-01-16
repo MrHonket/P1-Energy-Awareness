@@ -42,7 +42,6 @@ int main(int user_type){
     }
     else{
         l_update_settings(User);
-        update_next_activation(User);
     }
     confirmation = check_for_run_module(User);
 
@@ -63,20 +62,22 @@ int main(int user_type){
         else{
             error_message(ErrorUserType);
         }
+        update_next_activation(User);         //update next activation vil tage settings og planlægge næste aktivering.
     }
     else{
         //don't run, evt. log_data_use(User); alt efter hvordan den implementeres.
     }
 
-    update_next_activation(User);         //update next activation vil tage settings og planlægge næste aktivering.
-
+    
+    /*Test funktioner der skal slettes til sidst*/
     User.settings = load_settings();
     debug_user(User);
     
-    free(Data);
+    
     return EXIT_SUCCESS;
     
 }
+
 /*Checker for om der skal aktiveresSætter næste automatiske aktivering
  *Hvis aktivatitionen sker automatisk skal den vurdere om next activation stemmer overens med nuværende tidspunkt
  *Ellers hvis aktivationen sker af et menneske skal den bare gå videre.
@@ -113,14 +114,13 @@ void log_data_use(data Output){
 /*Funktionen som fungere som en brugers interface
  Kunne overvejes at lægges ind i language.c istedet for.*/
 int prompt_user(user User, data *Data){
-   
-    data *data_copy;
-    data_copy = copy_data(User,Data);
-
     User.settings = load_settings();
     l_prompt_user(User);
     scanf(" %d", &User.choice.function);
     
+    data *data_copy;
+    data_copy = copy_data(User,Data); //her har vi mulighed for at udvide copy_data til at bruge data fra user settings
+
     if(User.choice.function == Exit){
         return EXIT_SUCCESS;
     }
