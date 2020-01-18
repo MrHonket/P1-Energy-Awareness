@@ -9,17 +9,17 @@
 #define DATE_YMD "%4d %2d %2d %2d.%2d"
 #define FIRST_PRICEINDEX 3
 #define FIRST_CONSUMPINDEX 0
-#define ELSPOT_FILE_ID "Elspot Prices in DKK/MWh"
-#define CONSUMP_FILE_ID "571313104402686056"
-#define DATARESOLUTION 1
+#define ELSPOT_FILE_ID "Elspot Prices in DKK/MWh"   //check om filen indeholder dette i de første linier
+#define CONSUMP_FILE_ID "571313104402686056"        //check om filen indeholder dette i de første linier
+#define DATARESOLUTION 1 //data inddeles i 1 timers intervaller
 
 static pricedata mypricedata[HOURS_PR_YEAR*3];
 static meterdata myconsumpdata[HOURS_PR_YEAR*3];
-int price_initialised = 0;
-int consumption_initialised = 0;
+int price_initialised = 0;          //flag sættes hvis der er nye data tilrådighed somikke ligger i mypricedata
+int consumption_initialised = 0;    //flag sættes hvis der er nye data tilrådighed somikke ligger i mypricedata
 
 
-data        *get_price_for_timeinterval_in_area(dato from, dato to,  area area);
+data        *get_price_for_timeinterval_in_area(dato from, dato to,  area area);// get data for time interval
 void        init_database(void);
 void        init_pricestruct(pricedata data[]);
 pricedata   *init_price_array(pricedata mypricedata[]);
@@ -49,8 +49,6 @@ double  consumption_from_string(char *price);
     int     hours_since_index(dato first_index, dato to);
 /* int     calc_time(dato from, dato to);
 int     calc_hours(dato test_year, month test); */
-
-
 
 
 
@@ -327,14 +325,14 @@ int copy_file_to_myconsumpdata(char *filename){
                 myconsumpdata[j].value = consumption_from_string(data_txt[3]);
 
                 if(j>1 &&( dist = hours_between(myconsumpdata[j-1].from,myconsumpdata[j].from))>DATARESOLUTION){
-                    dist--;
+                    //dist--;//flyttet til for loopet
             
                 /*  printf("lappet hul i data :");
                     print_date(myconsumpdata[j].from);
                     printf("      afstand mlm datoer = %d \n", dist); */
                     k = 0;
                     
-                    for(k=0; k<dist; k++){
+                    for(k=0; k<dist-1; k++){
                         myconsumpdata[j+k] = empty_consumpstruct();
                     }
                     /* printf("%d tomme datafelter tilføjet fra index %d til index %d\n",dist,j,j+k);

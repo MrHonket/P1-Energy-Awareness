@@ -61,7 +61,7 @@ const char *month_txt;
     typedef enum {Human,Automated}user_type;
     typedef enum {Presentation,Exit,UserHistory,InfoEnergySaving,UpdateSettings,
               SavingAdvice,ConsumptionCheck,WarningEnergySaving,
-              MachineActivation}choice_function;
+              MachineActivation,MorningRoutine}choice_function;
     typedef enum {Mean = 1,Median}mean_or_median;
     typedef enum {Meter,Price,Green}lookup_type;
     /*settings valg: settings*/

@@ -19,11 +19,14 @@ double info_energy_saving(user User, data data_array[])
     double user_price_current = 0.0;
     double user_price_after = 0.0;
     double cheapest_price = 0.0;
+    int n_elements = hours_between(User.choice.from,User.choice.to);
     
 if (strcmp(User.settings.residence, "DK1") == 0)
 {   
-    current_price = data_array[User.choice.hour].prize.DK1price;
-    current_consumption = data_array[User.choice.hour].meter.value;
+    // current_price = data_array[User.choice.hour].prize.DK1price;
+    // current_consumption = data_array[User.choice.hour].meter.value;
+    current_price = data_array[n_elements/2].prize.DK1price;
+    current_consumption = data_array[n_elements/2].meter.value;
     
     if (current_price < 0)
         printf("Prisen er pt. negativ!\n");
@@ -32,7 +35,7 @@ if (strcmp(User.settings.residence, "DK1") == 0)
     user_price_current = current_consumption * KWH_TO_MWH * current_price;
 
     /* Sorterer pris-array så den billigste pris ligger først */
-    qsort(data_array, NMB_OF_ELEMENTS, sizeof(data), cmpfunc_DK1);
+    qsort(data_array, n_elements, sizeof(data), cmpfunc_DK1);
     cheapest_price = data_array[0].prize.DK1price;
 
     /* Dette giver brugerens strømpris baseret ud fra hvornår det er billigst at bruge strøm */
@@ -51,7 +54,7 @@ if (strcmp(User.settings.residence, "DK1") == 0)
         user_price_current = current_consumption * KWH_TO_MWH * current_price;
 
         /* Sorterer pris-array så den billigste pris ligger først */
-        qsort(data_array, NMB_OF_ELEMENTS, sizeof(data), cmpfunc_DK2);
+        qsort(data_array, n_elements, sizeof(data), cmpfunc_DK2);
         cheapest_price = data_array[0].prize.DK2price;
         
         /* Dette giver brugerens strømpris baseret ud fra hvornår det er billigst at bruge strøm */
@@ -99,19 +102,20 @@ int cmpfunc_DK2(const void * a, const void * b)
 void overview_for_interval(user User, data data_array[])
 {
     int i;
+    int n_elements = hours_between(User.choice.from,User.choice.to);
     if (strcmp(User.settings.residence, "DK1") == 0)
     {
         printf("Dato: %d / %d / %d\t   Område: %s\n\n", data_array->prize.from.day, data_array->prize.from.month, 
         data_array->prize.from.year, User.settings.residence);
-        for (i = User.choice.from.time.hour; i <= User.choice.to.time.hour; i++)
-            printf("Kl. %d\t|\tPris: %.2f DKK / MWH \n", i, data_array[i].prize.DK1price);
+        for (i = 0; i < n_elements; i++)
+            printf("dato %d / %d Kl. %d\t|\tPris: %.2f DKK / MWH \n",data_array[i].prize.from.day,data_array[i].prize.from.month, data_array[i].prize.from.time.hour, data_array[i].prize.DK1price);
     }
     else if (strcmp(User.settings.residence, "DK2") == 0)
     {
         printf("Dato: %d / %d / %d\t   Område: %s\n\n", data_array->prize.from.day, data_array->prize.from.month, 
         data_array->prize.from.year, User.settings.residence);
-        for (i = User.choice.from.time.hour; i <= User.choice.to.time.hour; i++)
-            printf("Kl. %d\t|\tPris: %.2f DKK / MWH \n", i, data_array[i].prize.DK2price);
+        for (i = 0; i < n_elements; i++)
+            printf("dato %d / %d Kl. %d\t|\tPris: %.2f DKK / MWH \n",data_array[i].prize.from.day,data_array[i].prize.from.month, data_array[i].prize.from.time.hour, data_array[i].prize.DK2price);
     }
 }
 

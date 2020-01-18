@@ -29,9 +29,9 @@ int main(int user_type){
     user User;
     User.type = Human;
     User.choice.lookup = Meter;
-    dato dato_from = {{00, 00}, 15, Januar, 2017};
+    dato dato_from = {{00, 00}, 1, Januar, 2017};
     User.choice.from = dato_from;
-    dato dato_to = {{00, 00}, 16, Januar, 2017};    
+    dato dato_to = {{00, 00}, 31, December, 2017};    
     User.choice.to = dato_to;                
     data *Data;
     data Output; //Dette vil være et struct som evt. kunne returneres i passiv_modulet til brug i log_data.
@@ -41,19 +41,22 @@ int main(int user_type){
         User.settings = load_settings();
     }
     else{
+        //viser et view til brugeren hvor de kan skrive deres data DK1 osv
         l_update_settings(User);
     }
+    //checker skal jeg køre eller ej, hvis "bruger" så kør altid, hvis det er en maskine , returnerer den true hvis der i settings er givet besked om at en maskine må køre på et bestemt tidspunkt
+    //timenow er altid sat til 
     confirmation = check_for_run_module(User);
 
     if(confirmation){
-        Data = get_price_for_timeinterval_in_area(dato_from, dato_to, Dk1);
+        Data = get_price_for_timeinterval_in_area(dato_from, dato_to, Dk1);//et års data tilbage i tid
         if (User.type == Human){
             prompt_user(User,Data);
         }
         else if(User.type == Automated){
-            confirmation = passive_module(User,Data);
+            confirmation = passive_module(User,Data); //returnerer en int 
             if(confirmation){                         
-                log_data_use(Output);                 
+                log_data_use(Output);  //tom stub               
             }
             else{
                 error_message(ErrorConfirmationPassiveModule);
@@ -65,6 +68,7 @@ int main(int user_type){
         update_next_activation(User);         //update next activation vil tage settings og planlægge næste aktivering.
     }
     else{
+        //her ville vi oprette en linie i log
         //don't run, evt. log_data_use(User); alt efter hvordan den implementeres.
     }
 
@@ -89,8 +93,8 @@ int check_for_run_module(user User){
         if(User.settings.next_activation.time.hour == time_now.time.hour){
             return TRUE;
         }
-        else if(User.settings.next_activation.day < time_now.day){
-            update_next_activation(User);
+        else if(User.settings.next_activation.day < time_now.day){//denne sammenligning er ugyldig, lav en funktion som 
+            update_next_activation(User);// denne funktion burde ændre
             check_for_run_module(User);
         }
         else{
@@ -114,7 +118,6 @@ void log_data_use(data Output){
 /*Funktionen som fungere som en brugers interface
  Kunne overvejes at lægges ind i language.c istedet for.*/
 int prompt_user(user User, data *Data){
-    User.settings = load_settings();
     l_prompt_user(User);
     scanf(" %d", &User.choice.function);
     
@@ -144,6 +147,9 @@ int prompt_user(user User, data *Data){
     }
     else if(User.choice.function == MachineActivation){
         l_machine_activation(User,data_copy);
+    }
+    else if(User.choice.function == MorningRoutine){
+        l_morningProcedure(&User);    
     }
     else{
         error_message(ErrorChoiceDoesntExist);

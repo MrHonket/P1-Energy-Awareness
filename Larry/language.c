@@ -9,7 +9,8 @@
 #include "warning_energy_saving.h"  
 #include "saving_advice.h"     
 #include "machine_activation.h"               
-#include "consumption_check.h"      
+#include "consumption_check.h" 
+#include "database_module.h"     
 
 void l_prompt_user(user User);
 void l_prompt_date(user User);
@@ -21,8 +22,14 @@ void l_update_settings(user User);
 void l_saving_advice(user User,data *Data);
 void l_consumption_check(user User,data *Data);
 void l_warning_energy_saving(user User, data *Data);
+void l_morningProcedure(user *User);
 void print_warning(user User);
 void l_machine_activation(user User, data *Data);
+void set_user_date_from(user *User);
+void set_user_date_to(user *User);
+void set_User_choice_lookup(user *User);
+
+
 
 void l_prompt_user(user User){
     if(strcmp(User.settings.language,"DK") == 0){
@@ -35,6 +42,7 @@ void l_prompt_user(user User){
         printf("Tryk %d for at lave et elcheck\n",ConsumptionCheck);                   
         printf("Tryk %d for at saette det op saadan at du bliver advaret hvis prisen er hoej\n",WarningEnergySaving);
         printf("Tryk %d for at saette nogle maskiner op saa de bliver aktiveret naar strommen er billig\n",MachineActivation);
+        printf("Tryk %d for at starte morgen routinen\n",MorningRoutine);
     }
     else if(strcmp(User.settings.language,"ENG") == 0){
         printf("\n\nPlease enter one of the available numbers\n");                
@@ -54,21 +62,29 @@ void l_prompt_user(user User){
 
 void l_user_history(user User, data *Data){
     double result;
-    int hours_to;
+    // int hours_to;
     
     if(strcmp(User.settings.language,"DK") == 0){
-        printf("Her kan du se dit gennemsnitlige forbrug i aaret\nFra ");
-        print_date(Data[0].prize.from);
+
+        printf("Her kan du se dit gennemsnitlige forbrug/elpris over en tidsperiode\nFra ");
+        set_user_date_from(&User);
+        // print_date(Data[0].prize.from);
         printf("Til ");
-        hours_to = hours_between(User.choice.from,User.choice.to);
-        print_date(Data[hours_to].prize.to);
+        set_user_date_to(&User);
+        // hours_to = hours_between(User.choice.from,User.choice.to);
+        print_date(User.choice.from);
+        print_date(User.choice.to);
+        set_User_choice_lookup(&User);
+
         printf("Skriv venligst \n%d for gennemsnit \n%d for medianen",Mean,Median);
 
         scanf(" %d",&User.choice.mean_or_median);
+        Data = get_price_for_timeinterval_in_area(User.choice.from,User.choice.to, Dk1);
 
         result = user_history(User, Data);
         printf("%s er %lf %s for perioden\n",(User.choice.mean_or_median == Median ? "Medianen" : "Gennemsnittet"), result,
                                               (User.choice.lookup==Meter ? "KWH" : "DKK"));
+        free(Data);
     }
     else if(strcmp(User.settings.language,"ENG") == 0){
         //skriv engelsk
@@ -94,8 +110,9 @@ void l_info_energy_saving(user User,data *Data)
         if (choice == 1 || choice == 2){
             switch(choice){
                 case 1: 
-                    printf("Indtast hvilken time du onsker data fra: ");
+                    printf("Indtast hvilken dato du onsker data fra: ");
                     scanf(" %d", &User.choice.hour);
+
                     print_information(Data, User);
                     info = info_energy_saving(User, Data);
                     cheapest(Data, User);
@@ -125,16 +142,17 @@ void l_info_energy_saving(user User,data *Data)
 void cheapest(data data_array[], user User)
 {
     data *cheapest;
+    int n_elements = hours_between(User.choice.from,User.choice.to);
     cheapest = (data*)malloc(1 * sizeof(data));
     
     if (strcmp(User.settings.residence, "DK1") == 0){
-        qsort(data_array, NMB_OF_ELEMENTS, sizeof(data), cmpfunc_DK1);
+        qsort(data_array, n_elements, sizeof(data), cmpfunc_DK1);
         cheapest->prize.from = data_array[0].prize.from;
         cheapest->prize.to = data_array[0].prize.to;
         cheapest->prize.DK1price = data_array[0].prize.DK1price;
     }
     else if (strcmp(User.settings.residence, "DK2") == 0){
-        qsort(data_array, NMB_OF_ELEMENTS, sizeof(data), cmpfunc_DK2);
+        qsort(data_array, n_elements, sizeof(data), cmpfunc_DK2);
         cheapest->prize.from = data_array[0].prize.from;
         cheapest->prize.to = data_array[0].prize.to;
         cheapest->prize.DK2price = data_array[0].prize.DK2price;
@@ -251,6 +269,33 @@ void l_warning_energy_saving(user User, data *Data){
     }
 }
 
+
+void l_morningProcedure(user *User){
+    data *Data;
+    double info;
+    
+    set_user_date_from(User);
+    User->choice.to = next_day(User->choice.from);
+    User->choice.to = next_day(User->choice.to);
+    print_date(User->choice.from);
+    print_date(User->choice.to);
+    Data = get_price_for_timeinterval_in_area(User->choice.from,User->choice.to, Dk1); //burde være User->settings.residence
+    // printf ("\n%f\n",info_energy_saving(*User,Data));
+    User->choice.hour = hours_between(User->choice.from,User->choice.to)/2;
+
+    print_information(Data, *User);
+    info = info_energy_saving(*User, Data);
+    cheapest(Data, *User);
+    printf("Din besparelse bliver: %.5f DKK\n", info);
+    printf("--------------------------------------------------------\n\n");
+    overview_for_interval(*User,Data);
+
+    // cheapest(Data,*User);
+    free(Data);
+
+}
+
+
 void print_warning(user User){
     
     if(strcmp(User.settings.language,"DK") == 0){
@@ -285,5 +330,49 @@ void l_machine_activation(user User, data *Data){
     }
     else{
         l_update_settings(User);
+    }
+}
+
+void set_user_date_from(user *User){
+    int d, m, y, h;
+    printf("indstil from dato skriv DD MM YYYY H\n");
+    scanf("%d %d %d %d",&d,&m,&y,&h);
+    User->choice.from.day = d;
+    User->choice.from.month = m;
+    User->choice.from.year = y;
+    User->choice.from.time.hour = h;
+    User->choice.from.time.minute = 0;
+    print_date(User->choice.from);
+    
+}
+
+void set_user_date_to(user *User){
+    int d, m, y, h;
+    printf("indstil to dato skriv DD MM YYYY H\n");
+    scanf("%d %d %d %d",&d,&m,&y,&h);
+    
+    User->choice.to.day = d;
+    User->choice.to.month = m;
+    User->choice.to.year = y;
+    User->choice.to.time.hour = h;
+    User->choice.to.time.minute = 0;
+    print_date(User->choice.to);
+
+}
+
+void set_User_choice_lookup(user *User){
+    char  str[3];
+    printf("hvad vil du gerne regne på?\nForbrug(f)\nElpris(e)\n: ");
+    scanf(" %s", str);
+    if (strcmp(str,"e")==0){
+        User->choice.lookup = Price;
+    }
+    else if (strcmp(str,"f")==0){
+        User->choice.lookup = Meter;
+    }
+    else {
+        error_message(ErrorUserLookupHistory);
+        printf("det lykkedes ikke at sætte user.choice.lookup så den er defaulted til Forbrug");
+        User->choice.lookup = Meter;
     }
 }
