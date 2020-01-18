@@ -25,9 +25,19 @@ int prompt_user(user User,data *Data);
     data* copy_data(user User,data *Data);
 void log_data_use(data Output);
 /*main vil modtage information om det er en måler eller sig selv (Automatisk) der aktivere eller en app (Human)*/
-int main(int user_type){
+int main(int arg_c, char *arg_v[]){
     user User;
-    User.type = Human;
+    if(arg_c == 2){
+        if(strcmp(arg_v[1], "Automated") == 0) {
+            User.type = Automated ;
+        }
+        else {
+            User.type = Human;
+        }
+    }
+    else {
+            User.type = Human;
+        }
     User.choice.lookup = Meter;
     dato dato_from = {{00, 00}, 1, Januar, 2017};
     User.choice.from = dato_from;
