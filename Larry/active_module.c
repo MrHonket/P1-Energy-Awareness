@@ -19,30 +19,53 @@
 #include "consumption_check.h"      //Implemented som error_message!
 #include "debug.h"                  //implementeret og brugbart!
 
+
 /*Dette er prototyper i programmet.*/
-int check_for_run_module(user User);
-int prompt_user(user User,data *Data);
+int check_for_run_module(user *User);
+int prompt_user(user *User,data *Data);
     data* copy_data(user User,data *Data);
 void log_data_use(data Output);
-/*main vil modtage information om det er en måler eller sig selv (Automatisk) der aktivere eller en app (Human)*/
+/*main vil modtage information om det er en måler eller sig selv (Automatisk) der aktivere eller en app (Human)
+main vil også modtage hvilken dato main er kaldt og sætte den pågældende dato som User.choice.now blot med årstal 2017
+kald main på følgende måde:
+./larry human $( date +%m-%d-%H)
+*/
 int main(int arg_c, char *arg_v[]){
     user User;
-    if(arg_c == 2){
+    if(arg_c >= 2){
         if(strcmp(arg_v[1], "Automated") == 0) {
+            
             User.type = Automated ;
+            User.choice.mean_or_median = Median;
+            User.choice.lookup = Meter;
+            User.choice.function = WarningEnergySaving;
         }
         else {
             User.type = Human;
+            User.choice.mean_or_median = Median;
+            User.choice.lookup = Meter;
+            User.choice.function = MorningRoutine;
+        }
+        if(arg_c >=3){
+            User.choice.now.year = 2017;
+            sscanf(arg_v[2],"%d-%d-%d",&User.choice.now.month,&User.choice.now.day,&User.choice.now.time.hour);
+            User.choice.now.time.minute = 0;
+            print_date(User.choice.now);
+            User.choice.from = date_from_stringDMYI("1-1-2017", 0);
+            User.choice.to = date_from_stringDMYI("31-12-2017", 23); 
+            print_date(User.choice.from);
+            print_date(User.choice.to);
         }
     }
     else {
             User.type = Human;
+            User.choice.now = date_from_stringDMYI("1-5-2017", 13);
+            User.choice.lookup = Meter;
+            User.choice.from = date_from_stringDMYI("1-1-2017", 0);
+            User.choice.to = date_from_stringDMYI("31-12-2017", 23);        
         }
-    User.choice.lookup = Meter;
-    dato dato_from = {{00, 00}, 1, Januar, 2017};
-    User.choice.from = dato_from;
-    dato dato_to = {{00, 00}, 31, December, 2017};    
-    User.choice.to = dato_to;                
+
+           
     data *Data;
     data Output; //Dette vil være et struct som evt. kunne returneres i passiv_modulet til brug i log_data.
     int confirmation;
@@ -52,19 +75,21 @@ int main(int arg_c, char *arg_v[]){
     }
     else{
         //viser et view til brugeren hvor de kan skrive deres data DK1 osv
-        l_update_settings(User);
+
+        l_update_settings(&User);
+        debug_user(User);
     }
     //checker skal jeg køre eller ej, hvis "bruger" så kør altid, hvis det er en maskine , returnerer den true hvis der i settings er givet besked om at en maskine må køre på et bestemt tidspunkt
     //timenow er altid sat til 
-    confirmation = check_for_run_module(User);
+    confirmation = check_for_run_module(&User);
 
     if(confirmation){
-        Data = get_price_for_timeinterval_in_area(dato_from, dato_to, Dk1);//et års data tilbage i tid
+        Data = get_price_for_timeinterval_in_area(User.choice.from, User.choice.to, Dk1);//et års data tilbage i tid
         if (User.type == Human){
-            prompt_user(User,Data);
+            prompt_user(&User,Data);
         }
         else if(User.type == Automated){
-            confirmation = passive_module(User,Data); //returnerer en int 
+            confirmation = passive_module(&User,Data); //returnerer en int 
             if(confirmation){                         
                 log_data_use(Output);  //tom stub               
             }
@@ -75,7 +100,7 @@ int main(int arg_c, char *arg_v[]){
         else{
             error_message(ErrorUserType);
         }
-        update_next_activation(User);         //update next activation vil tage settings og planlægge næste aktivering.
+        update_next_activation(&User);         //update next activation vil tage settings og planlægge næste aktivering.
     }
     else{
         //her ville vi oprette en linie i log
@@ -97,13 +122,15 @@ int main(int arg_c, char *arg_v[]){
  *Ellers hvis aktivationen sker af et menneske skal den bare gå videre.
  *Hvis den er automatisk og vurderes til at aktivere nu skal den hurtigt udregne næste gang den vurdere at aktivere hele programmet.
  *Hvis den er automatisk men vurderes til ikke at aktivere nu, så skal den returnere main(Automated) efter X antal tid(1 time?)*/
-int check_for_run_module(user User){
-    if(User.type == Automated){
-        dato time_now=User.settings.next_activation;/*rigtig tid skal hentes fra time library*/
-        if(User.settings.next_activation.time.hour == time_now.time.hour){
+int check_for_run_module(user *User){
+    if(User->type == Automated){
+        int Now_index = hours_between(User->choice.from,User->choice.now);
+        int next_activation_index = hours_between(User->choice.from,User->settings.next_activation);
+        dato time_now=User->settings.next_activation;/*rigtig tid skal hentes fra time library*/
+        if(next_activation_index == Now_index){
             return TRUE;
         }
-        else if(User.settings.next_activation.day < time_now.day){//denne sammenligning er ugyldig, lav en funktion som 
+        else if(next_activation_index < Now_index){//denne sammenligning er ugyldig, lav en funktion som 
             update_next_activation(User);// denne funktion burde ændre
             check_for_run_module(User);
         }
@@ -113,12 +140,14 @@ int check_for_run_module(user User){
             return 0;
         }
     }
-    else if(User.type == Human){
+    else if(User->type == Human){
         return 1;
     }
     else{
         error_message(ErrorUserType);
+        
     }
+    return EXIT_FAILURE;
 }
 /*Funktion der logger brugen af programmet og måden de data der måtte komme derigennem.*/
 /*Disse data vil være relevante at vise i funktionen system_information.c når den implementeres*/
@@ -127,39 +156,39 @@ void log_data_use(data Output){
 }
 /*Funktionen som fungere som en brugers interface
  Kunne overvejes at lægges ind i language.c istedet for.*/
-int prompt_user(user User, data *Data){
+int prompt_user(user *User, data *Data){
     l_prompt_user(User);
-    scanf(" %d", &User.choice.function);
+    scanf(" %d", &User->choice.function);
     
     data *data_copy;
-    data_copy = copy_data(User,Data); //her har vi mulighed for at udvide copy_data til at bruge data fra user settings
+    data_copy = copy_data(*User,Data); //her har vi mulighed for at udvide copy_data til at bruge data fra user settings
 
-    if(User.choice.function == Exit){
+    if(User->choice.function == Exit){
         return EXIT_SUCCESS;
     }
-    else if(User.choice.function == UserHistory){
+    else if(User->choice.function == UserHistory){
         l_user_history(User,data_copy);
     }
-    else if(User.choice.function == UpdateSettings){
+    else if(User->choice.function == UpdateSettings){
         l_update_settings(User);
     }
-    else if(User.choice.function == InfoEnergySaving){
+    else if(User->choice.function == InfoEnergySaving){
         l_info_energy_saving(User,data_copy);
     }
-    else if(User.choice.function == ConsumptionCheck){
+    else if(User->choice.function == ConsumptionCheck){
         l_consumption_check(User, data_copy);
     }
-    else if(User.choice.function == SavingAdvice){
+    else if(User->choice.function == SavingAdvice){
         l_saving_advice(User, data_copy);
     }
-    else if(User.choice.function == WarningEnergySaving){
+    else if(User->choice.function == WarningEnergySaving){
         l_warning_energy_saving(User,data_copy);
     }
-    else if(User.choice.function == MachineActivation){
+    else if(User->choice.function == MachineActivation){
         l_machine_activation(User,data_copy);
     }
-    else if(User.choice.function == MorningRoutine){
-        l_morningProcedure(&User);    
+    else if(User->choice.function == MorningRoutine){
+        l_morningProcedure(User);    
     }
     else{
         error_message(ErrorChoiceDoesntExist);

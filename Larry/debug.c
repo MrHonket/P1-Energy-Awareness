@@ -4,7 +4,7 @@
 
 char* translate(int choice_of_function);
 int debug_user(user User);
-
+//viser de data der er i user
 int debug_user(user User){
     printf("\nDebugger for user structs!\n");
     printf("ID = %d ; Sprog = %s ; Bosted = %s\n",User.settings.id,User.settings.language,User.settings.residence);

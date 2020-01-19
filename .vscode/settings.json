@@ -5,6 +5,7 @@
       "complex": "c",
       "type_traits": "c",
       "stdlib.h": "c",
-      "update_settings.h": "c"
+      "update_settings.h": "c",
+      "__config": "c"
    }
 }

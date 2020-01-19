@@ -33,6 +33,9 @@ int         copy_file_to_mypricedata(char *filename);
 int         copy_file_to_myconsumpdata(char *filename);
 
 
+void print_price_index_from_array(pricedata *Data, int index);
+void print_consump_index_from_array(meterdata *Data, int index);
+
 
 void    print_price_index(int index);
 void    print_consump_index(int index);
@@ -46,7 +49,7 @@ double  consumption_from_string(char *price);
 
 /* int     get_next_hour(int hour);
  */
-    int     hours_since_index(dato first_index, dato to);
+int     hours_since_index(dato first_index, dato to);
 /* int     calc_time(dato from, dato to);
 int     calc_hours(dato test_year, month test); */
 
@@ -172,7 +175,7 @@ data *get_price_for_timeinterval_in_area(dato from, dato to,  area area){
         init_database();
     }
     /* init VARIABLES and return structure*/
-    printf("dato 0 er : %d-%d-%d kl: %d:%d\n",mypricedata[first_data_index].from.year, mypricedata[first_data_index].from.month,mypricedata[first_data_index].from.day,mypricedata[first_data_index].from.time.hour,mypricedata[first_data_index].from.time.minute);
+    // printf("dato 0 er : %d-%d-%d kl: %d:%d\n",mypricedata[first_data_index].from.year, mypricedata[first_data_index].from.month,mypricedata[first_data_index].from.day,mypricedata[first_data_index].from.time.hour,mypricedata[first_data_index].from.time.minute);
     start_index     = hours_since_index(mypricedata[first_data_index].from, from);
     end_index       = hours_since_index(mypricedata[first_data_index].from, to);
     nr_of_elements  = abs(end_index-start_index);
@@ -425,11 +428,11 @@ double price_from_string(char *price){
 }
 
 
-double consumption_from_string(char *price){
+double consumption_from_string(char *consump){
     double value1=0,value2=0;
     int scanres=0;
     
-    if ((scanres = sscanf(price," %lf,%lf " ,&value1,&value2))>0){
+    if ((scanres = sscanf(consump," %lf,%lf " ,&value1,&value2))>0){//evt %3f
         return  value1 + value2/1000;
     }
     
@@ -439,7 +442,21 @@ double consumption_from_string(char *price){
 
 
 
+void print_price_index_from_array(pricedata *Data, int index){
+   printf("from: %d-%d-%d %d:%d\nto  : %d-%d-%d %d:%d\n DK1: %f\nDK2: %f \n\n",
+   Data[index].from.year,Data[index].from.month,Data[index].from.day,Data[index].from.time.hour,Data[index].from.time.minute,
+   Data[index].to.year  ,Data[index].to.month  ,Data[index].to.day  ,Data[index].to.time.hour  ,Data[index].to.time.minute,
+   Data[index].DK1price,Data[index].DK2price);
+    
+}
 
+void print_consump_index_from_array(meterdata *Data, int index){
+   printf("from: %d-%d-%d %d:%d\nto  : %d-%d-%d %d:%d\n VALUE: %f\n\n",
+   Data[index].from.year,Data[index].from.month,Data[index].from.day,Data[index].from.time.hour,Data[index].from.time.minute,
+   Data[index].to.year  ,Data[index].to.month  ,Data[index].to.day  ,Data[index].to.time.hour  ,Data[index].to.time.minute,
+   Data[index].value);
+    
+}
 void print_price_index(int index){
    printf("from: %d-%d-%d %d:%d\nto  : %d-%d-%d %d:%d\n DK1: %f\nDK2: %f \n\n",
    mypricedata[index].from.year,mypricedata[index].from.month,mypricedata[index].from.day,mypricedata[index].from.time.hour,mypricedata[index].from.time.minute,
@@ -457,9 +474,9 @@ void print_consump_index(int index){
 }
 
 
-int get_next_hour(int hour){
-    return hour < 23 ? hour+1 : 0;
-}
+// int get_next_hour(int hour){
+//     return hour < 23 ? hour+1 : 0;
+// }
 
 int hours_since_index(dato first_index, dato to){
    /*  printf("calc_time returnerer: %d",calc_time(first_index,to)); */

@@ -25,8 +25,8 @@ if (strcmp(User.settings.residence, "DK1") == 0)
 {   
     // current_price = data_array[User.choice.hour].prize.DK1price;
     // current_consumption = data_array[User.choice.hour].meter.value;
-    current_price = data_array[n_elements/2].prize.DK1price;
-    current_consumption = data_array[n_elements/2].meter.value;
+    current_price = data_array[0].prize.DK1price;
+    current_consumption = data_array[0].meter.value;
     
     if (current_price < 0)
         printf("Prisen er pt. negativ!\n");
@@ -40,7 +40,7 @@ if (strcmp(User.settings.residence, "DK1") == 0)
 
     /* Dette giver brugerens strømpris baseret ud fra hvornår det er billigst at bruge strøm */
     user_price_after = current_consumption * KWH_TO_MWH * cheapest_price;
-    printf("Din pris, hvis du vælger at flytte dit forbrug til billigste tidspunkt: %.2f DKK / KwH\n\n", user_price_after);
+    printf("\nDin pris, hvis du vælger at flytte dit forbrug til billigste tidspunkt: %.2f DKK\n\n", user_price_after);
 }
     else if (strcmp(User.settings.residence, "DK2") == 0)
     {
@@ -59,7 +59,7 @@ if (strcmp(User.settings.residence, "DK1") == 0)
         
         /* Dette giver brugerens strømpris baseret ud fra hvornår det er billigst at bruge strøm */
         user_price_after = current_consumption * KWH_TO_MWH * cheapest_price;
-        printf("Din pris, hvis du vaelger at flytte dit forbrug til billigste tidspunkt: %.2f DKK / KwH\n\n", user_price_after);
+        printf("\nDin pris, hvis du vaelger at flytte dit forbrug til billigste tidspunkt: %.2f DKK\n\n", user_price_after);
     }
     else
     {

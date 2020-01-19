@@ -12,6 +12,8 @@ dato    date_from_stringDMYI(char *str,int time);
 /* 2017 01 01 22.00 */
 dato    date_from_stringYMDH(char *date);
 
+void print_price_index_from_array(pricedata *Data, int index);
+void print_consump_index_from_array(meterdata *Data, int index);
 void    print_price_index(int index);
 void    print_consump_index(int index);
 /* int     calc_time(dato from, dato to);

@@ -10,7 +10,7 @@
 
 void update_settings(void);
   int test_update_scan(char userdata[]);
-void update_next_activation(user User);
+void update_next_activation(user *User);
 settings load_settings(void);
 void update_warning_energy_saving(void);
 void update_machine_activation(void);
@@ -75,7 +75,7 @@ int test_update_scan(char userdata[]){
 
 /*Skal sætte den næste dato for automatisk aktivering ind i settings.txt filen*/
 /*Husk at sørg for next_activation også bliver kørt i update_setings!*/
-void update_next_activation(user User){
+void update_next_activation(user *User){
     FILE *f;
 
     //udregn hvornår næste aktivering skal ske.
@@ -102,7 +102,6 @@ settings load_settings(void){
     fclose(f);
 
     sscanf(scan_data, " %s - %s - %d", location, language, &user_id);
-
     Settings.id = user_id;
     strcpy(Settings.language, language);
     strcpy(Settings.residence, location);

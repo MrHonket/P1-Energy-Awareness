@@ -253,18 +253,19 @@ typedef struct{
     int id;
     char residence[5];
     char language[5];
-    dato next_activation;
+    dato next_activation;//er ikke i settings endnu
 }settings;
 
 
 /*aktive valg: choice*/
 typedef struct{
-    int function;
+    choice_function function;
     int hour;
     int warning;
     mean_or_median mean_or_median;
     dato from;
     dato to;
+    dato now;
     lookup_type lookup;
 }choice;
 
@@ -280,8 +281,8 @@ typedef enum{Failure, Success}passive_warnings;
 
 /*Calc time funktionen!*/
 /*Prototypes*/
-int calc_time(dato from, dato to);
-int calc_hours(dato test_year, month test);
+// int calc_time(dato from, dato to);
+// int calc_hours(dato test_year, month test);
 int hours_between (dato d1, dato d2);
 int days_between(dato from, dato to);
 int months_between(dato d1, dato d2);
@@ -291,74 +292,74 @@ dato next_day(dato d);
 int leapYear(int);
 void print_date(dato);
 /*Funktionerne er listet herunder*/
-int calc_time(dato from, dato to){
-    int days = 0, hours = 0, test_number = 0;
-    month from_month;
-    month to_month;
+// int calc_time(dato from, dato to){
+//     int days = 0, hours = 0, test_number = 0;
+//     month from_month;
+//     month to_month;
 
-    from_month = from.month;
-    to_month = to.month;
-    hours = calc_hours(to, to_month) - calc_hours(from, from_month);
+//     from_month = from.month;
+//     to_month = to.month;
+//     hours = calc_hours(to, to_month) - calc_hours(from, from_month);
 
-    hours += (24 * (to.day - from.day));
-    hours += (to.time.hour - from.time.hour);
+//     hours += (24 * (to.day - from.day));
+//     hours += (to.time.hour - from.time.hour);
    
-    if(hours < 0 || hours == 73 || hours == 25){
-        return 1;
-    }
-    else{
-        return hours;
-    } 
-}
+//     if(hours < 0 || hours == 73 || hours == 25){
+//         return 1;
+//     }
+//     else{
+//         return hours;
+//     } 
+// }
 
-int calc_hours(dato test_year, month test){
-    int days = 0, hours = 0;
-    if(test_year.year % 4 == 0){
-        for (days = 0; test >= 1; test--)
-        {
-            if(test == 2){
-                days += 29;
-            }
-            else if(test <= 6 && test % 2 == 0){
-                days += 30;
-            }
-            else if(test <= 7 && test % 2 != 0){
-                days += 31;
-            }
-            else if(test > 6 && test % 2 == 0){
-                days += 31;
-            }
-            else if(test >= 9 && test % 2 != 0){
-                days += 30;
-            }
-        }
-        hours = days * 24;
-        return hours;
-    }
-    else if (test_year.year % 4 != 0){
-        for (days = 0; test >= 1; test--)
-        {
-            if(test == 2){
-                days += 28;
-            }
-            else if(test <= 6 && test % 2 == 0){
-                days += 30;
-            }
-            else if(test <= 7 && test % 2 != 0){
-                days += 31;
-            }
-            else if(test > 6 && test % 2 == 0){
-                days += 31;
-            }
-            else if(test >= 9 && test % 2 != 0){
-                days += 30;
-            }
-        }
-        hours = days * 24;
-        return hours;
-    }
-    return 0;
-}
+// int calc_hours(dato test_year, month test){
+//     int days = 0, hours = 0;
+//     if(test_year.year % 4 == 0){
+//         for (days = 0; test >= 1; test--)
+//         {
+//             if(test == 2){
+//                 days += 29;
+//             }
+//             else if(test <= 6 && test % 2 == 0){
+//                 days += 30;
+//             }
+//             else if(test <= 7 && test % 2 != 0){
+//                 days += 31;
+//             }
+//             else if(test > 6 && test % 2 == 0){
+//                 days += 31;
+//             }
+//             else if(test >= 9 && test % 2 != 0){
+//                 days += 30;
+//             }
+//         }
+//         hours = days * 24;
+//         return hours;
+//     }
+//     else if (test_year.year % 4 != 0){
+//         for (days = 0; test >= 1; test--)
+//         {
+//             if(test == 2){
+//                 days += 28;
+//             }
+//             else if(test <= 6 && test % 2 == 0){
+//                 days += 30;
+//             }
+//             else if(test <= 7 && test % 2 != 0){
+//                 days += 31;
+//             }
+//             else if(test > 6 && test % 2 == 0){
+//                 days += 31;
+//             }
+//             else if(test >= 9 && test % 2 != 0){
+//                 days += 30;
+//             }
+//         }
+//         hours = days * 24;
+//         return hours;
+//     }
+//     return 0;
+// }
 
 dato next_hour(dato d){
     dato temp = d;
@@ -523,6 +524,6 @@ dato next_day(dato d){
 
 /* Print dato d */
 void print_date(dato d){
-  printf("%2i-%2i-%4i kl %2d\n",  d.day, d.month, d.year, d.time.hour);
+  printf("%2d-%2d-%4d kl %2d\n",  d.day, d.month, d.year, d.time.hour);
 }
 

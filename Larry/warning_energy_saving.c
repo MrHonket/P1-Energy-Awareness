@@ -1,4 +1,5 @@
-/* Mathias(Niller) */
+//Activation har vurderet at prisen er høj lige nu , derfor uundersøges om der er et stort forbrug.
+//
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -11,26 +12,26 @@ double warning_energy_saving(user User, data *Data);
 double warning_consumption(double price, double consumption,double median_consumption);
 
 double warning_energy_saving(user User, data *Data){
-    int Time_now=User.choice.from.time.hour;
+    int Now_index = hours_between(User.choice.from, User.choice.now);
     double value,
            one_price,          
            one_consumption,    
            median_consumption;
     if(strcmp(User.settings.residence,"DK1") == 0)
     {
-        one_price= Data[Time_now].prize.DK1price;  
+        one_price= Data[Now_index].prize.DK1price;  
     }
     else if(strcmp(User.settings.residence,"DK2") == 0)
     {
-        one_price =Data[Time_now].prize.DK2price;
+        one_price =Data[Now_index].prize.DK2price;
     }
-    one_consumption = Data[Time_now].meter.value; 
+    one_consumption = Data[Now_index].meter.value; 
     median_consumption = user_history(User, Data);
 
     value = warning_consumption(one_price,one_consumption,median_consumption);
     return value;  
 }
-double warning_consumption(double price,double consumption,double median_consumption){
+double warning_consumption(double price,double consumption,double median_consumption){// returnerer hvis forbruget er større end median forbruget  et forbrug ellers false, du bruger ikke mere end gennemsnit
     double price_difference;
     if(consumption>median_consumption)
     {
@@ -39,7 +40,7 @@ double warning_consumption(double price,double consumption,double median_consump
     }
     else if(consumption<=median_consumption)
     {
-       price_difference=((price*median_consumption)/(price*consumption)-1);
+    //    price_difference=((price*median_consumption)/(price*consumption)-1);
        return FALSE;
     }
     else

@@ -68,7 +68,7 @@ const char *month_txt;
     typedef struct{int id;char residence[5];char language[5];dato next_activation;}settings;
     /*aktive valg: choice*/
     typedef struct{int function; int hour; int warning; mean_or_median mean_or_median;
-                   dato from;dato to;lookup_type lookup;}choice;
+                   dato from;dato to;dato now;lookup_type lookup;}choice;
     
 /*user structet*/
 typedef struct{
