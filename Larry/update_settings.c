@@ -111,18 +111,24 @@ settings load_settings(void){
 
 void update_warning_energy_saving(void){
     FILE *f;
+    char str1[40], str2[40], str3[40];
 
-    error_message(ErrorNotImplemented);
+    printf("update warning energy saving\n");
+    // error_message(ErrorNotImplemented);
+    scanf("%s",str1);
     //Lav en scanf som tager de input der er nødvendige for at sætte programmet op
-
     f = fopen("settings.txt", "r");
+    fgets(str2,40, f);
+    sprintf(str3,"%s\n%s",str2,str1);
     //Læs de data ind som er i settings.txt og lav en streng med de data + de førnævnte input
     fclose(f);
 
-    //f = fopen("settings.txt", "w");
-    //Skriv datastrengen ind i settings.txt filen.
-    //fclose(f);
+    f = fopen("settings.txt", "w");
+        fwrite(str3, 1, sizeof(str3),f);
+        fclose(f);
+    
 }
+
 
 void update_machine_activation(void){
     FILE *f;

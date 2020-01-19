@@ -263,7 +263,8 @@ void l_warning_energy_saving(user *User, data *Data){
     //skriv variable
     
     if(strcmp(User->settings.language,"DK") == 0){
-        error_message(ErrorLanguageNotImplemented);
+        // error_message(ErrorLanguageNotImplemented);
+        printf("hvor meget må strøm koste pr MWH før du modtager en advarsel?\n");
         update_warning_energy_saving();
     }
     else if(strcmp(User->settings.language,"ENG") == 0){
