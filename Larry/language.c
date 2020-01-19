@@ -29,6 +29,8 @@ void set_user_timeinterval(user *User);
 void set_user_date_from(user *User);
 void set_user_date_to(user *User);
 void set_User_choice_lookup(user *User);
+void init_user(user *User);
+
 
 
 
@@ -444,3 +446,12 @@ void set_User_choice_lookup(user *User){
         User->choice.lookup = Meter;
     }
 }
+
+void init_user(user *User){
+    User->choice.from = date_from_stringDMYI("0-0-0" ,0);
+    User->choice.to = date_from_stringDMYI("0-0-0" ,0);
+    User->choice.now = date_from_stringDMYI("0-0-0" ,0);
+    User->settings.next_activation = date_from_stringDMYI("1-1-2017", 0);
+
+}
+

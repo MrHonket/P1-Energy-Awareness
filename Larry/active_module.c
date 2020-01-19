@@ -25,6 +25,7 @@ int check_for_run_module(user *User);
 int prompt_user(user *User,data *Data);
     data* copy_data(user User,data *Data);
 void log_data_use(data Output);
+
 /*main vil modtage information om det er en måler eller sig selv (Automatisk) der aktivere eller en app (Human)
 main vil også modtage hvilken dato main er kaldt og sætte den pågældende dato som User.choice.now blot med årstal 2017
 kald main på følgende måde:
@@ -32,6 +33,7 @@ kald main på følgende måde:
 */
 int main(int arg_c, char *arg_v[]){
     user User;
+    init_user(&User);
     if(arg_c >= 2){
         if(strcmp(arg_v[1], "Automated") == 0) {
             
@@ -53,8 +55,11 @@ int main(int arg_c, char *arg_v[]){
             print_date(User.choice.now);
             User.choice.from = date_from_stringDMYI("1-1-2017", 0);
             User.choice.to = date_from_stringDMYI("31-12-2017", 23); 
+            printf("User choise from, to, now set to\n"); 
             print_date(User.choice.from);
             print_date(User.choice.to);
+            print_date(User.choice.now);
+
         }
     }
     else {
@@ -62,7 +67,11 @@ int main(int arg_c, char *arg_v[]){
             User.choice.now = date_from_stringDMYI("1-5-2017", 13);
             User.choice.lookup = Meter;
             User.choice.from = date_from_stringDMYI("1-1-2017", 0);
-            User.choice.to = date_from_stringDMYI("31-12-2017", 23);        
+            User.choice.to = date_from_stringDMYI("31-12-2017", 23);
+            printf("User choise from, to, now set to\n"); 
+            print_date(User.choice.from);
+            print_date(User.choice.to);
+            print_date(User.choice.now);       
         }
 
            
@@ -125,8 +134,18 @@ int main(int arg_c, char *arg_v[]){
 int check_for_run_module(user *User){
     if(User->type == Automated){
         int Now_index = hours_between(User->choice.from,User->choice.now);
+        
+        if(User->settings.next_activation.year < 1 || User->settings.next_activation.year > 2100){
+            User->settings.next_activation = User->choice.now;
+            printf("next activation er blevet sat til now");
+        }
+        printf("User choise from, to, next_activation set to\n"); 
+            print_date(User->choice.from);
+            print_date(User->choice.to);
+            print_date(User->settings.next_activation );
         int next_activation_index = hours_between(User->choice.from,User->settings.next_activation);
-        dato time_now=User->settings.next_activation;/*rigtig tid skal hentes fra time library*/
+        printf("Test1");
+        // dato time_now = User->settings.next_activation;/*rigtig tid skal hentes fra time library*/
         if(next_activation_index == Now_index){
             return TRUE;
         }
