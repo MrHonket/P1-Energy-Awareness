@@ -137,11 +137,9 @@ int check_for_run_module(user *User){
         
         if(User->settings.next_activation.year < 1 || User->settings.next_activation.year > 2100){
             User->settings.next_activation = User->choice.now;
-            printf("next activation er blevet sat til now");
+            printf("next activation er blevet sat til now\n");
         }
-        printf("User choise from, to, next_activation set to\n"); 
-            print_date(User->choice.from);
-            print_date(User->choice.to);
+            printf("next activation");
             print_date(User->settings.next_activation );
         int next_activation_index = hours_between(User->choice.from,User->settings.next_activation);
         printf("Test1");
