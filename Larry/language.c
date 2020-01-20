@@ -30,6 +30,7 @@ void set_user_date_from(user *User);
 void set_user_date_to(user *User);
 void set_User_choice_lookup(user *User);
 void init_user(user *User);
+data *get_data(user *User);
 
 
 
@@ -76,7 +77,7 @@ void l_user_history(user *User, data *Data){
         printf("Skriv venligst \n%d for gennemsnit \n%d for medianen",Mean,Median);
 
         scanf(" %d",&User->choice.mean_or_median);
-        Data = get_price_for_timeinterval_in_area(User->choice.from,User->choice.to, Dk1);
+        Data = get_data(User);
 
         result = user_history(*User, Data);
         printf("%s er %lf %s for perioden\n",(User->choice.mean_or_median == Median ? "Medianen" : "Gennemsnittet"), result,
@@ -114,7 +115,7 @@ void l_info_energy_saving(user *User,data *Data)
                 case 1: 
                     printf("Indtast hvilken dato du onsker data fra: ");
                     set_user_timeinterval(User);
-                    Data = get_price_for_timeinterval_in_area(User->choice.from,User->choice.to, Dk1); //burde være User->settings.residence
+                    Data = get_data(User); //burde være User->settings.residence
                     
                     // scanf(" %d", &User->choice.hour);
                     print_information(Data, *User);
@@ -127,7 +128,7 @@ void l_info_energy_saving(user *User,data *Data)
                 case 2: 
                     printf("Indtast en start og en slut dato du onsker at se priser for: \n");
                     set_user_timeinterval(User);
-                    Data = get_price_for_timeinterval_in_area(User->choice.from,User->choice.to, Dk1); //burde være User->settings.residence
+                    Data = get_data(User); //burde være User->settings.residence
                     // scanf(" %d %d", &User->choice.from.time.hour, &User->choice.to.time.hour);
                     overview_for_interval(*User,Data);
                     free(Data);
@@ -150,7 +151,7 @@ void l_info_energy_saving(user *User,data *Data)
 void cheapest(data data_array[], user User)
 {
     data *cheapest;
-    int n_elements = hours_between(User.choice.from,User.choice.to);
+    int n_elements = hours_between(User.choice.from,User.choice.to)+1;
     cheapest = (data*)malloc(1 * sizeof(data));
     
     if (strcmp(User.settings.residence, "DK1") == 0){
@@ -287,7 +288,7 @@ void l_morningProcedure(user *User){
     printf("MORGEN RUTINE!\n\n");
     printf("---------------------------------------------------------------------------------------------------\n\n");  
     set_user_timeinterval(User);
-    Data = get_price_for_timeinterval_in_area(User->choice.from,User->choice.to, Dk1); //burde være User->settings.residence
+    Data = get_data(User); //burde være User->settings.residence
     printf("---------------------------------------------------------------------------------------------------\n\n");
     printf("DIT STRØMOVERBLIK\n");
     
@@ -308,7 +309,7 @@ void l_morningProcedure(user *User){
     User->choice.mean_or_median = Median;
     print_date(User->choice.from);
     print_date(User->choice.to);
-    Data = get_price_for_timeinterval_in_area(User->choice.from,User->choice.to, Dk1);
+    Data = get_data(User);
     median_consump = user_history(*User,Data);
     printf("\ndit median forbrug i den %d. måned er %.2fKw / H \n\n", User->choice.from.month,median_consump);
     User->choice.lookup = Price;
@@ -323,8 +324,8 @@ void l_morningProcedure(user *User){
     User->choice.from.time.hour = 1;
     User->choice.from.time.minute = 0;
 
-    Data = get_price_for_timeinterval_in_area(User->choice.from,User->choice.to, Dk1);
-    for(int i = 0; i < hours_between(User->choice.from,User->choice.to);i++){
+    Data = get_data(User);
+    for(int i = 0; i <= hours_between(User->choice.from,User->choice.to);i++){
         consumed_price += Data[i].meter.value * Data[i].prize.DK1price * KWH_TO_MWH;
     }
     printf("--------------------------------------------------------\n\n");
@@ -399,7 +400,7 @@ void set_user_timeinterval(user *User){
     
     print_date(User->choice.from);
     print_date(User->choice.to);
-    User->choice.hour = hours_between(User->choice.from,User->choice.to);
+    User->choice.hour = hours_between(User->choice.from,User->choice.to)+1;
 
 }
 
@@ -453,5 +454,10 @@ void init_user(user *User){
     User->choice.now = date_from_stringDMYI("0-0-0" ,0);
     User->settings.next_activation = date_from_stringDMYI("1-1-2017", 0);
 
+}
+
+
+data *get_data(user *User){
+    return get_price_for_timeinterval_in_area(User->choice.from,User->choice.to, Dk1);
 }
 

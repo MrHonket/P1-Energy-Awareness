@@ -93,7 +93,7 @@ int main(int arg_c, char *arg_v[]){
     confirmation = check_for_run_module(&User);
 
     if(confirmation){
-        Data = get_price_for_timeinterval_in_area(User.choice.from, User.choice.to, Dk1);//et års data tilbage i tid
+        Data = get_data(&User);//et års data tilbage i tid
         if (User.type == Human){
             prompt_user(&User,Data);
         }
@@ -134,6 +134,7 @@ int main(int arg_c, char *arg_v[]){
 int check_for_run_module(user *User){
     if(User->type == Automated){
         int Now_index = hours_between(User->choice.from,User->choice.now);
+        
         
         if(User->settings.next_activation.year < 1 || User->settings.next_activation.year > 2100){
             // User->settings.next_activation = next_hour(User->choice.now);
@@ -216,11 +217,14 @@ int prompt_user(user *User, data *Data){
     return prompt_user(User,Data);
 }
 
+
+
+
 /* Funktionen lægger en kopi af dataene fra database modulet over i et tmp array, således at den sorterede data fra funktionerne 
  * i eksempelvis l_info_energy_saving ikke overlever fra kørsel til kørsel */
 data* copy_data(user User,data *Data)
 {
-    int interval = hours_between(User.choice.from,User.choice.to);
+    int interval = hours_between(User.choice.from,User.choice.to)+1;
     data *data_copy= malloc(sizeof(data) * HOURS_PR_YEAR);
     int i;
 

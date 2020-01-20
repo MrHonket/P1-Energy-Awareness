@@ -178,7 +178,7 @@ data *get_price_for_timeinterval_in_area(dato from, dato to,  area area){
     // printf("dato 0 er : %d-%d-%d kl: %d:%d\n",mypricedata[first_data_index].from.year, mypricedata[first_data_index].from.month,mypricedata[first_data_index].from.day,mypricedata[first_data_index].from.time.hour,mypricedata[first_data_index].from.time.minute);
     start_index     = hours_since_index(mypricedata[first_data_index].from, from);
     end_index       = hours_since_index(mypricedata[first_data_index].from, to);
-    nr_of_elements  = abs(end_index-start_index);
+    nr_of_elements  = abs(end_index-start_index)+1;
     tempdata        = malloc(nr_of_elements*sizeof(data));
     db_cur_index    = start_index;
 

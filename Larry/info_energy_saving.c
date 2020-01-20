@@ -19,7 +19,7 @@ double info_energy_saving(user User, data data_array[])
     double user_price_current = 0.0;
     double user_price_after = 0.0;
     double cheapest_price = 0.0;
-    int n_elements = hours_between(User.choice.from,User.choice.to);
+    int n_elements = hours_between(User.choice.from,User.choice.to)+1;
     
 if (strcmp(User.settings.residence, "DK1") == 0)
 {   
@@ -102,7 +102,7 @@ int cmpfunc_DK2(const void * a, const void * b)
 void overview_for_interval(user User, data data_array[])
 {
     int i;
-    int n_elements = hours_between(User.choice.from,User.choice.to);
+    int n_elements = hours_between(User.choice.from,User.choice.to)+1;
     if (strcmp(User.settings.residence, "DK1") == 0)
     {
         printf("Dato: %d / %d / %d\t   Område: %s\n\n", data_array->prize.from.day, data_array->prize.from.month, 

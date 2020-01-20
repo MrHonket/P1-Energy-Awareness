@@ -22,7 +22,7 @@ int main(void){
 
 
 
-    num_of_indexes = hours_between(date1,date2);
+    num_of_indexes = hours_between(date1,date2)+1;
     
      
     // print_consump_index(1000);

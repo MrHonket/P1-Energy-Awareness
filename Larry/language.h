@@ -21,6 +21,7 @@ void set_user_date_from(user *User);
 void set_user_date_to(user *User);
 void set_User_choice_lookup(user *User);
 void init_user(user *User);
+data *get_data(user *User);
 
 
 #endif

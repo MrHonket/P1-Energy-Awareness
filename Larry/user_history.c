@@ -32,7 +32,7 @@ double user_history(user User, data *Data) {
     /*Lav en array ud fra Data-structen og baseret på, om dataen er fra meter eller pris. Det er denne, der skal regnes på.*/
     if (User.choice.lookup == Meter) {
         /*Initialiserer number_of_elements, samt den array, der skal bruges. Lav om til egen funktion.*/
-        number_of_elements = hours_between(User.choice.from, User.choice.to);/*Finder antal timer*/
+        number_of_elements = hours_between(User.choice.from, User.choice.to)+1;/*Finder antal timer*/
         double *dataset = malloc(sizeof(double)*number_of_elements);
 
         /*Assigner arrayelementer fra Data og en for-løkke*/
@@ -47,7 +47,7 @@ double user_history(user User, data *Data) {
     } 
     else if (User.choice.lookup == Price) {
         /*Initialiserer number_of_elements, samt den array, der skal bruges. Lav om til egen funktion.*/
-        number_of_elements = hours_between(User.choice.from, User.choice.to);/*Finder antal timer*/
+        number_of_elements = hours_between(User.choice.from, User.choice.to)+1;/*Finder antal timer*/
         double *dataset = malloc(sizeof(double)*number_of_elements);
 
         /*Assigner arrayelementer vha Data og en for-løkke*/
@@ -59,7 +59,6 @@ double user_history(user User, data *Data) {
         qsort(dataset, number_of_elements, sizeof(double), sort_array_for_median);
         pointer_to_dataset = dataset;//brug dataset istedet for pointer_til_dataset
     } else {
-        printf("jakob l62 ");
         error_message(ErrorUserLookupHistory);
         return 0;
     }
@@ -89,7 +88,7 @@ double calc_mean(double dataset[], int number_of_elements) {
     // d_i = i;//slet 
     // double result = mean / d_i ;//omskriv til number_of_elements
     /*Returnerer gennemsnittet*/
-    return (mean/i);//(mean/number_of_elements)
+    return (mean/number_of_elements);//(mean/number_of_elements)
 }
 
 /*qsort*/
