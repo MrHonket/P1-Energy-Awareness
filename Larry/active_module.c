@@ -139,10 +139,10 @@ int check_for_run_module(user *User){
             User->settings.next_activation = User->choice.now;
             printf("next activation er blevet sat til now\n");
         }
-            printf("next activation");
+            printf("next activation: ");
             print_date(User->settings.next_activation );
         int next_activation_index = hours_between(User->choice.from,User->settings.next_activation);
-        printf("Test1");
+        
         // dato time_now = User->settings.next_activation;/*rigtig tid skal hentes fra time library*/
         if(next_activation_index == Now_index){
             return TRUE;
