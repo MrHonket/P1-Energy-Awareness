@@ -55,7 +55,7 @@ int main(int arg_c, char *arg_v[]){
             print_date(User.choice.now);
             User.choice.from = date_from_stringDMYI("1-1-2017", 0);
             User.choice.to = date_from_stringDMYI("31-12-2017", 23); 
-            printf("User choise from, to, now set to\n"); 
+            printf("User choice from, to, now is set to\n"); 
             print_date(User.choice.from);
             print_date(User.choice.to);
             print_date(User.choice.now);
@@ -68,7 +68,7 @@ int main(int arg_c, char *arg_v[]){
             User.choice.lookup = Meter;
             User.choice.from = date_from_stringDMYI("1-1-2017", 0);
             User.choice.to = date_from_stringDMYI("31-12-2017", 23);
-            printf("User choise from, to, now set to\n"); 
+            printf("User choice from, to, now is set to\n"); 
             print_date(User.choice.from);
             print_date(User.choice.to);
             print_date(User.choice.now);       
