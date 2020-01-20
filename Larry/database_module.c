@@ -176,22 +176,22 @@ data *get_price_for_timeinterval_in_area(dato from, dato to,  area area){
     }
     /* init VARIABLES and return structure*/
     // printf("dato 0 er : %d-%d-%d kl: %d:%d\n",mypricedata[first_data_index].from.year, mypricedata[first_data_index].from.month,mypricedata[first_data_index].from.day,mypricedata[first_data_index].from.time.hour,mypricedata[first_data_index].from.time.minute);
-    start_index     = hours_since_index(mypricedata[first_data_index].from, from);
-    end_index       = hours_since_index(mypricedata[first_data_index].from, to);
-    nr_of_elements  = abs(end_index-start_index)+1;
+    start_index     = hours_between(mypricedata[first_data_index].from, from);
+    // end_index       = hours_since_index(mypricedata[first_data_index].from, to);
+    nr_of_elements  = hours_between(from,to)+1;
     tempdata        = malloc(nr_of_elements*sizeof(data));
     db_cur_index    = start_index;
 
 
     for (i=0 ; i < nr_of_elements ; i++) { 
-        tempdata[i].prize.from    = mypricedata[db_cur_index+FIRST_PRICEINDEX].from;    
-        tempdata[i].prize.to      = mypricedata[db_cur_index+FIRST_PRICEINDEX].to;   
-        tempdata[i].prize.DK1price= mypricedata[db_cur_index+FIRST_PRICEINDEX].DK1price;
-        tempdata[i].prize.DK2price= mypricedata[db_cur_index+FIRST_PRICEINDEX].DK2price;
+        tempdata[i].prize.from    = mypricedata[db_cur_index+FIRST_PRICEINDEX+1].from;    
+        tempdata[i].prize.to      = mypricedata[db_cur_index+FIRST_PRICEINDEX+1].to;   
+        tempdata[i].prize.DK1price= mypricedata[db_cur_index+FIRST_PRICEINDEX+1].DK1price;
+        tempdata[i].prize.DK2price= mypricedata[db_cur_index+FIRST_PRICEINDEX+1].DK2price;
 
-        tempdata[i].meter.from    = myconsumpdata[db_cur_index+FIRST_CONSUMPINDEX].from;      
-        tempdata[i].meter.to      = myconsumpdata[db_cur_index+FIRST_CONSUMPINDEX].to;      
-        tempdata[i].meter.value   = myconsumpdata[db_cur_index+FIRST_CONSUMPINDEX].value; 
+        tempdata[i].meter.from    = myconsumpdata[db_cur_index+FIRST_PRICEINDEX+1].from;      
+        tempdata[i].meter.to      = myconsumpdata[db_cur_index+FIRST_PRICEINDEX+1].to;      
+        tempdata[i].meter.value   = myconsumpdata[db_cur_index+FIRST_PRICEINDEX+1].value; 
         
         db_cur_index++;
     }
@@ -251,7 +251,7 @@ int copy_file_to_mypricedata(char *filename){
             
             mypricedata[j].DK1price = price_from_string(data_txt[8]);
             mypricedata[j].DK2price = price_from_string(data_txt[9]);
-
+            
             j++;
         } 
          
@@ -295,7 +295,7 @@ int copy_file_to_myconsumpdata(char *filename){
         data_txt[i] = " ";
     }
 
-    j=0;
+    j=FIRST_PRICEINDEX;
 
     while (fgets(str,MAX_LINE_WIDTH,f)!=NULL){
         
@@ -327,8 +327,9 @@ int copy_file_to_myconsumpdata(char *filename){
                 myconsumpdata[j].to     = date_from_stringYMDH(data_txt[2]);
                 myconsumpdata[j].value = consumption_from_string(data_txt[3]);
 
-                if(j>1 &&( dist = hours_between(myconsumpdata[j-1].from,myconsumpdata[j].from))>DATARESOLUTION){
+                if(j>FIRST_PRICEINDEX &&( dist = hours_between(myconsumpdata[j-1].from,myconsumpdata[j].from))>DATARESOLUTION){
                     //dist--;//flyttet til for loopet
+                    
             
                 /*  printf("lappet hul i data :");
                     print_date(myconsumpdata[j].from);
@@ -337,11 +338,15 @@ int copy_file_to_myconsumpdata(char *filename){
                     
                     for(k=0; k<dist-1; k++){
                         myconsumpdata[j+k] = empty_consumpstruct();
+                        printf("index: %d ",j);
+                print_date(mypricedata[j].from);
+                
+                printf("          ");print_date(myconsumpdata[j].from);
                     }
                     /* printf("%d tomme datafelter tilføjet fra index %d til index %d\n",dist,j,j+k);
                     printf("index %5d : på dato: %d-%d-%d kl%d dist %d\n",j-1,myconsumpdata[j-1].from.year, myconsumpdata[j-1].from.month, myconsumpdata[j-1].from.day,myconsumpdata[j-1].from.time.hour, dist);
                 */
-                    j += dist;
+                    j += dist-1;
                     strcpy(myconsumpdata[j].id,data_txt[0]);
                     myconsumpdata[j].from   = date_from_stringYMDH(data_txt[1]);
                     myconsumpdata[j].to     = date_from_stringYMDH(data_txt[2]);
@@ -350,6 +355,11 @@ int copy_file_to_myconsumpdata(char *filename){
                     printf("      %5d : på dato: %d-%d-%d kl%d dist %d\n\n",j,myconsumpdata[j].from.year, myconsumpdata[j].from.month, myconsumpdata[j].from.day,myconsumpdata[j].from.time.hour, dist);
 
                 }
+                printf("index: %d ",j);
+                print_date(mypricedata[j].from);
+                
+                printf("          ");print_date(myconsumpdata[j].from);
+
                 j++;
             }
         }

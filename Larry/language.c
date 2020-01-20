@@ -129,6 +129,9 @@ void l_info_energy_saving(user *User,data *Data)
                     printf("Indtast en start og en slut dato du onsker at se priser for: \n");
                     set_user_timeinterval(User);
                     Data = get_data(User); //burde være User->settings.residence
+                    print_date(Data[0].meter.from);
+                    print_date(Data[0].prize.from);
+
                     // scanf(" %d %d", &User->choice.from.time.hour, &User->choice.to.time.hour);
                     overview_for_interval(*User,Data);
                     free(Data);
