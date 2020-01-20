@@ -136,8 +136,8 @@ int check_for_run_module(user *User){
         int Now_index = hours_between(User->choice.from,User->choice.now);
         
         if(User->settings.next_activation.year < 1 || User->settings.next_activation.year > 2100){
-            User->settings.next_activation = User->choice.now;
-            printf("next activation er blevet sat til now\n");
+            User->settings.next_activation = next_hour(User->choice.now);
+            update_next_activation(User);
         }
             printf("next activation: ");
             print_date(User->settings.next_activation );
@@ -145,6 +145,7 @@ int check_for_run_module(user *User){
         
         // dato time_now = User->settings.next_activation;/*rigtig tid skal hentes fra time library*/
         if(next_activation_index == Now_index){
+            update_next_activation(User);
             return TRUE;
         }
         else if(next_activation_index < Now_index){//denne sammenligning er ugyldig, lav en funktion som 

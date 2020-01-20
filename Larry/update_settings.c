@@ -4,6 +4,7 @@
 #include <ctype.h>
 #include "global.h"
 #include "language.h"
+#include "database_module.h"
 
 /* opdatere settings.txt fil*/
 /* Daniel */
@@ -77,6 +78,20 @@ int test_update_scan(char userdata[]){
 /*Husk at sørg for next_activation også bliver kørt i update_setings!*/
 void update_next_activation(user *User){
     FILE *f;
+    data *Data;
+    //denne funktion er blot en stub for at vise hvad der skulle ske
+    Data = get_price_for_timeinterval_in_area(User->choice.now,next_day(User->choice.now), Dk1);
+    for(int i =1; i<23;i++){
+        if(Data[i].prize.DK1price > 222){
+            print_date(Data[i].prize.from);
+            printf("prisen på el er højere end din max graense\n, derfor sættes next activation til dette tidspunkt\nhvor du vil få en notifikation hvis\n du bruger mere el end medianforbruget for foregående måned\n ");
+            printf("prisgraense er sat til User->settings.max_price = 222kr\n\n");
+            User->settings.next_activation = Data[i].prize.from;
+            return;
+        }
+    }
+
+    
 
     //udregn hvornår næste aktivering skal ske.
 
