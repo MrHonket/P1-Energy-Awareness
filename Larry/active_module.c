@@ -86,7 +86,7 @@ int main(int arg_c, char *arg_v[]){
         //viser et view til brugeren hvor de kan skrive deres data DK1 osv
 
         l_update_settings(&User);
-        debug_user(User);
+        // debug_user(User);
     }
     //checker skal jeg køre eller ej, hvis "bruger" så kør altid, hvis det er en maskine , returnerer den true hvis der i settings er givet besked om at en maskine må køre på et bestemt tidspunkt
     //timenow er altid sat til 
@@ -98,7 +98,7 @@ int main(int arg_c, char *arg_v[]){
             prompt_user(&User,Data);
         }
         else if(User.type == Automated){
-            confirmation = passive_module(&User,Data); //returnerer en int 
+            confirmation = passive_module(&User,Data); //returnerer 1 hvis den har kørt programmet som enten aktivering af et device eller check for stort forbrug
             if(confirmation){                         
                 log_data_use(Output);  //tom stub               
             }
@@ -136,7 +136,7 @@ int check_for_run_module(user *User){
         int Now_index = hours_between(User->choice.from,User->choice.now);
         
         if(User->settings.next_activation.year < 1 || User->settings.next_activation.year > 2100){
-            User->settings.next_activation = next_hour(User->choice.now);
+            // User->settings.next_activation = next_hour(User->choice.now);
             update_next_activation(User);
         }
             printf("next activation: ");

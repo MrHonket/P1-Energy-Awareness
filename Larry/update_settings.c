@@ -83,12 +83,14 @@ void update_next_activation(user *User){
     Data = get_price_for_timeinterval_in_area(User->choice.now,next_day(User->choice.now), Dk1);
     for(int i =1; i<23;i++){
         if(Data[i].prize.DK1price > 222){
+            printf("next activation er sat til : ");
             print_date(Data[i].prize.from);
-            printf("prisen på el er højere end din max graense\n, derfor sættes next activation til dette tidspunkt\nhvor du vil få en notifikation hvis\n du bruger mere el end medianforbruget for foregående måned\n ");
+            printf("fordi prisen på el %lf er højere end din max graense på 222\ndu vil modtage en notifikation hvis du bruger mere el end medianforbruget for foregående måned\n\n ", Data[i].prize.DK1price);
             printf("prisgraense er sat til User->settings.max_price = 222kr\n\n");
             User->settings.next_activation = Data[i].prize.from;
             return;
         }
+        User->settings.next_activation = next_day(User->choice.now);
     }
 
     
