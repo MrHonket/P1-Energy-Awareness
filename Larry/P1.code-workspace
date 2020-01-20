@@ -1,0 +1,21 @@
+{
+	"folders": [
+		{
+			"path": "/Users/saxjax/Documents/GitHub/P1-Energy-Awareness"
+		},
+		{
+			"path": "/Users/saxjax/Documents/Larry2"
+		}
+	],
+	"settings": {
+		"files.associations": {
+			"global.h": "c",
+			"chrono": "c",
+			"complex": "c",
+			"type_traits": "c",
+			"stdlib.h": "c",
+			"update_settings.h": "c",
+			"__config": "c"
+		}
+	}
+}
