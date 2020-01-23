@@ -1,0 +1,2 @@
+# Larry
+strøm oplysnings program
